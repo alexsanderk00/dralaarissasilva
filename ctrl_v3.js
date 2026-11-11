@@ -149,7 +149,7 @@ function miniLateral(host,mode){
   P(host,bone([470,447],[660,506],30,16,26).d,mode==='run'?HI:DIM,mode==='run'?'#fff':'none',1.6);P(host,bone([520,402],[680,476],34,20,34).d,mode==='run'?HI:DIM,mode==='run'?'#fff':'none',1.6);
   P(host,bone([262,-260],[281,368],24,15,34).d,mode==='ankle'?HI:MID,mode==='ankle'?'#fff':'none',1.6);
   if(mode==='ankle'){P(host,'M295 353L346 373','none','#F6E6CF',11);P(host,'M283 378L254 426','none','#F0DCC0',8,.8);ring(host,[320,363],.9)}
-  if(heel){ring(host,[160,352]);el('circle',{cx:206,cy:499,r:7,fill:'#9DBBC0'},host)}
+  if(heel){ring(host,[160,352]);el('circle',{cx:206,cy:499,r:7,fill:'#A7BED4'},host)}
   if(mode==='aquiles')ring(host,[167,285],1.1);
 }
 miniDorsal(document.getElementById('miniHero'));miniDorsal(document.getElementById('icoJoanete'));

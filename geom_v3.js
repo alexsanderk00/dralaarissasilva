@@ -109,7 +109,7 @@ function Dorsal(){
   const axM=el('path',{class:'cor','stroke-width':4.4},ann),axH=el('path',{class:'cor','stroke-width':4.4},ann),wedge=el('path',{fill:'rgba(240,113,76,.28)',stroke:'#F0714C','stroke-width':4},ann);
   const cut=el('path',{class:'cor','stroke-width':5.2,'stroke-dasharray':'10 10'},ann),portals=el('path',{class:'cor','stroke-width':8},ann);
   const burr=el('g',{},tool),burrL=el('path',{stroke:'#DCE6F2','stroke-width':6.4,'stroke-linecap':'round',fill:'none'},burr),burrH=el('path',{stroke:'#DCE6F2','stroke-width':18,'stroke-linecap':'round',fill:'none',opacity:.9},burr);
-  const scr=[0,1].map(()=>({l:el('path',{stroke:'#fff','stroke-width':8.4,'stroke-linecap':'round',fill:'none'},tool),t:el('path',{stroke:'#123840','stroke-width':8.4,'stroke-dasharray':'2.8 8',fill:'none',opacity:.55},tool),h:el('circle',{r:9,fill:'#fff'},tool)}));
+  const scr=[0,1].map(()=>({l:el('path',{stroke:'#fff','stroke-width':8.4,'stroke-linecap':'round',fill:'none'},tool),t:el('path',{stroke:'#113358','stroke-width':8.4,'stroke-dasharray':'2.8 8',fill:'none',opacity:.55},tool),h:el('circle',{r:9,fill:'#fff'},tool)}));
   const arrow=el('path',{class:'cor','stroke-width':4.8},ann);
   const L={m1:lb(1),hal:lb(1),ses:lb(1),jo:lb(0),dev:lb(0),fur:lb(0),bro:lb(0),des:lb(0),par:lb(0),con:lb(1),eixo:lb(1)};
   const pt=p=>f1(p[0])+' '+f1(p[1]);

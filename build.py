@@ -42,30 +42,34 @@ def font(names, size):
         except OSError: pass
     return ImageFont.load_default()
 W, H = 1200, 630
-og = Image.new('RGB', (W, H), '#F6F8F8'); d = ImageDraw.Draw(og)
+og = Image.new('RGB', (W, H), '#F7FAF8'); d = ImageDraw.Draw(og)
 ret = ImageOps.fit(Image.open('img/retrato.jpg').convert('RGB'), (420, 525), centering=(.5, .3))
 mask = Image.new('L', ret.size, 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, *ret.size), 8, fill=255)
 og.paste(ret, (W - 420 - 60, 52), mask)
 logo = Image.open('img/logo.png').convert('RGBA'); logo.thumbnail((90, 90)); og.paste(logo, (64, 52), logo)
-d.text((170, 72), 'Dra. Larissa da Silva', fill='#174650', font=font(['georgiaz.ttf', 'C:/Windows/Fonts/georgiaz.ttf'], 34))
-d.text((170, 116), 'Ortopedia e Traumatologia', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 22))
-d.text((64, 230), 'ORTOPEDIA · PÉ E TORNOZELO', fill='#1E7A88', font=font(['C:/Windows/Fonts/consola.ttf'], 22))
-d.text((60, 268), 'Seu pé,', fill='#174650', font=font(['C:/Windows/Fonts/georgiab.ttf'], 104))
-d.text((60, 380), 'explicado.', fill='#1E7A88', font=font(['C:/Windows/Fonts/georgiaz.ttf'], 104))
+d.text((170, 72), 'Dra. Larissa Silva', fill='#113358', font=font(['georgiaz.ttf', 'C:/Windows/Fonts/georgiaz.ttf'], 34))
+d.text((170, 116), 'Ortopedista e Traumatologista', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 22))
+d.text((64, 230), 'ORTOPEDIA · PÉ E TORNOZELO', fill='#146046', font=font(['C:/Windows/Fonts/consola.ttf'], 22))
+d.text((60, 268), 'Seu pé,', fill='#113358', font=font(['C:/Windows/Fonts/georgiab.ttf'], 104))
+d.text((60, 380), 'explicado.', fill='#146046', font=font(['C:/Windows/Fonts/georgiaz.ttf'], 104))
 d.text((64, 530), 'Joanete, calcanhar, Aquiles e tornozelo.', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 23))
 og.save('img/web/og.jpg', quality=86)
 
-desc = 'Dra. Larissa da Silva, ortopedista de pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
-ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa da Silva', 'url': URL, 'image': URL + 'img/web/og.jpg',
+# favicon quadrado: monograma sobre o claro da marca, legível em 16-32 px
+fav = Image.new('RGBA', (192, 192), '#EBF4EF'); m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((150, 150), Image.LANCZOS)
+fav.paste(m, ((192 - m.width) // 2, (192 - m.height) // 2), m); fav.save('img/web/favicon.png', optimize=True)
+
+desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
+ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'url': URL, 'image': URL + 'img/web/og.jpg',
       'description': desc, 'medicalSpecialty': 'Musculoskeletal', 'telephone': '+55-21-97289-6222',
       'address': {'@type': 'PostalAddress', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
       'sameAs': ['https://www.instagram.com/dralaarissasilva/']}
 head = ('<meta name="description" content="' + desc + '">\n'
-        '<meta name="theme-color" content="#123840">\n'
+        '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
-        '<link rel="icon" type="image/png" href="img/web/logo.png">\n<link rel="apple-touch-icon" href="img/web/logo.png">\n'
+        '<link rel="icon" type="image/png" href="img/web/favicon.png">\n<link rel="apple-touch-icon" href="img/web/favicon.png">\n'
         '<meta property="og:type" content="website">\n<meta property="og:locale" content="pt_BR">\n'
-        '<meta property="og:title" content="Dra. Larissa da Silva · Seu pé, explicado.">\n'
+        '<meta property="og:title" content="Dra. Larissa Silva · Seu pé, explicado.">\n'
         '<meta property="og:description" content="' + desc + '">\n'
         '<meta property="og:url" content="' + URL + '">\n'
         '<meta property="og:image" content="' + URL + 'img/web/og.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
