@@ -159,6 +159,8 @@ document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */
 const trail=document.getElementById('trail');
+// as pegadas caminham só enquanto a seção está na tela
+if(!reduced&&'IntersectionObserver' in window)new IntersectionObserver(([e])=>trail.classList.toggle('walk',e.isIntersecting),{threshold:.2}).observe(trail);
 if(!reduced&&'IntersectionObserver' in window){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target)}}),{threshold:.15});
   document.querySelectorAll('.rv').forEach(n=>{if(n.getBoundingClientRect().top>innerHeight*.9){n.classList.add('pre');io.observe(n)}});

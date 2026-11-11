@@ -254,11 +254,15 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .trail{list-style:none;margin:0;padding:0}
 .trail li{position:relative;padding:0 0 2.1rem 5.6rem;display:grid;gap:.35rem}
 .trail li:last-child{padding-bottom:0}
-.trail li::before{content:"";position:absolute;left:2.3rem;top:-.1rem;width:31px;height:50px;transform:rotate(186deg);transition:opacity .5s;
+.trail li::before{content:"";position:absolute;left:2.3rem;top:-.1rem;width:31px;height:50px;--pe:rotate(186deg);transform:var(--pe);transition:opacity .5s;
   background:center/contain no-repeat url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 54' fill='%231E7A88'><path d='M17 53c-6 0-9.4-5-8.3-12.4 1-6.3.2-9.4-1.9-14.6C4.4 19.5 8.6 13 16 13s11.600 5.300 10.500 12.600c-1 6.3-3.200 9.400-2.100 15.700C25.500 48.600 23.300 53 17 53z'/><circle cx='7.600' cy='8.600' r='4'/><circle cx='14.400' cy='5.200' r='3.300'/><circle cx='20.400' cy='5.400' r='2.900'/><circle cx='25.300' cy='7.800' r='2.600'/><circle cx='29' cy='11.600' r='2.300'/></svg>")}
-.trail li:nth-child(even)::before{left:.3rem;transform:scaleX(-1) rotate(186deg)}
+.trail li:nth-child(even)::before{left:.3rem;--pe:scaleX(-1) rotate(186deg)}
 .trail.pre li::before{opacity:.12}
 .trail li:nth-child(2)::before{transition-delay:.25s}.trail li:nth-child(3)::before{transition-delay:.5s}.trail li:nth-child(4)::before{transition-delay:.75s}
+/* as pegadas caminham: um pé pisa depois do outro, de cima para baixo, e a marca vai sumindo como na areia */
+@keyframes passo{0%{opacity:0;transform:var(--pe) translateY(14px) scale(1.18)}7%{opacity:1;transform:var(--pe) translateY(0) scale(.94)}12%{transform:var(--pe) scale(1)}55%{opacity:1}85%,100%{opacity:.14;transform:var(--pe)}}
+.trail.walk li::before{animation:passo 3.6s cubic-bezier(.3,.7,.3,1) infinite both}
+.trail.walk li:nth-child(2)::before{animation-delay:.6s}.trail.walk li:nth-child(3)::before{animation-delay:1.2s}.trail.walk li:nth-child(4)::before{animation-delay:1.8s}
 .trail .n{font-family:var(--mono);font-size:.74rem;letter-spacing:.10em;color:var(--brand)}
 .trail h3{font-size:1.5rem;line-height:1.15}
 .trail p{color:var(--ink-2);max-width:32rem}
@@ -412,7 +416,7 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .note small{color:var(--ink-3);font-size:.8rem;line-height:1.4}
 @media (max-width:860px){.cta .wrap{grid-template-columns:1fr;align-items:start}}
 footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);display:grid;gap:.45rem}
-@media (prefers-reduced-motion:reduce){.btn,.step .d,.rv,.trail li::before{transition:none}.rv.pre{opacity:1;transform:none}.trail.pre li::before{opacity:1}}
+@media (prefers-reduced-motion:reduce){.trail.walk li::before{animation:none}.btn,.step .d,.rv,.trail li::before{transition:none}.rv.pre{opacity:1;transform:none}.trail.pre li::before{opacity:1}}
 /* celular estreito: ficha com o rótulo em cima; cards de cirurgia em uma coluna (no fim para valer sobre as regras de cima) */
 @media (max-width:520px){.ficha div{grid-template-columns:1fr;gap:.25rem}.ficha dt{padding-top:0}}
 @media (max-width:420px){.treat .grid{grid-template-columns:1fr}}
@@ -561,7 +565,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
         <li>Curso de Onda de Choque, certificado pela Sociedade Brasileira de Medicina de Onda de Choque</li>
         <li>Curso básico e de trauma BRM de cirurgia percutânea do pé: técnicas de cirurgia minimamente invasiva do antepé e do retropé, no centro ICLO, em Verona, Itália</li>
       </ul></dd></div>
-      <div><dt>Onde atendo</dt><dd>Rio de Janeiro. <span class="todo">clínica, hospital, endereço</span></dd></div>
+      <div><dt>Onde atendo</dt><dd>Rua General Venâncio Flores, 184, Leblon, Rio de Janeiro</dd></div>
     </dl>
   </div>
 </div></section>
@@ -591,7 +595,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
     <p class="lead">E os exames que você já tem. Na avaliação eu explico o que está acontecendo e você sai com um plano por escrito.</p>
     <dl>
       <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5521972896222" target="_blank" rel="noopener">(21) 97289-6222</a></dd></div>
-      <div><dt>Endereço</dt><dd>Rio de Janeiro. <span class="todo">rua, número, sala</span></dd></div>
+      <div><dt>Endereço</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro" target="_blank" rel="noopener">Rua General Venâncio Flores, 184<br>Leblon, Rio de Janeiro</a></dd></div>
       <div><dt>Horários</dt><dd><span class="todo">dias e turnos de consulta</span></dd></div>
       <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener">@dralaarissasilva</a></dd></div>
     </dl>
