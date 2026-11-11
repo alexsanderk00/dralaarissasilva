@@ -127,10 +127,12 @@ header.top nav a:not(.btn):hover{color:#fff}
 .heropic{align-self:center;justify-self:end;width:min(100%,19rem)}
 .hero .filmchip{position:relative;left:auto;top:auto;bottom:auto;width:100%;box-shadow:0 30px 60px -24px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.14)}
 @media (max-width:860px){
-  .hero{align-items:end}
-  .hero .wrap{padding-top:6.5rem}
-  .heropic{justify-self:start;width:26%;max-width:7.5rem;margin-bottom:1rem}
+  /* celular: o texto começa logo abaixo do cabeçalho; o mini raio-X fica à direita, ao lado do link que aponta para ele */
+  .hero{align-items:start;min-height:0}
+  .hero .wrap{padding-top:6.2rem;padding-bottom:3.2rem;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "body pic";column-gap:1rem}
+  .heropic{justify-self:end;align-self:start;width:7.2rem;margin:0}
   .hero .filmchip span{display:none}
+  .hero .acts{margin-top:1.4rem}
 }
 @media (prefers-reduced-motion:reduce){.hero .herobg{transform:none}}
 /* celular: áreas de toque de pelo menos 40 px sem mudar o desenho */
@@ -432,7 +434,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
     <a class="filmchip" href="#esquema" aria-label="Ver o pé por dentro, no esquema"><svg id="miniHero" viewBox="440 300 640 822" aria-hidden="true"></svg><i class="scan" aria-hidden="true"></i><span>Raio-x ilustrativo</span></a>
   </div>
   <div class="hbody">
-    <div class="acts"><a class="btn primary" href="#agendar">Agendar avaliação</a><a class="more" href="#esquema">Ver o pé por dentro</a></div>
+    <div class="acts"><a class="more" href="#esquema">Ver o pé por dentro</a></div>
     <div class="where"><span>Ortopedia e Traumatologia pelo INTO, Rio de Janeiro</span><span>Cirurgia minimamente invasiva do pé e tornozelo</span><span>CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span></div>
   </div>
 </div></section>
