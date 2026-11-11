@@ -67,7 +67,7 @@ const wipeAuto=()=>s<0?seg(s,-1,-.05):1-(1-scene().endW(cond))*seg(s,2.62,3);
 
 function infoHTML(box,id){
   box.textContent='';
-  if(!id){const c=document.createElement('span');c.className='caps';c.textContent='O que a avaliação olha';box.appendChild(c);box.appendChild(document.createTextNode('Escolha um osso, aqui ou no desenho, para ver o que ele faz e o que a Dra. observa nele.'));return}
+  if(!id){const c=document.createElement('span');c.className='caps';c.textContent='O que a avaliação olha';box.appendChild(c);box.appendChild(document.createTextNode('Escolha um osso, aqui ou no desenho, para ver o que ele faz e o que eu observo nele.'));return}
   const P=PARTS[id],c=document.createElement('span');c.className='caps';c.textContent=P[0];box.appendChild(c);
   box.appendChild(document.createTextNode(P[2]+' '));const b=document.createElement('b');b.textContent='Na avaliação: ';box.appendChild(b);box.appendChild(document.createTextNode(P[3]));
 }
@@ -156,7 +156,6 @@ miniDorsal(document.getElementById('miniHero'));miniDorsal(document.getElementBy
 miniLateral(document.getElementById('icoHeel'),'heel');miniLateral(document.getElementById('icoAnkle'),'ankle');miniLateral(document.getElementById('icoAquiles'),'aquiles');
 const goEsq=c=>{const b=document.getElementById('tab-'+c);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})};
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goEsq(a.dataset.go)}));
-miniLateral(document.getElementById('miniHeel'),'heel');
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */
 const trail=document.getElementById('trail');
@@ -206,14 +205,14 @@ const ondeReset=()=>ondeOrig.forEach(o=>{o.r.value=o.v;o.r.nextElementSibling.te
 function setOnde(id){ondeReset();if(!id){compose();return}const D=DOR[id],r=document.getElementById('onde-'+D.onde);if(!r)return;
   if(D.onde===4){r.value=D.v;r.nextElementSibling.textContent=D.n}else if(D.v)r.value=D.v;r.checked=true;compose()}
 function dorHTML(){dorinfo.textContent='';const c=document.createElement('span');c.className='caps';
-  if(!dsel){c.textContent='Toque numa região';dorinfo.append(c,'O mapa mostra os problemas mais comuns de cada lugar do pé. Quem confirma o que é, é a avaliação.');return}
+  if(!dsel){c.textContent='Toque numa região';dorinfo.append(c,'O mapa mostra os problemas mais comuns de cada lugar do pé. Na avaliação vemos juntos o que é.');return}
   c.textContent=DOR[dsel].n;dorinfo.append(c,'Pode estar ligado a: ');
   const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('dd').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
   const acts=document.createElement('div');acts.className='acts';const ag=document.createElement('a');ag.className='btn primary';ag.href='#note';ag.textContent='Agendar avaliação';
   ag.addEventListener('click',()=>setOnde(dsel));acts.appendChild(ag);
   rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver no esquema: '+r.querySelector('dd').textContent;
     m.addEventListener('click',e=>{e.preventDefault();goEsq(r.dataset.esq)});acts.appendChild(m)});
-  const sm=document.createElement('small');sm.textContent='Só a avaliação confirma o que é. Ao agendar, a região já vai no pedido.';dorinfo.append(acts,sm)}
+  const sm=document.createElement('small');sm.textContent='Na avaliação vemos juntos o que é. Ao agendar, a região já vai no pedido.';dorinfo.append(acts,sm)}
 function pickDor(id){dsel=(id===dsel)?null:id;
   document.querySelectorAll('.dormap .rg').forEach(g=>{const on=g.dataset.r===dsel;g.classList.toggle('on',on);g.setAttribute('aria-pressed',String(on))});
   dortodo.setAttribute('aria-pressed',String(dsel==='todo'));symp.classList.toggle('has-sel',!!dsel);rows.forEach(r=>{const on=r.dataset.r===dsel;r.classList.toggle('on',on);r.setAttribute('aria-pressed',String(on))});
@@ -223,6 +222,12 @@ function pickDor(id){dsel=(id===dsel)?null:id;
     if(r.top<70||r.bottom>innerHeight-dockH-12)dorinfo.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})}}
 rows.forEach(r=>{r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r));
   r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(r.dataset.r)}})});dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
+
+/* ---------- vídeos em loop: só tocam quando aparecem na tela, e nunca com movimento reduzido ---------- */
+if(!reduced&&'IntersectionObserver' in window){
+  const vo=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.preload='auto';const p=v.play();if(p)p.catch(()=>{})}else v.pause()}),{threshold:.25});
+  document.querySelectorAll('video.loop').forEach(v=>vo.observe(v));
+}
 
 /* ---------- barra de agendar no celular: fora do topo, do esquema (que precisa da tela inteira) e da seção Agendar ---------- */
 const dock=document.getElementById('dock'),dockBtn=dock.querySelector('a'),seen=new Map();

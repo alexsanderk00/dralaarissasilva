@@ -82,7 +82,7 @@ const cXr=el('rect',{y:-20,height:700},el('clipPath',{id:'cX'},defs)),cSr=el('re
 const xt=el('filter',{id:'xrayTint','color-interpolation-filters':'sRGB'},defs);el('feColorMatrix',{type:'matrix',values:'.13 .26 .05 0 0  .21 .42 .08 0 .01  .24 .47 .09 0 .03  0 0 0 .62 0'},xt);
 
 /* =====================================================================
-   CENA 1 · vista de cima (joanete), desenhada no espaço da foto (1400 × 1867 px; 55 px ≈ 1 cm)
+   CENA 1 · vista de cima (joanete), desenhada no espaço da foto (1400 × 1867 px; 55 px ≈ 1 cm). A foto (img/pe_cima.webp) é deformada para esse espaço; ver CLAUDE.md
    ===================================================================== */
 function Dorsal(){
   const SC=.5,TR='translate(-112 -66) scale(.5)',G=(x,y)=>[(x+112)/SC,(y+66)/SC];      // G: posição no filme (0–600) → espaço da foto
@@ -95,7 +95,7 @@ function Dorsal(){
     return{set:d=>{setD(s,d);setD(b,d)},vis:v=>{s.style.display=b.style.display=v?'':'none'}}};
   // ossos fixos: tarsos, metatarsos 2–5 e dedos menores (cabeça → ponta do dedo, medidos na foto)
   [[[852,1150],60,52,0],[[768,1152],40,50,.1],[[698,1158],40,50,.1],[[602,1178],64,56,.2]].forEach(([c,rx,ry,r])=>mk(dimG).set(blob(c,rx,ry,r)));
-  const RAYS=[{b:[772,1092],h:[776,742],tip:[706,378]},{b:[702,1098],h:[692,768],tip:[630,388]},{b:[632,1104],h:[612,798],tip:[576,484]},{b:[562,1112],h:[534,838],tip:[526,596]}];
+  const RAYS=[{b:[772,1092],h:[776,742],tip:[712,395]},{b:[702,1098],h:[692,768],tip:[625,425]},{b:[632,1104],h:[612,798],tip:[562,495]},{b:[562,1112],h:[534,838],tip:[508,588]}];   // pontas medidas no pé da foto atual (IMG_0200)
   RAYS.forEach(r=>{mk(dimG,'metas').set(bone(r.b,r.h,62,32,60).d);
     const v=[r.tip[0]-r.h[0],r.tip[1]-r.h[1]],L=Math.hypot(v[0],v[1]),u=[v[0]/L,v[1]/L],at=t=>[r.h[0]+u[0]*t,r.h[1]+u[1]*t];
     const a=14,z=L-20,l1=(z-a)*.48,l2=(z-a)*.29;

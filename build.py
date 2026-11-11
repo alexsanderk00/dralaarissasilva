@@ -1,14 +1,16 @@
-import base64, json, os
+import base64, hashlib, json, os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 URL = 'https://alexsanderk00.github.io/dralaarissasilva/'
-IMGS = [('{{IMG_JOANETE}}', 'img/joanete.jpg'), ('{{IMG_BAILARINA}}', 'img/bailarina.jpg'), ('{{IMG_RETRATO}}', 'img/retrato.jpg'),
-        ('{{IMG_CIRURGIA}}', 'img/cirurgia.jpg'), ('{{IMG_CURSO}}', 'img/curso.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
-        ('{{IMG_PE_CIMA}}', 'img/pe_cima.webp'), ('{{IMG_PE_LADO}}', 'img/pe_lado.webp')]
+IMGS = [('{{IMG_JOANETE}}', 'img/joanete.jpg'), ('{{IMG_BAILARINA}}', 'img/bailarina.jpg'), ('{{IMG_FOTO1}}', 'img/foto1.jpg'), ('{{IMG_FOTO2}}', 'img/foto2.jpg'), ('{{IMG_FOTO3}}', 'img/foto3.jpg'), ('{{IMG_PERFIL}}', 'img/perfil.jpg'), ('{{IMG_CONSULTORIO}}', 'img/consultorio.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
+        ('{{IMG_PE_CIMA}}', 'img/pe_cima.webp'), ('{{IMG_PE_LADO}}', 'img/pe_lado.webp'),
+        ('{{IMG_PERFIL_POSTER}}', 'img/perfil_poster.jpg')]
 MIME = {'.jpg': 'jpeg', '.png': 'png', '.webp': 'webp'}
 
-# junta os 3 arquivos editáveis em src.html
+# junta os 3 arquivos editáveis em src.html; vídeos entram com ?v=<hash> (o navegador nunca mostra o antigo do cache)
 src = ''.join(open(f, encoding='utf-8').read() for f in ['head_v3.html', 'geom_v3.js', 'ctrl_v3.js'])
+for k, f in [('{{VID_PERFIL}}', 'video/perfil.mp4')]:
+    src = src.replace(k, f + '?v=' + hashlib.md5(open(f, 'rb').read()).hexdigest()[:8])
 open('src.html', 'w', encoding='utf-8').write(src)
 
 # 1) versão com imagens embutidas: tema do artifact e teste local
@@ -33,7 +35,7 @@ for k, f in IMGS:
         im = im.convert('RGBA' if 'A' in im.getbands() else 'RGB')   # as fotos do pé do esquema têm fundo transparente: não perder
         if im.width > 1600: im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
         im.save(out, 'WEBP', quality=78, method=6)
-    site = site.replace(k, out)
+    site = site.replace(k, out + '?v=' + hashlib.md5(open(out, 'rb').read()).hexdigest()[:8])   # versão no nome: o navegador nunca mostra a foto antiga do cache
 
 # imagem de prévia (WhatsApp, Instagram, Google): 1200 × 630
 def font(names, size):
@@ -43,7 +45,7 @@ def font(names, size):
     return ImageFont.load_default()
 W, H = 1200, 630
 og = Image.new('RGB', (W, H), '#F7FAF8'); d = ImageDraw.Draw(og)
-ret = ImageOps.fit(Image.open('img/retrato.jpg').convert('RGB'), (420, 525), centering=(.5, .3))
+ret = ImageOps.fit(Image.open('img/consultorio.jpg').convert('RGB'), (420, 525), centering=(.5, .3))
 mask = Image.new('L', ret.size, 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, *ret.size), 8, fill=255)
 og.paste(ret, (W - 420 - 60, 52), mask)
 logo = Image.open('img/logo.png').convert('RGBA'); logo.thumbnail((90, 90)); og.paste(logo, (64, 52), logo)

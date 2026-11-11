@@ -81,7 +81,9 @@ header.top nav a:not(.btn):hover{color:var(--ink)}
 .photo img{display:block;width:100%;height:100%;object-fit:cover}
 .photo figcaption,.tagline{position:absolute;left:.7rem;bottom:.7rem;background:rgba(17,51,88,.86);color:#fff;font-family:var(--mono);font-size:.62rem;letter-spacing:.10em;text-transform:uppercase;padding:.36rem .62rem;border-radius:999px}
 .hero .photo{aspect-ratio:4/5;box-shadow:0 30px 60px -34px rgba(22,23,28,.55)}
-.hero .photo img{object-position:50% 30%}
+.hero .photo img{object-position:50% 50%}
+.care .head .photo{aspect-ratio:4/5;max-width:21rem;margin-top:.6rem}
+.care .head .photo img{object-position:50% 40%}
 .hero .photo figcaption{left:auto;right:.7rem}
 /* o filme pequeno sobre a foto, como nos reels */
 .filmchip{position:absolute;left:-1.6rem;bottom:1.4rem;width:36%;aspect-ratio:7/9;border-radius:var(--r-film);overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%);box-shadow:0 22px 40px -20px rgba(22,23,28,.7);display:block;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
@@ -99,7 +101,8 @@ header.top nav a:not(.btn):hover{color:var(--ink)}
   .hero .wrap{grid-template-columns:1fr;grid-template-areas:"top" "pic" "body"}
   .hero h1{margin-bottom:1.1rem}
   .heropic{margin-bottom:1.4rem}
-  .hero .photo{aspect-ratio:4/3}
+  .hero .photo{aspect-ratio:4/3}.hero .photo img{object-position:50% 24%}
+  .care .head .photo{aspect-ratio:4/3;max-width:none}.care .head .photo img{object-position:50% 38%}
   .filmchip{left:.7rem;top:.7rem;bottom:auto;width:30%}   /* em cima, sobre a janela: embaixo ele bate na legenda da foto */
   .filmchip span{left:.45rem;bottom:.4rem;font-size:.42rem;letter-spacing:.08em;white-space:nowrap}
 }
@@ -281,28 +284,37 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 /* vídeos */
 .reels .wrap{padding-block:var(--space);display:grid;gap:2rem}
 .reels .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:1rem}
-.reelrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.8rem,2.4vw,1.6rem)}
+.reelrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:44rem;width:100%;margin-inline:auto;gap:clamp(.8rem,2.4vw,1.6rem)}
 .reel{position:relative;aspect-ratio:9/16;border-radius:var(--r-film);overflow:hidden;background:var(--paper-2);box-shadow:0 18px 36px -24px rgba(22,23,28,.5);display:block;text-decoration:none;max-width:100%}
-.reel img{width:100%;height:100%;object-fit:cover;display:block}
+.reel img,.reel video{width:100%;height:100%;object-fit:cover;display:block}
+.photo video{display:block;width:100%;height:100%;object-fit:cover}
 .reel.type{padding:14% 9% 0}
 .reel.type h3{font-size:clamp(1.1rem,3.3vw,2.25rem);margin-top:.5rem;line-height:1.05}
 .reel.type .caps{font-size:clamp(.5rem,1vw,.7rem)}
 .reel.type svg{position:absolute;left:8%;bottom:13%;width:84%;border-radius:10px;display:block}
-@media (max-width:560px){.reelrow{grid-template-columns:repeat(2,minmax(0,1fr))}.reelrow .reel:nth-child(3){display:none}}
+@media (max-width:560px){.reelrow{gap:.5rem}}
 
+/* galeria: depois de Quem sou; três colunas de espaços em pé (as fotos são todas verticais) */
+.gallery .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:1.15fr 1fr 1.15fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:.8rem;height:clamp(30rem,58vw,42rem)}
+.gallery .photo{height:100%}
+.gallery .g4{grid-row:1/3}.gallery .g3{grid-column:3;grid-row:1/3}
+.gallery .g4 img{object-position:45% 30%}.gallery .g1 img{object-position:50% 30%}.gallery .g2 img{object-position:60% 30%}.gallery .g3 img{object-position:100% 30%}
+@media (max-width:860px){.gallery .wrap{grid-template-columns:1fr 1fr;grid-template-rows:auto;height:auto}.gallery .photo{aspect-ratio:3/4;height:auto}.gallery .g4,.gallery .g3{grid-row:auto;grid-column:auto}}
+.hero .photo video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
 /* quem atende */
-.about .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(1.6rem,5vw,4.5rem);align-items:center}
-.about .pics{display:grid;grid-template-columns:1fr .62fr;gap:.8rem;align-items:end;min-width:0}
-.about .pics .a{aspect-ratio:3/4}.about .pics .b{aspect-ratio:1/1}
-.about .pics .a img{object-position:50% 25%}.about .pics .b img{object-position:70% 40%}
+.about .wrap{padding-block:0 var(--space)}
+.about .txt{max-width:52rem}
 .about .txt{display:grid;gap:1.1rem}
 .about .txt p{color:var(--ink-2)}
 .ficha{margin:0;display:grid;border-top:1.5px solid var(--brand-deep);font-size:.97rem}
 .ficha div{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--rule)}
 .ficha dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-3);padding-top:.2rem}
 .ficha dd{margin:0}
+.cursos{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.cursos li{position:relative;padding-left:.95rem}
+.cursos li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--brand)}
 .todo{color:var(--ink-3);border-bottom:1.5px dashed var(--ink-3);padding-bottom:1px}
-@media (max-width:860px){.about .wrap{grid-template-columns:1fr}}
+@media (max-width:860px){.about .wrap{grid-template-columns:1fr}}   /* no celular, o texto vem antes das fotos */
 
 /* perguntas */
 .faq .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(1.4rem,5vw,4.5rem)}
@@ -371,7 +383,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 
 <header class="top"><div class="wrap">
   <a class="brand" href="#inicio"><img src="{{IMG_LOGO}}" alt="Monograma LS com uma pegada, marca da Dra. Larissa Silva" width="293" height="349"><span><b>Dra. Larissa Silva</b><span>Ortopedista e Traumatologista</span></span></a>
-  <nav><a href="#esquema">O esquema</a><a href="#cuidado">O cuidado</a><a href="#trata">Cirurgias</a><a href="#perguntas">Perguntas</a><a class="btn primary" href="#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
+  <nav><a href="#sobre">Quem sou</a><a href="#esquema">O esquema</a><a href="#cuidado">O cuidado</a><a href="#trata">Cirurgias</a><a href="#perguntas">Perguntas</a><a class="btn primary" href="#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
 </div></header>
 
 <section class="hero" id="inicio"><div class="wrap">
@@ -380,11 +392,11 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
     <h1>Seu pé, <em>explicado.</em></h1>
   </div>
   <div class="heropic">
-    <figure class="photo"><img alt="Dra. Larissa de pijama cirúrgico e touca do mutirão Pé na Estrada" src="{{IMG_RETRATO}}"><figcaption>Foto provisória · Instagram</figcaption></figure>
+    <figure class="photo"><video class="loop" muted playsinline loop preload="metadata" poster="{{IMG_PERFIL_POSTER}}" aria-label="Dra. Larissa Silva no centro cirúrgico, acompanhando uma cirurgia"><source src="{{VID_PERFIL}}" type="video/mp4"></video><figcaption>Centro cirúrgico</figcaption></figure>
     <a class="filmchip" href="#esquema" aria-label="Ver o pé por dentro, no esquema"><svg id="miniHero" viewBox="440 300 640 822" aria-hidden="true"></svg><i class="scan" aria-hidden="true"></i><span>Raio-x ilustrativo</span></a>
   </div>
   <div class="hbody">
-    <p class="lead">Joanete, dor atrás do calcanhar, tendão de Aquiles, tornozelo que falseia. Veja no esquema o que acontece no osso, o que se trata sem cirurgia e como é a cirurgia quando ela é indicada.</p>
+    <p class="lead">Joanete, dor atrás do calcanhar, tendão de Aquiles, tornozelo que falseia. No esquema eu mostro o que acontece no osso, o que dá para tratar sem cirurgia e como é a cirurgia quando ela é indicada.</p>
     <div class="acts"><a class="btn primary" href="#agendar">Agendar avaliação</a><a class="more" href="#esquema">Ver o pé por dentro</a></div>
     <div class="where"><span>Ortopedia e Traumatologia pelo INTO, Rio de Janeiro</span><span>Cirurgia minimamente invasiva do pé e tornozelo</span><span>CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span></div>
   </div>
@@ -440,22 +452,23 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
     <span class="caps"><b>02</b> — Como é o cuidado</span>
     <h2>Primeiro, <em>sem cirurgia.</em></h2>
     <p>A maioria das dores no pé e no tornozelo melhora com calçado certo, palmilha e fisioterapia. A cirurgia fica para quando isso não resolve e a dor trava a sua vida.</p>
+    <figure class="photo"><img alt="Dra. Larissa Silva no consultório, sentada à mesa" src="{{IMG_CONSULTORIO}}" width="1043" height="1800" loading="lazy"><figcaption>Consultório</figcaption></figure>
   </div>
   <ol class="trail" id="trail">
-    <li><span class="n">01</span><h3>Consulta e exame</h3><p>Você conta onde dói e quando. O pé é examinado parado, andando e dentro do calçado que você usa.</p></li>
+    <li><span class="n">01</span><h3>Consulta e exame</h3><p>Você me conta onde dói e quando. Examino o pé parado, andando e dentro do calçado que você usa.</p></li>
     <li><span class="n">02</span><h3>Imagem, se precisar</h3><p>Radiografia em pé, com carga, mostra o alinhamento real dos ossos. Outros exames serão necessários conforme a avaliação.</p></li>
     <li><span class="n">03</span><h3>Tratamento conservador</h3><p>Calçado, palmilha, exercício orientado e fisioterapia, com prazo combinado para reavaliar.</p></li>
-    <li><span class="n">04</span><h3>Cirurgia, quando indicada</h3><p>Você vê o plano no seu próprio exame: o que será feito, os riscos e as fases da recuperação.</p></li>
+    <li><span class="n">04</span><h3>Cirurgia, quando indicada</h3><p>Mostro o plano no seu próprio exame: o que vou fazer, os riscos e as fases da recuperação.</p></li>
   </ol>
 </div></section>
 
 <section class="treat" id="trata"><div class="wrap">
-  <div class="rv"><span class="caps"><b>03</b> — Cirurgias</span><h2 style="margin-top:.7rem">As quatro que ela <em>mais faz.</em></h2></div>
+  <div class="rv"><span class="caps"><b>03</b> — Cirurgias</span><h2 style="margin-top:.7rem">As quatro que eu <em>mais faço.</em></h2></div>
   <div class="grid">
-    <article class="tcard rv"><a class="ico" href="#esquema" data-go="joanete" aria-label="Ver joanete no esquema"><svg id="icoJoanete" viewBox="330 300 800 600" aria-hidden="true"></svg></a><h3>Joanete</h3><p>Realinha o osso do dedão. Em muitos casos por técnica minimamente invasiva, com furinhos na pele.</p><a class="more" href="#esquema" data-go="joanete">Ver no esquema</a></article>
-    <article class="tcard rv"><a class="ico" href="#esquema" data-go="haglund" aria-label="Ver Haglund no esquema"><svg id="icoHeel" viewBox="60 262 372 279" aria-hidden="true"></svg></a><h3>Haglund</h3><p>Retira a saliência do osso que atrita com o tendão atrás do calcanhar. Aberta ou por vídeo.</p><a class="more" href="#esquema" data-go="haglund">Ver no esquema</a></article>
-    <article class="tcard rv"><a class="ico" href="#esquema" data-go="aquiles" aria-label="Ver tendão de Aquiles no esquema"><svg id="icoAquiles" viewBox="20 150 372 279" aria-hidden="true"></svg></a><h3>Tendão de Aquiles</h3><p>Sutura do tendão rompido e tratamento das tendinites que não melhoram com fisioterapia.</p><a class="more" href="#esquema" data-go="aquiles">Ver no esquema</a></article>
-    <article class="tcard rv"><a class="ico" href="#esquema" data-go="tornozelo" aria-label="Ver tornozelo no esquema"><svg id="icoAnkle" viewBox="190 236 300 225" aria-hidden="true"></svg></a><h3>Tornozelo</h3><p>Reparo dos ligamentos do tornozelo que falseia e fixação de fraturas.</p><a class="more" href="#esquema" data-go="tornozelo">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="joanete" aria-label="Ver joanete no esquema"><svg id="icoJoanete" viewBox="330 300 800 600" aria-hidden="true"></svg></a><h3>Joanete</h3><p>Realinho o osso do dedão. Em muitos casos por técnica minimamente invasiva, com furinhos na pele.</p><a class="more" href="#esquema" data-go="joanete">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="haglund" aria-label="Ver Haglund no esquema"><svg id="icoHeel" viewBox="60 262 372 279" aria-hidden="true"></svg></a><h3>Haglund</h3><p>Retiro a saliência do osso que atrita com o tendão atrás do calcanhar. Aberta ou por vídeo.</p><a class="more" href="#esquema" data-go="haglund">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="aquiles" aria-label="Ver tendão de Aquiles no esquema"><svg id="icoAquiles" viewBox="20 150 372 279" aria-hidden="true"></svg></a><h3>Tendão de Aquiles</h3><p>Faço a sutura do tendão rompido e trato as tendinites que não melhoram com fisioterapia.</p><a class="more" href="#esquema" data-go="aquiles">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="tornozelo" aria-label="Ver tornozelo no esquema"><svg id="icoAnkle" viewBox="190 236 300 225" aria-hidden="true"></svg></a><h3>Tornozelo</h3><p>Reparo os ligamentos do tornozelo que falseia e fixo fraturas.</p><a class="more" href="#esquema" data-go="tornozelo">Ver no esquema</a></article>
   </div>
   <div class="common">
     <div class="rv dorcol">
@@ -493,28 +506,33 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
   <div class="reelrow">
     <a class="reel rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><img alt="Capa do vídeo: Joanete por furinhos? Cirurgia minimamente invasiva" src="{{IMG_JOANETE}}" loading="lazy"><span class="tagline">Joanete</span></a>
     <a class="reel rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><img alt="Capa do vídeo: Pé de bailarina, o que a ponta faz com o pé" src="{{IMG_BAILARINA}}" loading="lazy"><span class="tagline">Salto e ponta</span></a>
-    <a class="reel type rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><span class="caps">Joanete, calcanhar, tornozelo</span><h3>Mais vídeos <em>no Instagram.</em></h3>
-      <svg id="miniHeel" viewBox="60 250 400 290" aria-hidden="true"><rect x="60" y="250" width="400" height="290" fill="#113358"/></svg>
-      <span class="tagline">@dralaarissasilva</span></a>
   </div>
 </div></section>
 
 <section class="about" id="sobre"><div class="wrap">
-  <div class="pics rv">
-    <figure class="photo a"><img alt="Dra. Larissa operando, de touca e máscara, sob o foco cirúrgico" src="{{IMG_CIRURGIA}}" loading="lazy"><figcaption>Centro cirúrgico</figcaption></figure>
-    <figure class="photo b"><img alt="Dra. Larissa em curso prático de cirurgia do pé" src="{{IMG_CURSO}}" loading="lazy"><figcaption>Curso · Verona</figcaption></figure>
-  </div>
   <div class="txt rv">
-    <span class="caps"><b>06</b> — Quem atende</span>
+    <span class="caps"><b>06</b> — Quem sou</span>
     <h2>Dra. Larissa <em>Silva</em></h2>
-    <p>Ortopedista e traumatologista dedicada à cirurgia minimamente invasiva do pé e tornozelo. Explica o exame na tela, desenha o que vai fazer e diz com clareza quando a cirurgia é necessária e quando dá para tratar sem ela.</p>
+    <p>Sou ortopedista e traumatologista, dedicada à cirurgia minimamente invasiva do pé e tornozelo. Explico o exame na tela, desenho o que vou fazer e digo com clareza quando a cirurgia é necessária e quando dá para tratar sem ela.</p>
     <dl class="ficha">
       <div><dt>Registro</dt><dd>CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</dd></div>
       <div><dt>Formação</dt><dd>Ortopedista e traumatologista pela Sociedade Brasileira de Ortopedia e Traumatologia (SBOT). Ortopedia e Traumatologia pelo INTO, Rio de Janeiro.</dd></div>
-      <div><dt>Atualização</dt><dd>Cursos em peça anatômica no ITC Rio de Janeiro e em Verona, Itália. Mutirão Pé na Estrada, da ABTPé, em Estrela, RS.</dd></div>
-      <div><dt>Atende em</dt><dd>Rio de Janeiro. <span class="todo">clínica, hospital, endereço</span></dd></div>
+      <div><dt>Atualização</dt><dd><ul class="cursos">
+        <li>GMReis Foot and Ankle Sports Injuries and MIS Surgery</li>
+        <li>Curso avançado de artrodese do pé e tornozelo, ITC, Rio de Janeiro</li>
+        <li>Curso de Onda de Choque, certificado pela Sociedade Brasileira de Medicina de Onda de Choque</li>
+        <li>Curso básico e de trauma BRM de cirurgia percutânea do pé: técnicas de cirurgia minimamente invasiva do antepé e do retropé, no centro ICLO, em Verona, Itália</li>
+      </ul></dd></div>
+      <div><dt>Onde atendo</dt><dd>Rio de Janeiro. <span class="todo">clínica, hospital, endereço</span></dd></div>
     </dl>
   </div>
+</div></section>
+
+<section class="gallery" id="galeria" aria-label="Fotos da Dra. Larissa"><div class="wrap">
+  <figure class="photo g4 rv"><img alt="Dra. Larissa em treino de cirurgia do pé, trabalhando numa peça anatômica" src="{{IMG_PERFIL}}" width="1102" height="1400" loading="lazy"><figcaption>Treino</figcaption></figure>
+  <figure class="photo g1 rv"><img alt="Dra. Larissa operando um pé no centro cirúrgico" src="{{IMG_FOTO1}}" width="1050" height="1400" loading="lazy"><figcaption>Cirurgia</figcaption></figure>
+  <figure class="photo g2 rv"><img alt="Dra. Larissa operando ao lado de outro cirurgião" src="{{IMG_FOTO2}}" width="1050" height="1400" loading="lazy"><figcaption>Cirurgia</figcaption></figure>
+  <figure class="photo g3 rv"><img alt="Dra. Larissa com colegas em curso prático no ITC, Rio de Janeiro" src="{{IMG_FOTO3}}" width="936" height="1400" loading="lazy"><figcaption>Curso · ITC Rio</figcaption></figure>
 </div></section>
 
 <section class="faq" id="perguntas"><div class="wrap">
@@ -524,7 +542,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
     <details><summary>Cirurgia “por furinhos” serve para qualquer caso?</summary><p>Não. A técnica minimamente invasiva depende do grau do desvio, da qualidade do osso e de outras alterações do pé. A escolha é feita na consulta, com exame e radiografia com carga.</p></details>
     <details><summary>Dor atrás do calcanhar é fascite?</summary><p>Em geral, não. A fascite dói embaixo do calcanhar, ao pisar de manhã. Dor atrás, onde o sapato encosta, pode ser Haglund ou inflamação do tendão de Aquiles.</p></details>
     <details><summary>Torci o pé e consigo andar. Preciso de avaliação?</summary><p>Procure avaliação se não consegue dar quatro passos, se dói ao apertar o osso, se o tornozelo ficou torto ou se não melhora em alguns dias. Pode haver fratura ou lesão de ligamento.</p></details>
-    <details><summary>Quanto tempo leva a recuperação?</summary><p>Depende do problema, da técnica e de você. Na consulta você recebe o plano por fases: apoio, calçado, fisioterapia e volta ao trabalho e ao esporte. Toda cirurgia tem riscos, e o resultado varia de pessoa para pessoa.</p></details>
+    <details><summary>Quanto tempo leva a recuperação?</summary><p>Depende do problema, da técnica e de você. Na consulta eu passo o plano por fases: apoio, calçado, fisioterapia e volta ao trabalho e ao esporte. Toda cirurgia tem riscos, e o resultado varia de pessoa para pessoa.</p></details>
   </div>
 </div></section>
 
@@ -532,7 +550,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
   <div>
     <span class="caps"><b>08</b> — Agendar</span>
     <h2 style="margin-top:.8rem">Traga o sapato que <em>mais dói.</em></h2>
-    <p class="lead">E os exames que você já tem. Na avaliação você entende o que está acontecendo e sai com um plano por escrito.</p>
+    <p class="lead">E os exames que você já tem. Na avaliação eu explico o que está acontecendo e você sai com um plano por escrito.</p>
     <dl>
       <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5521972896222" target="_blank" rel="noopener">(21) 97289-6222</a></dd></div>
       <div><dt>Endereço</dt><dd>Rio de Janeiro. <span class="todo">rua, número, sala</span></dd></div>
