@@ -57,8 +57,8 @@ d.text((60, 380), 'explicado.', fill='#146046', font=font(['C:/Windows/Fonts/seg
 d.text((64, 530), 'Joanete, calcanhar, Aquiles e tornozelo.', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 23))
 og.save('img/web/og.jpg', quality=86)
 
-# favicon quadrado: monograma sobre o claro da marca, legível em 16-32 px
-fav = Image.new('RGBA', (192, 192), '#EBF4EF'); m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((150, 150), Image.LANCZOS)
+# favicon quadrado: só o monograma, sem fundo
+fav = Image.new('RGBA', (192, 192), (0, 0, 0, 0)); m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((184, 184), Image.LANCZOS)   # fundo transparente, monograma ocupando quase tudo
 fav.paste(m, ((192 - m.width) // 2, (192 - m.height) // 2), m); fav.save('img/web/favicon.png', optimize=True)
 
 desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
