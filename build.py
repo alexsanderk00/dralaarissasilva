@@ -29,7 +29,8 @@ for k, f in IMGS:
         Image.open(f).save(out, optimize=True)
     else:
         out = 'img/web/' + name + '.webp'
-        im = ImageOps.exif_transpose(Image.open(f)).convert('RGB')
+        im = ImageOps.exif_transpose(Image.open(f))
+        im = im.convert('RGBA' if 'A' in im.getbands() else 'RGB')   # as fotos do pé do esquema têm fundo transparente: não perder
         if im.width > 1600: im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
         im.save(out, 'WEBP', quality=78, method=6)
     site = site.replace(k, out)
@@ -70,7 +71,12 @@ head = ('<meta name="description" content="' + desc + '">\n'
         '<meta property="og:image" content="' + URL + 'img/web/og.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
         '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>\n')
-# versão avulsa para abrir direto no navegador / GitHub Pages
+# versão avulsa para abrir direto no navegador / GitHub Pages: <title> e metas do topo do src vão para o <head>
+import re
+TOPO = r'^(?:<title>.*?</title>|<meta [^>]*>)\n'
+head_src = ''.join(re.findall(TOPO, site, flags=re.M))
+site = re.sub(TOPO, '', site, flags=re.M)
+head = head_src + head
 full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
         + head + '<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n</head>\n<body>\n' + site + '\n</body>\n</html>\n')
 open('index.html', 'w', encoding='utf-8').write(full)
