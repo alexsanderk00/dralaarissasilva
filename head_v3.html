@@ -1,0 +1,509 @@
+<title>Dra. Larissa da Silva</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Tema: "do passo ao osso". Cores e tipografia da logo (petróleo, turquesa, prata; serifa itálica + Montserrat).
+   Layout: página editorial em papel; a única faixa escura de tela cheia é o esquema, preso na tela enquanto a rolagem
+   leva o pé de fora (pele) para dentro (raio-X) e do problema à cirurgia. Pegadas marcam o caminho do cuidado. Tema único, por escolha. */
+:root{
+  color-scheme:light;
+  /* cores medidas na logo: petróleo #174650, turquesa #65AEB6, prata #B5B7BA, fundo quase branco */
+  --paper:#F6F8F8; --paper-2:#E7EDEE; --card:#FFFFFF;
+  --ink:#13292F; --ink-2:#465A60; --ink-3:#83959A; --rule:#D3DCDE;
+  --brand:#1E7A88; --brand-deep:#174650; --brand-lite:#7CC6CE; --silver:#B5B7BA;
+  --film:#123840; --film-2:#1C5560; --film-ink:#E9F3F4; --film-dim:#9DBBC0; --film-rule:rgba(233,243,244,.16);
+  --alert:#F0714C; --alert-lite:#FF9A7B;   /* só dentro do esquema: marca o problema e a cirurgia */
+  --serif:Georgia,'Times New Roman',Times,serif;
+  --sans:'Montserrat','Segoe UI',system-ui,-apple-system,sans-serif;
+  --caps:'Montserrat','Segoe UI',system-ui,sans-serif;
+  --r:4px;           /* fotos, cartões, abas */
+  --r-film:14px;     /* tudo que é "filme de raio-X" */
+  --gut-l:max(20px,env(safe-area-inset-left,0px)); --gut-r:max(20px,env(safe-area-inset-right,0px));
+  --wide:1180px; --space:clamp(3.2rem,7.5vw,6.5rem);
+}
+*{box-sizing:border-box}
+body{background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .09  0 0 0 0 .2  0 0 0 0 .23  0 0 0 .07 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+p{margin:0}
+.wrap{max-width:var(--wide);margin-inline:auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.caps{font-family:var(--caps);font-weight:600;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brand)}
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.015em;line-height:1.02;margin:0;text-wrap:balance}
+h1,h2{color:var(--brand-deep)}
+h1 em,h2 em,h3 em{color:var(--brand);font-style:italic}
+h2{font-size:clamp(2rem,4.6vw,3.3rem)}
+.btn{display:inline-flex;align-items:center;font-family:var(--sans);font-weight:600;font-size:.92rem;text-decoration:none;border-radius:999px;padding:.82rem 1.35rem;border:1.5px solid var(--brand-deep);background:var(--brand-deep);color:#fff;cursor:pointer;white-space:nowrap;transition:transform .18s,background .18s,color .18s,border-color .18s}
+.btn:hover{transform:translateY(-1px);background:#0E3038}
+.btn.ghost{background:transparent;color:var(--brand-deep)}
+.btn.ghost:hover{background:var(--brand-deep);color:#fff}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:6px}
+.rv.pre{opacity:.3;transform:translateY(18px)}
+.rv{transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+
+/* faixa de prévia */
+
+/* cabeçalho */
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.15rem}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;line-height:1.1}
+.brand img{height:52px;width:auto;display:block}
+.brand b{display:block;font-family:var(--serif);font-style:italic;font-size:1.22rem;letter-spacing:-.01em;color:var(--brand-deep)}
+.brand>span{display:block}
+.brand span span{display:block;font-family:var(--sans);font-size:.74rem;color:var(--ink-2);margin-top:.22rem}
+header.top nav{display:flex;align-items:center;gap:1.5rem;font-size:.95rem;color:var(--ink-2)}
+header.top nav a{text-decoration:none}
+header.top nav a:not(.btn):hover{color:var(--ink)}
+@media (max-width:920px){header.top nav a:not(.btn){display:none}header.top .btn{padding:.6rem .95rem;font-size:.9rem}.brand img{height:44px}.brand b{font-size:1.05rem}.brand span span{white-space:nowrap;font-size:.68rem}}
+@media (max-width:480px){.xs-hide{display:none}}
+
+/* hero */
+/* título, foto e texto em áreas separadas: no celular a foto entra logo depois do título, ainda na primeira tela */
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);grid-template-areas:"top pic" "body pic";column-gap:clamp(1.5rem,5vw,4.5rem);padding-block:clamp(1.5rem,5vw,3.5rem) var(--space)}
+.htop{grid-area:top;align-self:end}.hbody{grid-area:body;align-self:start}.heropic{grid-area:pic;align-self:center}
+.hero h1{font-size:clamp(3.1rem,9.2vw,7.4rem);margin:.9rem 0 1.4rem;line-height:.94}
+.hero p.lead{font-size:1.14rem;max-width:33rem;color:var(--ink-2)}
+.hero .acts{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1.4rem;margin-top:1.8rem}
+.hero .more{font-weight:600;font-size:.95rem;color:var(--brand-deep);text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:1px}
+.hero .more::after{content:" →"}
+.hero .more:hover{color:var(--brand)}
+.hero .where{margin-top:1.6rem;display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.9rem;color:var(--ink-3)}
+.hero .where span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brand);margin-right:.5rem;vertical-align:middle}
+.heropic{position:relative;min-width:0}
+.photo{margin:0;position:relative;border-radius:var(--r);overflow:hidden;background:var(--paper-2);max-width:100%}
+.photo img{display:block;width:100%;height:100%;object-fit:cover}
+.photo figcaption,.tagline{position:absolute;left:.7rem;bottom:.7rem;background:rgba(18,56,64,.86);color:#fff;font-family:var(--caps);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.36rem .62rem;border-radius:999px}
+.hero .photo{aspect-ratio:4/5;box-shadow:0 30px 60px -34px rgba(22,23,28,.55)}
+.hero .photo img{object-position:50% 30%}
+.hero .photo figcaption{left:auto;right:.7rem}
+/* o filme pequeno sobre a foto, como nos reels */
+.filmchip{position:absolute;left:-1.6rem;bottom:1.4rem;width:36%;aspect-ratio:7/9;border-radius:var(--r-film);overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%);box-shadow:0 22px 40px -20px rgba(22,23,28,.7);display:block;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.filmchip:hover{transform:translateY(-3px);box-shadow:0 28px 46px -20px rgba(22,23,28,.75)}
+.filmchip:focus-visible{border-radius:var(--r-film)}
+.filmchip svg{display:block;width:100%;height:100%}
+.filmchip span{position:absolute;left:.6rem;bottom:.5rem;font-family:var(--caps);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--film-dim)}
+/* assinatura: a linha do aparelho de raio-X passa devagar pelo filme e volta a passar de tempos em tempos */
+.filmchip .scan{position:absolute;left:0;right:0;top:0;height:34%;pointer-events:none;opacity:0;
+  background:linear-gradient(to bottom,transparent,rgba(124,198,206,.16) 82%,rgba(190,236,241,.9) 99%,transparent);
+  animation:scan 6.5s cubic-bezier(.45,.05,.55,.95) 1.2s infinite}
+@keyframes scan{0%{transform:translateY(-100%);opacity:0}6%{opacity:1}46%{transform:translateY(300%);opacity:1}52%,100%{transform:translateY(300%);opacity:0}}
+@media (prefers-reduced-motion:reduce){.filmchip .scan{display:none}.filmchip{transition:none}}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;grid-template-areas:"top" "pic" "body"}
+  .hero h1{margin-bottom:1.1rem}
+  .heropic{margin-bottom:1.4rem}
+  .hero .photo{aspect-ratio:4/3}
+  .filmchip{left:.7rem;top:.7rem;bottom:auto;width:30%}   /* em cima, sobre a janela: embaixo ele bate na legenda da foto */
+  .filmchip span{left:.45rem;bottom:.4rem;font-size:.42rem;letter-spacing:.08em;white-space:nowrap}
+}
+
+/* o esquema */
+.intro .wrap{padding-block:0 2rem;display:grid;gap:1rem}
+.intro p{max-width:40rem;color:var(--ink-2);font-size:1.08rem}
+.story{position:relative;height:540vh;background:var(--film);color:var(--film-ink);overflow-x:clip}
+.stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;
+  background:radial-gradient(90% 80% at 50% 38%,var(--film-2),var(--film) 72%)}
+.stage .wrap{position:relative;width:100%;display:grid;grid-template-columns:minmax(0,19rem) minmax(0,1fr) minmax(0,16.5rem);gap:clamp(1rem,2.4vw,2.4rem);align-items:center}
+.stage .caps{color:var(--brand-lite)}
+.stage h3{font-size:clamp(1.7rem,2.6vw,2.3rem);color:#fff;margin:.6rem 0 1.1rem}
+.stage h3 em{color:var(--brand-lite)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin:0 0 1.1rem}
+.tab{font-family:var(--sans);text-align:left;background:transparent;border:1.5px solid var(--film-rule);border-radius:var(--r);padding:.45rem .75rem;cursor:pointer;color:var(--film-dim);line-height:1.2;transition:border-color .2s,background .2s,color .2s}
+.tab b{display:block;font-family:var(--serif);font-size:1.02rem;color:var(--film-ink)}
+.tab span{font-size:.76rem}
+.tab:hover{border-color:var(--film-dim)}
+.tab[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink-2)}
+.tab[aria-pressed="true"] b{color:var(--brand-deep)}
+.steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--film-rule)}
+.steps li{border-bottom:1px solid var(--film-rule)}
+.step{display:grid;grid-template-columns:2.2rem 1fr;gap:.15rem;width:100%;text-align:left;background:none;border:0;padding:.55rem 0;cursor:pointer;font:inherit;color:var(--film-dim)}
+.step .n{font-family:var(--caps);font-size:.72rem;letter-spacing:.14em;padding-top:.36rem}
+.step .t{font-family:var(--serif);font-weight:700;font-size:1.16rem;line-height:1.2}
+.step .d{grid-column:2;font-size:.93rem;line-height:1.48;color:#C9D5E5;display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease,opacity .35s;opacity:0}
+.step .d>div{overflow:hidden}
+.step .d small{display:block;margin-top:.45rem;font-size:.8rem;color:var(--film-dim);line-height:1.45}
+li.on .step{color:#fff;cursor:default}
+li.on .step .n{color:var(--brand-lite)}
+li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
+#stepDesc{display:none}
+.filmcol{min-width:0;display:grid;justify-items:center}
+.film{position:relative;width:min(100%,calc(min(80vh,760px)*600/640));aspect-ratio:600/640;contain:layout}
+.film svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.film .view,.film .corner{position:absolute;top:.2rem;z-index:1;font-family:var(--caps);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--film-dim);
+  background:color-mix(in srgb,var(--film) 80%,transparent);padding:.22rem .55rem;border-radius:999px;pointer-events:none}
+.film .view{right:.2rem}
+.film .corner{left:.2rem}
+.meter{display:grid;grid-template-columns:repeat(5,1fr);width:min(100%,calc(min(80vh,760px)*600/640));margin-top:.4rem;font-family:var(--caps);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--film-dim);position:relative;padding-top:.75rem}
+.meter::before{content:"";position:absolute;left:0;right:0;top:3px;height:2px;background:var(--film-rule)}
+.meter i{position:absolute;left:0;top:3px;height:2px;background:var(--brand-lite);width:0}
+.meter u{position:absolute;top:-1px;width:10px;height:10px;border-radius:50%;background:var(--brand-lite);left:0;transform:translateX(-50%)}
+.meter span{text-align:center}.meter span:first-of-type{text-align:left}.meter span:last-of-type{text-align:right}
+.meter span.on{color:#fff}
+/* painel "toque num osso" */
+.panel{min-width:0;display:grid;gap:.8rem;align-content:center}
+.partgrid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.part{font:inherit;text-align:left;background:rgba(255,255,255,.04);border:1px solid var(--film-rule);border-radius:var(--r);padding:.5rem .6rem;color:var(--film-dim);cursor:pointer;line-height:1.2;transition:border-color .2s,background .2s}
+.part b{display:block;font-family:var(--serif);font-size:.95rem;color:var(--film-ink)}
+.part span{font-family:var(--caps);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase}
+.part:hover{border-color:var(--film-dim)}
+.part[aria-pressed="true"]{border-color:var(--brand-lite);background:rgba(124,198,206,.16)}
+.partinfo{border:1px solid var(--film-rule);border-radius:var(--r);padding:.8rem .85rem;font-size:.9rem;line-height:1.5;color:#C9D5E5;min-height:9.5rem}
+.partinfo .caps{display:block;margin-bottom:.4rem;font-size:.62rem}
+.partinfo b{color:#fff;font-weight:600}
+.btn.onfilm{background:transparent;border-color:var(--film-dim);color:var(--film-ink);font-size:.9rem;padding:.65rem 1rem;justify-content:center}
+.btn.onfilm:hover{background:var(--film-ink);color:var(--film);border-color:var(--film-ink)}
+/* svg */
+.soft path{fill:#fff;stroke:#fff;stroke-width:46;stroke-linejoin:round}
+.bn path{stroke-linejoin:round}
+.bn.dim path{fill:rgba(170,196,228,.30);stroke:rgba(190,212,240,.28);stroke-width:1.2}
+.bn.hi path{fill:rgba(236,243,252,.90);stroke:#fff;stroke-width:1.6}
+.bn.hi{filter:drop-shadow(0 0 7px rgba(200,225,255,.55))}
+.bn.mid path{fill:rgba(205,222,243,.55);stroke:rgba(225,236,250,.6);stroke-width:1.3}
+.tendon{fill:#E9C9A4;opacity:.55}
+#svg [data-part]{cursor:pointer}
+#svg .bn path.sel{fill:rgba(190,236,241,.97);stroke:var(--brand-lite);stroke-width:3}
+#svg path.sel:not(.bn path){stroke:var(--brand-lite)!important;opacity:1!important}
+#svg .tendon.sel{fill:#A9E3EA;stroke-width:2.5}
+.lb text{font-family:var(--caps);font-weight:600;fill:var(--alert-lite);paint-order:stroke;stroke:var(--film);stroke-linejoin:round}
+.lb path{fill:none;stroke:var(--alert-lite)}
+.lb rect.plate{fill:var(--film);opacity:.74}
+.lb circle.dot{fill:var(--alert-lite)} .lb circle.ring{fill:none;stroke:var(--alert-lite);stroke-width:1.6}
+.lb.cool text{fill:var(--film-ink)} .lb.cool path{stroke:var(--film-ink);opacity:.8} .lb.cool circle.dot{fill:var(--film-ink)} .lb.cool circle.ring{stroke:var(--film-ink)}
+.cor{stroke:var(--alert-lite);fill:none;stroke-linecap:round}
+#grip{cursor:ew-resize;touch-action:none}
+#grip circle{fill:var(--brand);stroke:#fff;stroke-width:2}
+#grip text{font-family:var(--caps);font-weight:700;font-size:8.6px;letter-spacing:1.1px;fill:#fff;text-anchor:middle;pointer-events:none}
+#grip path{stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#edge{stroke:#fff;stroke-width:2;filter:drop-shadow(0 0 6px rgba(255,255,255,.9))}
+/* notebook pequeno e tablet deitado: as três colunas continuam, mais estreitas */
+@media (min-width:980px) and (max-width:1279px){
+  .stage .wrap{grid-template-columns:minmax(0,15rem) minmax(0,1fr) minmax(0,13rem);gap:1.1rem}
+  .stage h3{font-size:1.6rem;margin:.4rem 0 .8rem}
+  .step .t{font-size:1.05rem}.step .d{font-size:.88rem}
+  .part b{font-size:.88rem}.partinfo{font-size:.86rem;min-height:8.5rem}
+}
+@media (max-width:979px){
+  .story{height:480vh}
+  .stage{align-items:flex-start}
+
+  .stage .wrap{grid-template-columns:1fr;gap:.5rem;padding-block:.7rem}
+  .textcol>.caps,.textcol>h3,.panel{display:none}
+  .tabs{margin:.1rem 0 .1rem;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem}
+  .tab{min-width:0;padding:.4rem .3rem;text-align:center}.tab b{font-size:.84rem}.tab span{display:none}
+  .filmcol{order:2}.textcol{display:contents}
+  .film{width:min(100%,calc(min(52svh,100svh - 17rem)*600/640))}
+  .film .view{display:none}   /* a aba escolhida já aparece logo acima */
+  .steps{order:3;display:grid;grid-template-columns:repeat(5,1fr);border:0;gap:.2rem}
+  .steps li{border:0}.step{display:block;padding:.25rem 0;text-align:center}
+  .step .n{display:block;padding:0;font-size:.62rem}.step .t{font-size:.82rem}.step .d{display:none}
+  #stepDesc{display:block;order:4;font-size:.94rem;line-height:1.45;color:#C9D5E5;min-height:7.5em}
+  #stepDesc small{display:block;margin-top:.35rem;font-size:.8rem;color:var(--film-dim)}
+  #stepDesc b{color:#fff}
+  .meter{display:none}
+}
+
+/* o cuidado: pegadas */
+.care .wrap{padding-block:var(--space);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(1.6rem,5vw,4.5rem);align-items:start}
+.care .head{display:grid;gap:.9rem;position:sticky;top:2rem}
+.care .head p{color:var(--ink-2);font-size:1.08rem;max-width:30rem}
+.trail{list-style:none;margin:0;padding:0}
+.trail li{position:relative;padding:0 0 2.1rem 5.6rem;display:grid;gap:.35rem}
+.trail li:last-child{padding-bottom:0}
+.trail li::before{content:"";position:absolute;left:2.3rem;top:-.1rem;width:31px;height:50px;transform:rotate(186deg);transition:opacity .5s;
+  background:center/contain no-repeat url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 54' fill='%231E7A88'><path d='M17 53c-6 0-9.4-5-8.3-12.4 1-6.3.2-9.4-1.9-14.6C4.4 19.5 8.6 13 16 13s11.600 5.300 10.500 12.600c-1 6.3-3.200 9.400-2.100 15.700C25.500 48.600 23.300 53 17 53z'/><circle cx='7.600' cy='8.600' r='4'/><circle cx='14.400' cy='5.200' r='3.300'/><circle cx='20.400' cy='5.400' r='2.900'/><circle cx='25.300' cy='7.800' r='2.600'/><circle cx='29' cy='11.600' r='2.300'/></svg>")}
+.trail li:nth-child(even)::before{left:.3rem;transform:scaleX(-1) rotate(186deg)}
+.trail.pre li::before{opacity:.12}
+.trail li:nth-child(2)::before{transition-delay:.25s}.trail li:nth-child(3)::before{transition-delay:.5s}.trail li:nth-child(4)::before{transition-delay:.75s}
+.trail .n{font-family:var(--caps);font-size:.74rem;letter-spacing:.16em;color:var(--brand)}
+.trail h3{font-size:1.5rem;line-height:1.15}
+.trail p{color:var(--ink-2);max-width:32rem}
+@media (max-width:860px){.care .wrap{grid-template-columns:1fr}.care .head{position:static}.trail li{padding-left:4.6rem}.trail li::before{left:1.9rem}.trail li:nth-child(even)::before{left:.1rem}}
+
+/* o que trata */
+.treat{background:var(--card);border-block:1px solid var(--rule)}
+.treat .wrap{padding-block:var(--space);display:grid;gap:2rem}
+.treat .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.8rem,2vw,1.4rem)}
+.tcard{display:grid;gap:.7rem;align-content:start;min-width:0}
+.tcard .ico{border-radius:var(--r-film);overflow:hidden;aspect-ratio:4/3;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%)}
+.tcard .ico svg{display:block;width:100%;height:100%}
+.tcard .ico{display:block}
+.tcard h3{font-size:1.28rem;line-height:1.15;color:var(--brand-deep)}
+.tcard .more{font-weight:600;font-size:.9rem;color:var(--brand);text-decoration:none;border-bottom:1.5px solid currentColor;justify-self:start;padding-bottom:1px}
+.tcard .more:hover{color:var(--brand-deep)}
+.common{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(1.4rem,5vw,4.5rem);margin-top:clamp(1.5rem,4vw,3rem);align-items:start}
+.common p{color:var(--ink-2);margin-top:.9rem;max-width:26rem}
+.symp{margin:0;border-top:1.5px solid var(--brand-deep)}
+.symp div{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.symp dt{color:var(--ink-2)}
+.symp dd{margin:0;font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--brand-deep)}
+.common>div:first-child{position:sticky;top:2rem}   /* o título acompanha a lista longa */
+@media (max-width:860px){.common{grid-template-columns:1fr}.common>div:first-child{position:static}}
+@media (max-width:520px){.symp div{grid-template-columns:1fr;gap:.1rem}}
+.tcard p{font-size:.95rem;color:var(--ink-2)}
+@media (max-width:900px){.treat .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* vídeos */
+.reels .wrap{padding-block:var(--space);display:grid;gap:2rem}
+.reels .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:1rem}
+.reelrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.8rem,2.4vw,1.6rem)}
+.reel{position:relative;aspect-ratio:9/16;border-radius:var(--r-film);overflow:hidden;background:var(--paper-2);box-shadow:0 18px 36px -24px rgba(22,23,28,.5);display:block;text-decoration:none;max-width:100%}
+.reel img{width:100%;height:100%;object-fit:cover;display:block}
+.reel.type{padding:14% 9% 0}
+.reel.type h3{font-size:clamp(1.1rem,3.3vw,2.25rem);margin-top:.5rem;line-height:1.05}
+.reel.type .caps{font-size:clamp(.5rem,1vw,.7rem)}
+.reel.type svg{position:absolute;left:8%;bottom:13%;width:84%;border-radius:10px;display:block}
+@media (max-width:560px){.reelrow{grid-template-columns:repeat(2,minmax(0,1fr))}.reelrow .reel:nth-child(3){display:none}}
+
+/* quem atende */
+.about .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(1.6rem,5vw,4.5rem);align-items:center}
+.about .pics{display:grid;grid-template-columns:1fr .62fr;gap:.8rem;align-items:end;min-width:0}
+.about .pics .a{aspect-ratio:3/4}.about .pics .b{aspect-ratio:1/1}
+.about .pics .a img{object-position:50% 25%}.about .pics .b img{object-position:70% 40%}
+.about .txt{display:grid;gap:1.1rem}
+.about .txt p{color:var(--ink-2)}
+.ficha{margin:0;display:grid;border-top:1.5px solid var(--brand-deep);font-size:.97rem}
+.ficha div{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--rule)}
+.ficha dt{font-family:var(--caps);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);padding-top:.2rem}
+.ficha dd{margin:0}
+.todo{color:var(--ink-3);border-bottom:1.5px dashed var(--ink-3);padding-bottom:1px}
+@media (max-width:860px){.about .wrap{grid-template-columns:1fr}}
+
+/* perguntas */
+.faq .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(1.4rem,5vw,4.5rem)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq details:first-of-type{border-top:1.5px solid var(--brand-deep)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;align-items:baseline;padding:1rem 0;font-family:var(--serif);font-weight:700;font-size:1.18rem;line-height:1.25}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--sans);font-weight:400;font-size:1.5rem;line-height:1;color:var(--brand);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 2.5rem 1.15rem 0;color:var(--ink-2);max-width:40rem}
+@media (max-width:860px){.faq .wrap{grid-template-columns:1fr}}
+
+/* agendar */
+.cta{background:var(--film);color:var(--film-ink)}
+.cta .wrap{padding-block:var(--space);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(1.6rem,5vw,4rem);align-items:center}
+.cta h2{color:#fff;font-size:clamp(2.2rem,5.6vw,4.2rem)}
+.cta h2 em{color:var(--brand-lite)}
+.cta .lead{color:var(--film-dim);max-width:32rem;margin-top:1rem}
+.cta .caps{color:var(--brand-lite)}
+.cta dl{margin:1.8rem 0 0;display:grid;border-top:1px solid var(--film-rule);max-width:30rem}
+.cta dl div{display:grid;grid-template-columns:7rem 1fr;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--film-rule);font-size:.97rem}
+.cta dt{font-family:var(--caps);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--film-dim);padding-top:.2rem}
+.cta dd{margin:0}.cta dd a{color:#fff}
+.cta .todo{color:var(--film-dim);border-color:var(--film-dim)}
+/* barra de agendar no celular: aparece depois do topo e some na seção Agendar */
+.dock{display:none}
+@media (max-width:860px){
+  .dock{display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;padding:.6rem var(--gut-r) calc(.6rem + env(safe-area-inset-bottom,0px)) var(--gut-l);
+    background:color-mix(in srgb,var(--paper) 92%,transparent);border-top:1px solid var(--rule);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    transform:translateY(110%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .dock.on{transform:none}
+  .dock .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.dock{transition:none}}
+/* bilhete: o pedido de avaliação montado na hora */
+.note{background:var(--card);color:var(--ink);border-radius:var(--r);padding:1.4rem 1.4rem 1.5rem;display:grid;gap:1rem;box-shadow:0 26px 50px -28px rgba(0,0,0,.7);position:relative;min-width:0}
+.note::before{content:"";position:absolute;left:50%;top:-11px;width:86px;height:24px;transform:translateX(-50%) rotate(-2deg);background:rgba(181,183,186,.8);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.note fieldset{border:0;margin:0;padding:0;min-width:0}
+.note legend{font-family:var(--caps);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);padding:0;margin-bottom:.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips span{display:block;border:1.5px solid var(--rule);border-radius:999px;padding:.4rem .85rem;font-size:.93rem;color:var(--ink-2);transition:background .15s,border-color .15s,color .15s}
+.chips input:checked+span{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff}
+.chips input:focus-visible+span{outline:2.5px solid var(--brand);outline-offset:2px}
+.note output{display:block;font-family:var(--serif);font-style:italic;font-size:1.05rem;line-height:1.45;border-top:1px dashed var(--rule);padding-top:.9rem;color:var(--ink)}
+.note .btn{justify-content:center}
+.note small{color:var(--ink-3);font-size:.8rem;line-height:1.4}
+@media (max-width:860px){.cta .wrap{grid-template-columns:1fr;align-items:start}}
+footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);display:grid;gap:.45rem}
+@media (prefers-reduced-motion:reduce){.btn,.step .d,.rv,.trail li::before{transition:none}.rv.pre{opacity:1;transform:none}.trail.pre li::before{opacity:1}}
+</style>
+
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#inicio"><img src="{{IMG_LOGO}}" alt="Monograma LS com uma pegada" width="178" height="240"><span><b>Dra. Larissa da Silva</b><span>Ortopedia e Traumatologia</span></span></a>
+  <nav><a href="#esquema">O esquema</a><a href="#cuidado">O cuidado</a><a href="#trata">Cirurgias</a><a href="#perguntas">Perguntas</a><a class="btn primary" href="#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
+</div></header>
+
+<section class="hero" id="inicio"><div class="wrap">
+  <div class="htop">
+    <span class="caps">Ortopedia · Pé e tornozelo</span>
+    <h1>Seu pé, <em>explicado.</em></h1>
+  </div>
+  <div class="heropic">
+    <figure class="photo"><img alt="Dra. Larissa de pijama cirúrgico e touca do mutirão Pé na Estrada" src="{{IMG_RETRATO}}"><figcaption>Foto provisória · Instagram</figcaption></figure>
+    <a class="filmchip" href="#esquema" aria-label="Ver o pé por dentro, no esquema"><svg id="miniHero" viewBox="440 300 640 822" aria-hidden="true"></svg><i class="scan" aria-hidden="true"></i><span>Raio-x ilustrativo</span></a>
+  </div>
+  <div class="hbody">
+    <p class="lead">Joanete, dor atrás do calcanhar, tendão de Aquiles, tornozelo que falseia. Veja no esquema o que acontece no osso, o que se trata sem cirurgia e como é a cirurgia quando ela é indicada.</p>
+    <div class="acts"><a class="btn primary" href="#agendar">Agendar avaliação</a><a class="more" href="#esquema">Ver o pé por dentro</a></div>
+    <div class="where"><span>Ortopedia e Traumatologia pelo INTO, Rio de Janeiro</span><span>Cirurgia do pé e tornozelo</span></div>
+  </div>
+</div></section>
+
+<section class="intro" id="esquema"><div class="wrap">
+  <span class="caps">O esquema</span>
+  <h2>Onde dói? <em>Veja por dentro.</em></h2>
+  <p>Escolha o problema e role a página, ou arraste a linha sobre o pé. O desenho vai de fora para dentro: a pele, o osso normal, o que mudou, o que a cirurgia faz e como fica depois.</p>
+</div></section>
+
+<section class="story" id="story" aria-label="Esquema interativo do pé e tornozelo">
+  <div class="stage">
+    <div class="wrap">
+    <div class="textcol">
+      <span class="caps" id="kicker">Vista de cima</span>
+      <h3>Do passo <em>ao osso.</em></h3>
+      <div class="tabs" role="group" aria-label="Escolha o problema">
+        <button class="tab" type="button" id="tab-joanete" data-c="joanete" aria-pressed="true"><b>Joanete</b><span>lateral do dedão</span></button>
+        <button class="tab" type="button" id="tab-haglund" data-c="haglund" aria-pressed="false"><b>Calcanhar</b><span>atrás, no sapato</span></button>
+        <button class="tab" type="button" id="tab-aquiles" data-c="aquiles" aria-pressed="false"><b>Aquiles</b><span>pedrada atrás da perna</span></button>
+        <button class="tab" type="button" id="tab-tornozelo" data-c="tornozelo" aria-pressed="false"><b>Tornozelo</b><span>torce e falseia</span></button>
+      </div>
+      <ol class="steps" id="steps">
+        <li><button class="step" type="button" id="step-0"><span class="n">01</span><span class="t">Por fora</span><span class="d"><div></div></span></button></li>
+        <li><button class="step" type="button" id="step-1"><span class="n">02</span><span class="t">Por dentro</span><span class="d"><div></div></span></button></li>
+        <li><button class="step" type="button" id="step-2"><span class="n">03</span><span class="t">O problema</span><span class="d"><div></div></span></button></li>
+        <li><button class="step" type="button" id="step-3"><span class="n">04</span><span class="t">A cirurgia</span><span class="d"><div></div></span></button></li>
+        <li><button class="step" type="button" id="step-4"><span class="n">05</span><span class="t">Depois</span><span class="d"><div></div></span></button></li>
+      </ol>
+      <p id="stepDesc" aria-live="polite"></p>
+    </div>
+    <div class="filmcol">
+      <div class="film" id="film">
+        <svg id="svg" viewBox="0 0 600 640" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="svgTitle"><title id="svgTitle">Esquema ilustrativo do pé: pele de um lado, ossos em raio-x do outro</title></svg>
+        <span class="corner">Esquema ilustrativo</span>
+        <span class="view" id="viewTag">Joanete</span>
+      </div>
+      <div class="meter" id="meter" aria-hidden="true"><i></i><u></u><span>Por fora</span><span>Por dentro</span><span>Problema</span><span>Cirurgia</span><span>Depois</span></div>
+    </div>
+    <aside class="panel" aria-label="Toque num osso">
+      <span class="caps">Toque num osso</span>
+      <div class="partgrid" id="partgrid"></div>
+      <div class="partinfo" id="partinfo" aria-live="polite"></div>
+      <button class="btn onfilm" type="button" id="xrayToggle">Ver por fora</button>
+    </aside>
+    </div>
+  </div>
+</section>
+
+<section class="care" id="cuidado"><div class="wrap">
+  <div class="head rv">
+    <span class="caps">Como é o cuidado</span>
+    <h2>Primeiro, <em>sem cirurgia.</em></h2>
+    <p>A maioria das dores no pé e no tornozelo melhora com calçado certo, palmilha e fisioterapia. A cirurgia fica para quando isso não resolve e a dor trava a sua vida.</p>
+  </div>
+  <ol class="trail" id="trail">
+    <li><span class="n">01</span><h3>Consulta e exame</h3><p>Você conta onde dói e quando. O pé é examinado parado, andando e dentro do calçado que você usa.</p></li>
+    <li><span class="n">02</span><h3>Imagem, se precisar</h3><p>Radiografia em pé, com carga, mostra o alinhamento real dos ossos. Outros exames só quando mudam a conduta.</p></li>
+    <li><span class="n">03</span><h3>Tratamento conservador</h3><p>Calçado, palmilha, exercício orientado e fisioterapia, com prazo combinado para reavaliar.</p></li>
+    <li><span class="n">04</span><h3>Cirurgia, quando indicada</h3><p>Você vê o plano no seu próprio exame: o que será feito, os riscos e as fases da recuperação.</p></li>
+  </ol>
+</div></section>
+
+<section class="treat" id="trata"><div class="wrap">
+  <div class="rv"><span class="caps">Cirurgias</span><h2 style="margin-top:.7rem">As quatro que ela <em>mais faz.</em></h2></div>
+  <div class="grid">
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="joanete" aria-label="Ver joanete no esquema"><svg id="icoJoanete" viewBox="330 300 800 600" aria-hidden="true"></svg></a><h3>Joanete</h3><p>Realinha o osso do dedão. Em muitos casos por técnica minimamente invasiva, com furinhos na pele.</p><a class="more" href="#esquema" data-go="joanete">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="haglund" aria-label="Ver Haglund no esquema"><svg id="icoHeel" viewBox="60 262 372 279" aria-hidden="true"></svg></a><h3>Haglund</h3><p>Retira a saliência do osso que atrita com o tendão atrás do calcanhar. Aberta ou por vídeo.</p><a class="more" href="#esquema" data-go="haglund">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="aquiles" aria-label="Ver tendão de Aquiles no esquema"><svg id="icoAquiles" viewBox="20 150 372 279" aria-hidden="true"></svg></a><h3>Tendão de Aquiles</h3><p>Sutura do tendão rompido e tratamento das tendinites que não melhoram com fisioterapia.</p><a class="more" href="#esquema" data-go="aquiles">Ver no esquema</a></article>
+    <article class="tcard rv"><a class="ico" href="#esquema" data-go="tornozelo" aria-label="Ver tornozelo no esquema"><svg id="icoAnkle" viewBox="190 236 300 225" aria-hidden="true"></svg></a><h3>Tornozelo</h3><p>Reparo dos ligamentos do tornozelo que falseia e fixação de fraturas.</p><a class="more" href="#esquema" data-go="tornozelo">Ver no esquema</a></article>
+  </div>
+  <div class="common">
+    <div class="rv"><span class="caps">No consultório</span><h2 style="margin-top:.7rem">O que mais <em>aparece.</em></h2><p>Procure pelo que você sente. A maioria destes problemas se resolve sem cirurgia.</p></div>
+    <dl class="symp rv">
+      <div><dt>Dor embaixo do calcanhar ao levantar da cama</dt><dd>Fascite plantar</dd></div>
+      <div><dt>Torceu o pé e semanas depois ainda incha</dt><dd>Entorse de tornozelo</dd></div>
+      <div><dt>Dor atrás do tornozelo ao começar a correr</dt><dd>Tendinite de Aquiles</dd></div>
+      <div><dt>Dor na “bola” do pé, como pedrinha no sapato</dt><dd>Metatarsalgia e neuroma de Morton</dd></div>
+      <div><dt>Dedos dobrados que roçam no calçado</dt><dd>Dedo em garra e em martelo</dd></div>
+      <div><dt>Canto da unha vermelho e dolorido</dt><dd>Unha encravada</dd></div>
+      <div><dt>Arco que desabou, dor por dentro do tornozelo</dt><dd>Pé plano do adulto</dd></div>
+      <div><dt>Dedão duro, que dói ao dobrar</dt><dd>Hálux rígido (artrose)</dd></div>
+      <div><dt>Dor no peito do pé que piora com o treino</dt><dd>Fratura por estresse</dd></div>
+      <div><dt>Ferida ou dormência no pé de quem tem diabetes</dt><dd>Pé diabético</dd></div>
+    </dl>
+  </div>
+</div></section>
+
+<section class="reels" id="videos"><div class="wrap">
+  <div class="head rv">
+    <div><span class="caps">Vídeos</span><h2 style="margin-top:.7rem">Explicado em <em>40 segundos.</em></h2></div>
+    <a class="btn ghost" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener">@dralaarissasilva no Instagram</a>
+  </div>
+  <div class="reelrow">
+    <a class="reel rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><img alt="Capa do vídeo: Joanete por furinhos? Cirurgia minimamente invasiva" src="{{IMG_JOANETE}}" loading="lazy"><span class="tagline">Joanete</span></a>
+    <a class="reel rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><img alt="Capa do vídeo: Pé de bailarina, o que a ponta faz com o pé" src="{{IMG_BAILARINA}}" loading="lazy"><span class="tagline">Salto e ponta</span></a>
+    <a class="reel type rv" href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener"><span class="caps">Joanete, calcanhar, tornozelo</span><h3>Mais vídeos <em>no Instagram.</em></h3>
+      <svg id="miniHeel" viewBox="60 250 400 290" aria-hidden="true"><rect x="60" y="250" width="400" height="290" fill="#123840"/></svg>
+      <span class="tagline">@dralaarissasilva</span></a>
+  </div>
+</div></section>
+
+<section class="about" id="sobre"><div class="wrap">
+  <div class="pics rv">
+    <figure class="photo a"><img alt="Dra. Larissa operando, de touca e máscara, sob o foco cirúrgico" src="{{IMG_CIRURGIA}}" loading="lazy"><figcaption>Centro cirúrgico</figcaption></figure>
+    <figure class="photo b"><img alt="Dra. Larissa em curso prático de cirurgia do pé" src="{{IMG_CURSO}}" loading="lazy"><figcaption>Curso · Verona</figcaption></figure>
+  </div>
+  <div class="txt rv">
+    <span class="caps">Quem atende</span>
+    <h2>Dra. Larissa <em>da Silva</em></h2>
+    <p>Ortopedista dedicada só ao pé e ao tornozelo. Explica o exame na tela, desenha o que vai fazer e diz com clareza quando a cirurgia é necessária e quando dá para tratar sem ela.</p>
+    <dl class="ficha">
+      <div><dt>Registro</dt><dd><span class="todo">CRM-UF 000000 · RQE 00000</span></dd></div>
+      <div><dt>Formação</dt><dd>Ortopedia e Traumatologia pelo INTO, Rio de Janeiro. Cirurgia do Pé e Tornozelo. <span class="todo">ano, título, sociedades</span></dd></div>
+      <div><dt>Atualização</dt><dd>Cursos em peça anatômica no ITC Rio de Janeiro e em Verona, Itália. Mutirão Pé na Estrada, da ABTPé, em Estrela, RS.</dd></div>
+      <div><dt>Atende em</dt><dd>Rio de Janeiro. <span class="todo">clínica, hospital, endereço</span></dd></div>
+    </dl>
+  </div>
+</div></section>
+
+<section class="faq" id="perguntas"><div class="wrap">
+  <div class="rv"><span class="caps">Perguntas</span><h2 style="margin-top:.7rem">O que todo mundo <em>pergunta.</em></h2></div>
+  <div class="rv">
+    <details open><summary>Todo joanete precisa de cirurgia?</summary><p>Não. Joanete que não dói e não limita costuma ser só acompanhado. Calçado mais largo, palmilha e fisioterapia aliviam muitos casos, mas não desfazem o desvio do osso. A cirurgia entra quando a dor persiste e atrapalha o dia a dia.</p></details>
+    <details><summary>Cirurgia “por furinhos” serve para qualquer caso?</summary><p>Não. A técnica minimamente invasiva depende do grau do desvio, da qualidade do osso e de outras alterações do pé. A escolha é feita na consulta, com exame e radiografia com carga.</p></details>
+    <details><summary>Dor atrás do calcanhar é fascite?</summary><p>Em geral, não. A fascite dói embaixo do calcanhar, ao pisar de manhã. Dor atrás, onde o sapato encosta, pode ser Haglund ou inflamação do tendão de Aquiles.</p></details>
+    <details><summary>Torci o pé e consigo andar. Preciso de avaliação?</summary><p>Procure avaliação se não consegue dar quatro passos, se dói ao apertar o osso, se o tornozelo ficou torto ou se não melhora em alguns dias. Pode haver fratura ou lesão de ligamento.</p></details>
+    <details><summary>Quanto tempo leva a recuperação?</summary><p>Depende do problema, da técnica e de você. Na consulta você recebe o plano por fases: apoio, calçado, fisioterapia e volta ao trabalho e ao esporte. Toda cirurgia tem riscos, e o resultado varia de pessoa para pessoa.</p></details>
+  </div>
+</div></section>
+
+<section class="cta" id="agendar"><div class="wrap">
+  <div>
+    <span class="caps">Agendar</span>
+    <h2 style="margin-top:.8rem">Traga o sapato que <em>mais dói.</em></h2>
+    <p class="lead">E os exames que você já tem. Na avaliação você entende o que está acontecendo e sai com um plano por escrito.</p>
+    <dl>
+      <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5521972896222" target="_blank" rel="noopener">(21) 97289-6222</a></dd></div>
+      <div><dt>Endereço</dt><dd>Rio de Janeiro. <span class="todo">rua, número, sala</span></dd></div>
+      <div><dt>Horários</dt><dd><span class="todo">dias e turnos de consulta</span></dd></div>
+      <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener">@dralaarissasilva</a></dd></div>
+    </dl>
+  </div>
+  <form class="note" id="note" aria-label="Montar o pedido de avaliação">
+    <fieldset><legend>Onde dói</legend><div class="chips">
+      <label><input type="radio" name="onde" id="onde-1" value="no dedão ou joanete" checked><span>Dedão ou joanete</span></label>
+      <label><input type="radio" name="onde" id="onde-2" value="no calcanhar"><span>Calcanhar</span></label>
+      <label><input type="radio" name="onde" id="onde-3" value="no tornozelo"><span>Tornozelo</span></label>
+      <label><input type="radio" name="onde" id="onde-4" value="em outro lugar do pé"><span>Outro lugar</span></label>
+    </div></fieldset>
+    <fieldset><legend>Melhor período</legend><div class="chips">
+      <label><input type="radio" name="quando" id="quando-1" value="de manhã" checked><span>Manhã</span></label>
+      <label><input type="radio" name="quando" id="quando-2" value="à tarde"><span>Tarde</span></label>
+      <label><input type="radio" name="quando" id="quando-3" value="em qualquer horário"><span>Tanto faz</span></label>
+    </div></fieldset>
+    <output id="noteOut" for="onde-1 quando-1"></output>
+    <a class="btn primary" id="noteSend" href="https://wa.me/5521972896222" target="_blank" rel="noopener">Agendar avaliação</a>
+    <small>Abre o WhatsApp com essa mensagem pronta. Você revisa antes de enviar.</small>
+  </form>
+</div></section>
+
+<div class="dock" id="dock"><a class="btn primary" href="#agendar" tabindex="-1">Agendar avaliação</a></div>
+
+<footer><div class="wrap">
+  <span>Dra. Larissa da Silva · Ortopedia e Traumatologia · Pé e tornozelo · <span class="todo">CRM-UF 000000 · RQE 00000</span></span>
+  <span>Conteúdo educativo, não substitui consulta. Os esquemas são ilustrativos. Toda cirurgia tem riscos; a indicação, o resultado e a recuperação variam de caso para caso.</span>
+</div></footer>
+

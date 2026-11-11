@@ -1,0 +1,9 @@
+# gerados pelo build (só o index.html vai para o site)
+src.html
+test.html
+dra-larissa.html
+prints/
+node_modules/
+# notas internas de trabalho: não vão para o repositório público
+CLAUDE.md
+FOTOS-SABADO.md
