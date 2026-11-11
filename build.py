@@ -60,6 +60,7 @@ og.save('img/web/og.jpg', quality=86)
 # favicon quadrado: só o monograma, sem fundo
 fav = Image.new('RGBA', (192, 192), (0, 0, 0, 0)); m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((184, 184), Image.LANCZOS)   # fundo transparente, monograma ocupando quase tudo
 fav.paste(m, ((192 - m.width) // 2, (192 - m.height) // 2), m); fav.save('img/web/favicon.png', optimize=True)
+FAV_V = hashlib.md5(open('img/web/favicon.png', 'rb').read()).hexdigest()[:8]   # versão no link: navegador guarda favicon no cache com força
 
 desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
 ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'url': URL, 'image': URL + 'img/web/og.jpg',
@@ -69,7 +70,7 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
-        '<link rel="icon" type="image/png" href="img/web/favicon.png">\n<link rel="apple-touch-icon" href="img/web/favicon.png">\n'
+        '<link rel="icon" type="image/png" href="img/web/favicon.png?v=' + FAV_V + '">\n<link rel="apple-touch-icon" href="img/web/favicon.png?v=' + FAV_V + '">\n'
         '<meta property="og:type" content="website">\n<meta property="og:locale" content="pt_BR">\n'
         '<meta property="og:title" content="Dra. Larissa Silva · Seu pé, explicado.">\n'
         '<meta property="og:description" content="' + desc + '">\n'
