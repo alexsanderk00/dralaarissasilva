@@ -154,7 +154,8 @@ function miniLateral(host,mode){
 }
 miniDorsal(document.getElementById('miniHero'));miniDorsal(document.getElementById('icoJoanete'));
 miniLateral(document.getElementById('icoHeel'),'heel');miniLateral(document.getElementById('icoAnkle'),'ankle');miniLateral(document.getElementById('icoAquiles'),'aquiles');
-document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const b=document.getElementById('tab-'+a.dataset.go);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})}));
+const goEsq=c=>{const b=document.getElementById('tab-'+c);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})};
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goEsq(a.dataset.go)}));
 miniLateral(document.getElementById('miniHeel'),'heel');
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */
@@ -167,9 +168,54 @@ if(!reduced&&'IntersectionObserver' in window){
 
 /* ---------- bilhete: monta o pedido e leva ao WhatsApp ---------- */
 const note=document.getElementById('note'),noteOut=document.getElementById('noteOut'),noteSend=document.getElementById('noteSend');
-function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value;
+const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando');
+function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value;rxOnde.textContent=o;rxQuando.textContent=q;
   const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.href='https://wa.me/5521972896222?text='+encodeURIComponent(m)}
 note.addEventListener('change',compose);note.addEventListener('submit',e=>e.preventDefault());compose();
+
+/* ---------- toque onde dói: região do pé ↔ lista ↔ pedido do WhatsApp ---------- */
+// onde: qual opção do bilhete recebe a região; v: como a região entra na frase (sem v, fica o texto da opção)
+const DOR={dedao:{n:'Dedão',onde:1},dedos:{n:'Dedos',onde:4,v:'nos dedos'},bola:{n:'Bola do pé',onde:4,v:'na bola do pé'},arco:{n:'Arco, por dentro',onde:4,v:'no arco do pé'},
+  calcbaixo:{n:'Calcanhar, embaixo',onde:2,v:'embaixo do calcanhar'},calctras:{n:'Calcanhar, atrás',onde:2,v:'atrás do calcanhar'},tornozelo:{n:'Tornozelo',onde:3},
+  peito:{n:'Peito do pé',onde:4,v:'no peito do pé'},todo:{n:'O pé todo',onde:4,v:'no pé (tenho diabetes)'}};
+const mapSola=document.getElementById('mapSola'),mapLado=document.getElementById('mapLado'),dorinfo=document.getElementById('dorinfo'),symp=document.getElementById('symp'),
+      rows=[...symp.querySelectorAll('div[data-r]')],dortodo=document.querySelector('.dortodo');
+const rg=(host,id)=>{const g=el('g',{class:'rg','data-r':id,tabindex:0,role:'button','aria-pressed':'false','aria-label':DOR[id].n},host);g.addEventListener('click',()=>pickDor(id));
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(id)}});return g};
+const ell=(host,cx,cy,rx,ry,r=0,cls)=>el('ellipse',Object.assign({cx,cy,rx,ry,transform:'rotate('+r+' '+cx+' '+cy+')'},cls?{class:cls}:{}),host);
+// sola do pé direito (dedão à esquerda), desenhada à mão em 160 × 320
+el('path',{class:'pele',d:'M78 314C56 314 46 296 47 270C48 246 54 228 50 206C46 184 34 164 30 138C26 112 30 92 46 84C66 75 110 76 128 86C144 95 146 118 140 146C134 176 126 206 124 238C122 270 118 314 78 314Z'},mapSola);
+const TOES=[[82,44,10,14,-4],[103,50,9,12,4],[121,62,8,11,12],[136,78,7,10,20]];
+ell(mapSola,52,52,16,23,-8,'pele');TOES.forEach(t=>ell(mapSola,...t,'pele'));
+{const g=rg(mapSola,'dedao');ell(g,52,52,16,23,-8);el('path',{d:'M32 92C34 84 46 80 62 82L64 122C52 126 38 122 33 112Z'},g)}
+{const g=rg(mapSola,'dedos');TOES.forEach(t=>ell(g,...t))}
+el('path',{d:'M66 82C90 78 116 80 130 88C140 96 140 112 136 126C112 130 86 128 66 124Z'},rg(mapSola,'bola'));
+el('path',{d:'M36 140C44 136 60 138 70 146L72 214C64 222 54 222 50 210C48 190 42 162 36 140Z'},rg(mapSola,'arco'));
+ell(rg(mapSola,'calcbaixo'),84,278,32,28);
+// lado de fora: o mesmo contorno de pele do esquema
+el('path',{class:'pele',d:spline(scenes.lateral.geo.skN)},mapLado);
+{const lg=el('linearGradient',{id:'ladoFade',x1:0,y1:0,x2:0,y2:1},el('defs',{},mapLado));el('stop',{offset:0,'stop-color':'#fff'},lg);el('stop',{offset:1,'stop-color':'#fff','stop-opacity':0},lg);
+ el('rect',{x:90,y:148,width:600,height:150,fill:'url(#ladoFade)'},mapLado)}   // a perna some no alto, sem corte reto
+el('path',{d:spline([[108,330],[150,322],[176,420],[204,498],[150,532],[104,472]])},rg(mapLado,'calctras'));
+el('circle',{cx:300,cy:366,r:40},rg(mapLado,'tornozelo'));
+el('path',{d:spline([[400,334],[480,372],[560,412],[604,430],[592,470],[470,440],[394,396]])},rg(mapLado,'peito'));
+let dsel=null;
+function setOnde(id){const D=DOR[id],r=document.getElementById('onde-'+D.onde);if(!r)return;
+  if(D.onde===4){r.value=D.v;r.nextElementSibling.textContent=D.n}else if(D.v)r.value=D.v;r.checked=true;compose()}
+function dorHTML(){dorinfo.textContent='';const c=document.createElement('span');c.className='caps';
+  if(!dsel){c.textContent='Toque numa região';dorinfo.append(c,'O mapa mostra os problemas mais comuns de cada lugar do pé. Quem confirma o que é, é a avaliação.');return}
+  c.textContent=DOR[dsel].n;dorinfo.append(c,'Pode estar ligado a: ');
+  const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('dd').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
+  const acts=document.createElement('div');acts.className='acts';const ag=document.createElement('a');ag.className='btn primary';ag.href='#agendar';ag.textContent='Agendar avaliação';
+  ag.addEventListener('click',()=>setOnde(dsel));acts.appendChild(ag);
+  rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver '+r.querySelector('dd').textContent.toLowerCase()+' no esquema';
+    m.addEventListener('click',e=>{e.preventDefault();goEsq(r.dataset.esq)});acts.appendChild(m)});
+  const sm=document.createElement('small');sm.textContent='Só a avaliação confirma o que é. Ao agendar, a região já vai no pedido.';dorinfo.append(acts,sm)}
+function pickDor(id){dsel=(id===dsel)?null:id;
+  document.querySelectorAll('.dormap .rg').forEach(g=>{const on=g.dataset.r===dsel;g.classList.toggle('on',on);g.setAttribute('aria-pressed',String(on))});
+  dortodo.setAttribute('aria-pressed',String(dsel==='todo'));symp.classList.toggle('has-sel',!!dsel);rows.forEach(r=>r.classList.toggle('on',r.dataset.r===dsel));
+  if(dsel)setOnde(dsel);dorHTML()}
+rows.forEach(r=>r.addEventListener('click',()=>pickDor(r.dataset.r)));dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
 
 /* ---------- barra de agendar no celular: fora do topo, do esquema (que precisa da tela inteira) e da seção Agendar ---------- */
 const dock=document.getElementById('dock'),dockBtn=dock.querySelector('a'),seen=new Map();
