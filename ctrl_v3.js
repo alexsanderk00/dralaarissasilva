@@ -220,6 +220,10 @@ function pickDor(id){dsel=(id===dsel)?null:id;
   // leva a pessoa até a explicação que acabou de abrir (no celular ela fica embaixo do mapa, e a lista fica mais abaixo ainda)
   if(dsel){const r=dorinfo.getBoundingClientRect(),dockH=dock.classList.contains('on')?dock.offsetHeight:0;
     if(r.top<70||r.bottom>innerHeight-dockH-12)dorinfo.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})}}
+// área de toque mínima de 40 px em cada região, invisível, sem mexer no desenho
+requestAnimationFrame(()=>document.querySelectorAll('.dormap .rg').forEach(g=>{const sv=g.ownerSVGElement,k=sv.viewBox.baseVal.width/Math.max(1,sv.getBoundingClientRect().width),b=g.getBBox(),m=40*k;
+  const w=Math.max(b.width,m),h=Math.max(b.height,m);if(w===b.width&&h===b.height)return;
+  g.insertBefore(el('rect',{class:'hit',x:b.x+b.width/2-w/2,y:b.y+b.height/2-h/2,width:w,height:h,rx:m/2}),g.firstChild)}));
 rows.forEach(r=>{r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r));
   r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(r.dataset.r)}})});dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
 
@@ -234,7 +238,7 @@ const dock=document.getElementById('dock'),dockBtn=dock.querySelector('a'),seen=
 if('IntersectionObserver' in window){
   const io=new IntersectionObserver(es=>{es.forEach(e=>seen.set(e.target.id,e.isIntersecting));const on=![...seen.values()].some(Boolean);
     dock.classList.toggle('on',on);dockBtn.tabIndex=on?0:-1;dock.setAttribute('aria-hidden',String(!on))},{threshold:0});
-  ['inicio','story','agendar'].forEach(id=>io.observe(document.getElementById(id)));
+  ['inicio','story','agendar'].forEach(id=>io.observe(document.getElementById(id)));io.observe(document.querySelector('footer'));
 }
 })();
 </script>

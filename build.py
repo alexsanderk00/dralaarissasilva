@@ -1,7 +1,7 @@
 import base64, hashlib, json, os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-URL = 'https://alexsanderk00.github.io/dralaarissasilva/'
+URL = 'https://alexsanderk00.github.io/dralaarissasilva/'   # trocar por https://dralaarissasilva.com.br/ quando o DNS estiver pronto (e criar o arquivo CNAME)
 IMGS = [('{{IMG_JOANETE}}', 'img/joanete.jpg'), ('{{IMG_BAILARINA}}', 'img/bailarina.jpg'), ('{{IMG_FOTO1}}', 'img/foto1.jpg'), ('{{IMG_FOTO2}}', 'img/foto2.jpg'), ('{{IMG_FOTO3}}', 'img/foto3.jpg'), ('{{IMG_PERFIL}}', 'img/perfil.jpg'), ('{{IMG_CONSULTORIO}}', 'img/consultorio.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
         ('{{IMG_PE_CIMA}}', 'img/pe_cima.webp'), ('{{IMG_PE_LADO}}', 'img/pe_lado.webp'),
         ('{{IMG_PERFIL_POSTER}}', 'img/perfil_poster.jpg')]
@@ -18,7 +18,7 @@ emb = src
 for k, f in IMGS:
     emb = emb.replace(k, 'data:image/' + MIME[os.path.splitext(f)[1]] + ';base64,' + base64.b64encode(open(f, 'rb').read()).decode())
 open('dra-larissa.html', 'w', encoding='utf-8').write(emb)
-t = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body>' + emb.replace('<link rel="stylesheet" href="https://fonts.googleapis.com', '<link rel="x" href="x') + '</body></html>'
+t = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body>' + emb.replace('<link rel="stylesheet" href="https://fonts.googleapis.com', '<link rel="x" href="x') + '</body></html>'
 open('test.html', 'w', encoding='utf-8').write(t)
 
 # 2) site publicado: imagens como arquivos WebP em img/web/ (o HTML cai de ~640 KB para ~90 KB)
@@ -77,13 +77,13 @@ head = ('<meta name="description" content="' + desc + '">\n'
         '<meta property="og:image" content="' + URL + 'img/web/og.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
         '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>\n')
-# versão avulsa para abrir direto no navegador / GitHub Pages: <title> e metas do topo do src vão para o <head>
+# versão avulsa para abrir direto no navegador / GitHub Pages (o viewport vem do head_v3.html: sem ele o celular mostra o layout de computador encolhido): <title> e metas do topo do src vão para o <head>
 import re
 TOPO = r'^(?:<title>.*?</title>|<meta [^>]*>)\n'
 head_src = ''.join(re.findall(TOPO, site, flags=re.M))
 site = re.sub(TOPO, '', site, flags=re.M)
 head = head_src + head
-full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
+full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
         + head + '<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n</head>\n<body>\n' + site + '\n</body>\n</html>\n')
 open('index.html', 'w', encoding='utf-8').write(full)
 print('artifact', len(emb) // 1024, 'KB · index', len(full) // 1024, 'KB')
