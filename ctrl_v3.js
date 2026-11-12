@@ -1,25 +1,25 @@
 /* ---------- textos (rascunho para revisão médica) ---------- */
 const TXT={
   joanete:{name:'Joanete',steps:[
-    ['Por fora, o joanete é o calombo na lateral do dedão, com o dedão inclinado para os outros dedos. Role, ou arraste a linha, para ver por dentro.'],
+    ['Por fora, o joanete é o calombo na lateral do dedão, com o dedão inclinado para os outros dedos. Role para ver por dentro.'],
     ['Por dentro não existe osso novo. São os mesmos ossos, fora do lugar: o osso longo do dedão, o primeiro metatarso, abriu para fora, e a cabeça dele saiu de cima dos sesamoides.'],
     ['O primeiro metatarso abre para um lado e o dedão entorta para o outro. É o ângulo entre os dois que se mede na radiografia. O “calombo” é a cabeça do osso.'],
     ['Quando calçado largo, palmilha e fisioterapia não controlam a dor, a cirurgia realinha o osso. Na técnica minimamente invasiva, uma broca fina corta o osso por furinhos na pele, a cabeça é deslocada para o lugar e fixada com parafusos.','A técnica depende do grau do desvio. Toda cirurgia tem riscos, como infecção, rigidez e retorno do desvio.'],
     ['O osso consolida na nova posição ao longo das semanas. O apoio, o calçado e a volta às atividades seguem o plano definido para o seu caso.','O resultado e a recuperação variam de pessoa para pessoa.']]},
   haglund:{name:'Calcanhar · Haglund',steps:[
-    ['Por fora, o calcanhar tem contorno liso atrás, bem onde o contraforte do sapato encosta. Role, ou arraste a linha, para ver por dentro.'],
+    ['Por fora, o calcanhar tem contorno liso atrás, bem onde o contraforte do sapato encosta. Role para ver por dentro.'],
     ['Atrás do calcanhar, o tendão de Aquiles desce e se prende no osso. Entre os dois há uma pequena bolsa de líquido, a bursa, que reduz o atrito.'],
     ['Na deformidade de Haglund, uma saliência do osso atrita com o tendão e com o sapato. A bursa inflama, incha e dói. Não é calo e não é fascite: fascite dói embaixo do calcanhar.'],
     ['O primeiro passo não é cirurgia. Calçado com a parte de trás macia, calcanheira e exercício orientado melhoram a maioria. Quando não resolve, a cirurgia retira o excesso de osso e limpa a região inflamada.','Pode ser aberta ou por vídeo, conforme o caso. Toda cirurgia tem riscos.'],
     ['Sem a saliência, o tendão deixa de ser comprimido contra o osso. O tempo de proteção e a fisioterapia dependem do que foi feito no tendão.','O resultado e a recuperação variam de pessoa para pessoa.']]},
   aquiles:{name:'Tendão de Aquiles',steps:[
-    ['Por fora, o tendão de Aquiles é a corda firme atrás do tornozelo, logo acima do calcanhar. Role, ou arraste a linha, para ver por dentro.'],
+    ['Por fora, o tendão de Aquiles é a corda firme atrás do tornozelo, logo acima do calcanhar. Role para ver por dentro.'],
     ['O tendão de Aquiles liga a panturrilha ao osso do calcanhar. É ele que dá o impulso para andar, correr e ficar na ponta do pé.'],
     ['Na ruptura, o tendão arrebenta alguns centímetros acima do calcanhar, muitas vezes numa arrancada ou num salto. A sensação é de pedrada atrás da perna. As pontas se afastam e falta força para ficar na ponta do pé.'],
     ['A ruptura pode ser tratada com bota e reabilitação ou com cirurgia. Na cirurgia, as duas pontas são aproximadas e costuradas, por corte aberto ou por pequenos cortes.','A escolha depende da idade, da atividade e do tempo desde a lesão. Toda cirurgia tem riscos.'],
     ['O tendão cicatriza e fica mais espesso no ponto do reparo. A volta ao esporte acontece por fases, com fisioterapia, ao longo de meses.','O resultado e a recuperação variam de pessoa para pessoa.']]},
   tornozelo:{name:'Tornozelo · ligamento',steps:[
-    ['Por fora, o tornozelo tem um osso saliente de cada lado. Os ligamentos que mais rompem ficam logo à frente e abaixo do de fora. Role, ou arraste a linha.'],
+    ['Por fora, o tornozelo tem um osso saliente de cada lado. Os ligamentos que mais rompem ficam logo à frente e abaixo do de fora. Role para ver por dentro.'],
     ['Do lado de fora do tornozelo, ligamentos curtos prendem a fíbula ao tálus e ao calcâneo. São eles que seguram o pé quando você pisa torto.'],
     ['Na entorse, o ligamento da frente é o que mais rompe. A maioria cicatriza com proteção e fisioterapia. Quando cicatriza frouxo, o tálus ganha folga e o tornozelo passa a falsear.'],
     ['Se a instabilidade continua depois da reabilitação, o ligamento pode ser reparado: ele é preso de volta no osso com pequenas âncoras e suturas.','Em muitos casos por vídeo. Toda cirurgia tem riscos.'],
@@ -44,6 +44,7 @@ const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aq
 const scenes={dorsal:Dorsal(),lateral:Lateral()};
 const hand=el('g',{},svg),edge=el('line',{id:'edge',y1:-20,y2:660},hand),grip=el('g',{id:'grip',tabindex:0,role:'slider','aria-label':'Arraste para ver por fora ou em raio-x','aria-valuemin':0,'aria-valuemax':100},hand);
 el('circle',{r:29},grip);el('path',{d:'M-17 -3l-6 5 6 5M17 -3l6 5-6 5'},grip);{const t=el('text',{y:-7},grip);t.textContent='ARRASTE'}
+grip.style.display='none';grip.removeAttribute('tabindex');grip.setAttribute('aria-hidden','true');   // sem alça: o esquema anda pela rolagem e pelo botão "Ver em raio-x"
 const GY=604;
 function setWipe(dir,w){
   const e=dir==='right'?600*(1-w):600*w;WIPE.x=e;WIPE.dir=dir;

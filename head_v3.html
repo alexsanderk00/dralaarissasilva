@@ -117,7 +117,7 @@ header.top nav{color:rgba(255,255,255,.82)}
 header.top nav a:not(.btn):hover{color:#fff}
 .hero{position:relative;min-height:100vh;min-height:100svh;display:grid;align-items:center;overflow:hidden;background:var(--brand-deep);color:#fff;isolation:isolate}
 .hero .herobg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;filter:blur(9px) brightness(.6) saturate(.8);transform:scale(1.08);z-index:-2}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(17,51,88,.9) 0%,rgba(17,51,88,.62) 48%,rgba(17,51,88,.3) 100%),linear-gradient(to top,rgba(17,51,88,.55),transparent 40%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(17,51,88,.9) 0%,rgba(17,51,88,.62) 48%,rgba(17,51,88,.3) 100%),linear-gradient(to top,var(--film) 0%,rgba(17,51,88,.6) 14%,rgba(17,51,88,0) 42%)}
 .hero .wrap{width:100%;padding-top:clamp(7rem,14vh,9rem)}
 .hero .caps{color:var(--brand-lite)}
 .hero h1{color:#fff}.hero h1 em{color:var(--brand-lite)}
@@ -150,7 +150,7 @@ header.top nav a:not(.btn):hover{color:#fff}
 .intro p{max-width:40rem;color:rgba(235,244,239,.8);font-size:1.08rem}
 .story{position:relative;height:540vh;background:var(--film);color:var(--film-ink);overflow-x:clip}
 .stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;
-  background:radial-gradient(90% 80% at 50% 38%,var(--film-2),var(--film) 72%)}
+  background:linear-gradient(to bottom,var(--film),rgba(17,51,88,0) 22%,rgba(17,51,88,0) 82%,var(--film)),radial-gradient(90% 80% at 50% 45%,var(--film-2),var(--film) 72%)}   /* bordas no azul sólido: emenda invisível com a faixa 01 */
 .stage .wrap{position:relative;width:100%;display:grid;grid-template-columns:minmax(0,19rem) minmax(0,1fr) minmax(0,16.5rem);gap:clamp(1rem,2.4vw,2.4rem);align-items:center}
 .stage .caps{color:var(--brand-lite)}
 .stage h3{font-size:clamp(1.7rem,2.6vw,2.3rem);color:#fff;margin:.6rem 0 1.1rem}
@@ -450,7 +450,7 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 <section class="intro" id="esquema"><div class="wrap">
   <span class="caps"><b>01</b> — O esquema</span>
   <h2>Onde dói? <em>Veja por dentro.</em></h2>
-  <p>Escolha o problema e role a página, ou arraste a linha sobre o pé. O desenho vai de fora para dentro: a pele, o osso normal, o que mudou, o que a cirurgia faz e como fica depois.</p>
+  <p>Escolha o problema e role a página. O desenho vai de fora para dentro: a pele, o osso normal, o que mudou, o que a cirurgia faz e como fica depois.</p>
 </div></section>
 
 <section class="story" id="story" aria-label="Esquema interativo do pé e tornozelo">
