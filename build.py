@@ -14,7 +14,8 @@ for k, f in [('{{VID_PERFIL}}', 'video/perfil.mp4')]:
 open('src.html', 'w', encoding='utf-8').write(src)
 
 # 1) versão com imagens embutidas: tema do artifact e teste local
-emb = src
+import re
+emb = re.sub(r'<meta http-equiv="Content-Security-Policy"[^>]*>\n', '', src)   # a regra de segurança é só do site publicado: no artifact ela bloquearia o próprio ambiente
 for k, f in IMGS:
     emb = emb.replace(k, 'data:image/' + MIME[os.path.splitext(f)[1]] + ';base64,' + base64.b64encode(open(f, 'rb').read()).decode())
 open('dra-larissa.html', 'w', encoding='utf-8').write(emb)

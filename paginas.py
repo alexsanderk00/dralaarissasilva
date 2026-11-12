@@ -91,6 +91,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
     footer = re.search(r'<footer><div class="wrap">.*?</footer>', src_head, flags=re.S).group(0)
     ga = '<script>' + src_ctrl.rsplit('<script>', 1)[1]
     hoje = datetime.date.today().isoformat()
+    csp = re.search(r'<meta http-equiv="Content-Security-Policy"[^>]*>', src_head).group(0)   # mesma regra de segurança da página principal
     out = []
     for p in PAGINAS:
         c = p['cond']; s = txt[c]
@@ -114,6 +115,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{csp}
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <meta name="theme-color" content="#113358">
