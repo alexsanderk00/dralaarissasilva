@@ -742,7 +742,7 @@ const xt=el('filter',{id:'xrayTint','color-interpolation-filters':'sRGB'},defs);
 function Dorsal(){
   const SC=.5,TR='translate(-112 -66) scale(.5)',G=(x,y)=>[(x+112)/SC,(y+66)/SC];      // G: posição no filme (0–600) → espaço da foto
   const xr=el('g',{'clip-path':'url(#cX)'},svg),sk=el('g',{'clip-path':'url(#cS)','pointer-events':'none'},svg),root=el('g',{transform:TR},xr),body=el('g',{mask:'url(#mB)'},root),skRoot=el('g',{transform:TR,mask:'url(#mB)'},sk),parts={};
-  const PH={href:'img/web/pe_cima.webp?v=221401d6',x:420,y:270,width:590,height:1110};
+  const PH={href:'img/web/pe_cima.webp?v=1536e3b8',x:420,y:270,width:590,height:1110};
   const ghost=el('image',Object.assign({filter:'url(#xrayTint)'},PH),body);el('image',PH,skRoot);
   const soft=el('g',{class:'soft',opacity:0,style:'stroke-width:92px'},body),dimG=el('g',{class:'bn dim'},body),hiG=el('g',{class:'bn hi'},body);
   const tool=el('g',{},root),ann=el('g',{},root),lbG=el('g',{transform:TR},svg),lb=c=>label(lbG,c,()=>1/SC,p=>[p[0]*SC-112,p[1]*SC-66]);
@@ -816,9 +816,9 @@ function Dorsal(){
 function Lateral(){
   const xr=el('g',{'clip-path':'url(#cX)'},svg),sk=el('g',{'clip-path':'url(#cS)','pointer-events':'none'},svg),phX=el('g',{mask:'url(#mRp)'},xr),root=el('g',{},xr),body=el('g',{mask:'url(#mR)'},root),phS=el('g',{mask:'url(#mRp)'},sk),parts={};let K=1,MA=[1,0,1,0,0],QQ=null;
   /* foto real de lado (1200 × 1800 px). O esqueleto é levado até ela por uma afinidade: escala em x, escala em y e inclinação da sola (perspectiva). */
-  const PHL={href:'img/web/pe_lado.webp?v=6d5372f4',x:0,y:0,width:569,height:852};el('image',Object.assign({filter:'url(#xrayTint)',opacity:.9},PHL),phX);el('image',PHL,phS);
+  const PHL={href:'img/web/pe_lado.webp?v=91664e92',x:0,y:0,width:569,height:852};el('image',Object.assign({filter:'url(#xrayTint)',opacity:.9},PHL),phX);el('image',PHL,phS);
   /* encaixe: esqueleto -> pixels da foto (x*.53, y*.85, ancorado no calcanhar e na sola) -> palco (zoom Z) */
-  const FIT=(()=>{const Z=1.12,kx=.53,ky=.85,hx=28,sy0=832,ox=44,oy=-355;const a=Z*kx,d=Z*ky,e=Z*(hx-kx*117)+ox,f=Z*(sy0-ky*530)+oy;return{MA:[a,0,d,e,f],PT:'matrix('+Z+' 0 0 '+Z+' '+ox+' '+oy+')'}})();
+  const FIT=(()=>{const Z=1.12,kx=.5724,ky=.517,hx=28,sy0=832,ox=44,oy=-355;   /* kx/ky medidos no pé da foto IMG_3078 (calcanhar, ponta dos dedos, dobra do tornozelo) */ const a=Z*kx,d=Z*ky,e=Z*(hx-kx*117)+ox,f=Z*(sy0-ky*530)+oy;return{MA:[a,0,d,e,f],PT:'matrix('+Z+' 0 0 '+Z+' '+ox+' '+oy+')'}})();
   let LX=54;const MP=p=>[MA[0]*p[0]+MA[3],MA[1]*p[0]+MA[2]*p[1]+MA[4]],QH=q=>[MA[0]*q[0]+MA[3]+LX,MA[2]*q[1]+MA[4]],QT=QH;
   const skin=el('path',{fill:'none',stroke:'none',display:'none'},body);
   const tib=el('g',{class:'bn dim'},body);const tibia=el('path',{},tib);
@@ -831,7 +831,7 @@ function Lateral(){
   const fibG=el('g',{class:'bn hi'},body),fibula=el('path',{'data-part':'fibula'},fibG);
   const lig=el('g',{},body),extra=el('g',{},root);
   const ann=el('g',{},svg);
-  setD(tibia,bone([316,-260],[322,318],60,46,84).d);setD(fibula,bone([262,-260],[281,368],24,15,34).d);
+  setD(tibia,bone([294,-260],[322,318],60,46,84).d);setD(fibula,bone([240,-260],[281,368],24,15,34).d);   /* inclinadas como a perna da foto */
   const talN=[[268,338],[292,324],[322,319],[352,326],[374,340],[400,353],[424,367],[430,388],[412,402],[380,401],[346,399],[312,403],[282,397],[264,377]];
   setD(talus,spline(talN));
   const calN=[[177,368],[202,367],[233,381],[263,399],[302,409],[346,405],[389,411],[410,429],[404,457],[364,463],[312,467],[262,481],[212,495],[173,486],[152,453],[152,404]];
@@ -912,8 +912,8 @@ function Lateral(){
     L.sal([160,352],[92,250],'SALIÊNCIA\nDO OSSO',H?o1:0,'end');L.sap([74,472],[176,560],'O SAPATO\nENCOSTA AQUI',H?o1:0,'end');L.fas([206,499],[322,560],'FASCITE DÓI AQUI,\nEMBAIXO',H?o1:0);
     L.ret(mixP([176-26*fd,366-34*fd],[192,385],seg(s,1.78,1.95)),[92,226],'OSSO\nRETIRADO',H?win(s,1.5,1.6,2.3,2.5):0,'end');
     L.esp([178,388],[92,300],'TENDÃO LIVRE\nDO ATRITO',H?o3:0,'end');
-    L.fib([270,268],[212,236],'FÍBULA',T?o0:0,'end');L.tal([378,372],[424,290],'TÁLUS',T?o0:0);L.lg(mixP(o,ins,.5),[424,232],'LIGAMENTO\nTALOFIBULAR',T?o0:0);
-    L.rom(mixP(o,ins,.5),[424,232],'LIGAMENTO\nROMPIDO',T?o1:0);L.fol([420+dx,330],[436,290],'O TÁLUS\nGANHA FOLGA',T?win(s,.75,.95,1.3,1.5):0);
+    L.fib([270,268],[212,236],'FÍBULA',T?o0:0,'end');L.tal([378,372],[424,318],'TÁLUS',T?o0:0);L.lg(mixP(o,ins,.5),[424,232],'LIGAMENTO\nTALOFIBULAR',T?o0:0);
+    L.rom(mixP(o,ins,.5),[424,232],'LIGAMENTO\nROMPIDO',T?o1:0);L.fol([420+dx,330],[436,330],'O TÁLUS\nGANHA FOLGA',T?win(s,.75,.95,1.3,1.5):0);
     L.anc(a0,[424,232],'ÂNCORA\nE SUTURA',T?win(s,1.5,1.6,2.3,2.5):0);L.rep(mixP(o,ins,.5),[424,232],'LIGAMENTO\nREPARADO',T?o3:0);
     return (infl>.5)||(loose>.6)||(rp>0&&rp<1);
   }
