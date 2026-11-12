@@ -446,6 +446,15 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 /* celular estreito: ficha com o rótulo em cima; cards de cirurgia em uma coluna (no fim para valer sobre as regras de cima) */
 @media (max-width:520px){.ficha div{grid-template-columns:1fr;gap:.25rem}.ficha dt{padding-top:0}}
 @media (max-width:420px){.treat .grid{grid-template-columns:1fr}}
+/* aviso de cookies (LGPD): o Google Analytics só carrega depois do "Aceitar" */
+.cookies{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;width:min(34rem,calc(100% - 2rem));
+  background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r);box-shadow:0 18px 40px -18px rgba(0,0,0,.45);
+  padding:1rem 1.1rem;display:grid;gap:.8rem;font-size:.88rem;line-height:1.45}
+.cookies[hidden]{display:none}
+.cookies p{margin:0;color:var(--ink-2)}
+.cookies .acts{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}
+.cookies .btn{padding:.6rem 1.1rem;font-size:.86rem}
+footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer;justify-self:start}
 </style>
 
 
@@ -648,9 +657,15 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 
 <div class="dock" id="dock"><a class="btn primary" href="#agendar" tabindex="-1">Agendar avaliação</a></div>
 
+<div class="cookies" id="cookies" role="dialog" aria-label="Aviso de cookies" hidden>
+  <p>Uso cookies do Google Analytics só para contar as visitas e ver quais partes do site ajudam mais. Não recebo seu nome nem seu contato. Você aceita?</p>
+  <div class="acts"><button class="btn ghost" type="button" data-ck="nao">Recusar</button><button class="btn primary" type="button" data-ck="sim">Aceitar</button></div>
+</div>
+
 <footer><div class="wrap">
   <span>Dra. Larissa Silva · Ortopedista e Traumatologista · Pé e tornozelo · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span>
   <span>Conteúdo educativo, não substitui consulta. Os esquemas são ilustrativos. Toda cirurgia tem riscos; a indicação, o resultado e a recuperação variam de caso para caso.</span>
+  <button class="linkbtn" type="button" id="ckOpen">Preferências de cookies</button>
 </div></footer>
 
 <script>
@@ -1094,7 +1109,9 @@ if(!reduced&&'IntersectionObserver' in window){
 const note=document.getElementById('note'),noteOut=document.getElementById('noteOut'),noteSend=document.getElementById('noteSend');
 const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando');
 function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value;rxOnde.textContent=o;rxQuando.textContent=q;
-  const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.href='https://wa.me/5521972896222?text='+encodeURIComponent(m)}
+  const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.dataset.msg=m}
+/* o texto (com o sintoma) só entra no link na hora do clique: o href fica sem ?text, e nenhuma medição de cliques de saída recebe o sintoma (LGPD: dado de saúde) */
+noteSend.addEventListener('click',e=>{const m=noteSend.dataset.msg;if(!m)return;e.preventDefault();window.open('https://wa.me/5521972896222?text='+encodeURIComponent(m),'_blank','noopener')});
 note.addEventListener('change',compose);note.addEventListener('submit',e=>e.preventDefault());compose();
 
 /* ---------- toque onde dói: região do pé ↔ lista ↔ pedido do WhatsApp ---------- */
@@ -1165,6 +1182,28 @@ if('IntersectionObserver' in window){
     dock.classList.toggle('on',on);dockBtn.tabIndex=on?0:-1;dock.setAttribute('aria-hidden',String(!on))},{threshold:0});
   ['inicio','story','agendar'].forEach(id=>io.observe(document.getElementById(id)));io.observe(document.querySelector('footer'));
 }
+})();
+</script>
+<script>
+/* ---------- Google Analytics (tag GTM-NR3MFX3J) com consentimento: nada carrega antes do "Aceitar"; só no domínio publicado ---------- */
+(()=>{
+const TAG='GTM-NR3MFX3J', PROD=location.hostname==='dralaarissasilva.com.br';
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+let loaded=false;
+function load(){if(loaded||!PROD)return;loaded=true;gtag('consent','update',{analytics_storage:'granted'});
+  const sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtm.js?id='+TAG;document.head.appendChild(sc);gtag('js',new Date())}
+const box=document.getElementById('cookies');
+let ck=null;try{ck=localStorage.getItem('cookies')}catch(e){}
+if(ck==='sim')load();else if(ck!=='nao')box.hidden=false;
+box.addEventListener('click',e=>{const b=e.target.closest('[data-ck]');if(!b)return;const v=b.dataset.ck;
+  try{localStorage.setItem('cookies',v)}catch(e){}box.hidden=true;
+  if(v==='sim')load();else if(loaded){gtag('consent','update',{analytics_storage:'denied'})}});
+document.getElementById('ckOpen').addEventListener('click',()=>{box.hidden=false;box.querySelector('[data-ck="sim"]').focus()});
+/* eventos: cliques em Agendar e no WhatsApp (só contam se a pessoa aceitou) */
+document.addEventListener('click',e=>{if(!loaded)return;const a=e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href'),sec=a.closest('section,header,footer,.dock');
+  const onde=(sec&&(sec.id||sec.className.split(' ')[0]))||'pagina';
+  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h==='#agendar')gtag('event','agendar_click',{onde})});
 })();
 </script>
 

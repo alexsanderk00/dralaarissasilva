@@ -172,7 +172,9 @@ if(!reduced&&'IntersectionObserver' in window){
 const note=document.getElementById('note'),noteOut=document.getElementById('noteOut'),noteSend=document.getElementById('noteSend');
 const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando');
 function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value;rxOnde.textContent=o;rxQuando.textContent=q;
-  const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.href='https://wa.me/5521972896222?text='+encodeURIComponent(m)}
+  const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.dataset.msg=m}
+/* o texto (com o sintoma) só entra no link na hora do clique: o href fica sem ?text, e nenhuma medição de cliques de saída recebe o sintoma (LGPD: dado de saúde) */
+noteSend.addEventListener('click',e=>{const m=noteSend.dataset.msg;if(!m)return;e.preventDefault();window.open('https://wa.me/5521972896222?text='+encodeURIComponent(m),'_blank','noopener')});
 note.addEventListener('change',compose);note.addEventListener('submit',e=>e.preventDefault());compose();
 
 /* ---------- toque onde dói: região do pé ↔ lista ↔ pedido do WhatsApp ---------- */
@@ -243,5 +245,27 @@ if('IntersectionObserver' in window){
     dock.classList.toggle('on',on);dockBtn.tabIndex=on?0:-1;dock.setAttribute('aria-hidden',String(!on))},{threshold:0});
   ['inicio','story','agendar'].forEach(id=>io.observe(document.getElementById(id)));io.observe(document.querySelector('footer'));
 }
+})();
+</script>
+<script>
+/* ---------- Google Analytics (tag GTM-NR3MFX3J) com consentimento: nada carrega antes do "Aceitar"; só no domínio publicado ---------- */
+(()=>{
+const TAG='GTM-NR3MFX3J', PROD=location.hostname==='dralaarissasilva.com.br';
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+let loaded=false;
+function load(){if(loaded||!PROD)return;loaded=true;gtag('consent','update',{analytics_storage:'granted'});
+  const sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtm.js?id='+TAG;document.head.appendChild(sc);gtag('js',new Date())}
+const box=document.getElementById('cookies');
+let ck=null;try{ck=localStorage.getItem('cookies')}catch(e){}
+if(ck==='sim')load();else if(ck!=='nao')box.hidden=false;
+box.addEventListener('click',e=>{const b=e.target.closest('[data-ck]');if(!b)return;const v=b.dataset.ck;
+  try{localStorage.setItem('cookies',v)}catch(e){}box.hidden=true;
+  if(v==='sim')load();else if(loaded){gtag('consent','update',{analytics_storage:'denied'})}});
+document.getElementById('ckOpen').addEventListener('click',()=>{box.hidden=false;box.querySelector('[data-ck="sim"]').focus()});
+/* eventos: cliques em Agendar e no WhatsApp (só contam se a pessoa aceitou) */
+document.addEventListener('click',e=>{if(!loaded)return;const a=e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href'),sec=a.closest('section,header,footer,.dock');
+  const onde=(sec&&(sec.id||sec.className.split(' ')[0]))||'pagina';
+  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h==='#agendar')gtag('event','agendar_click',{onde})});
 })();
 </script>

@@ -424,6 +424,15 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 /* celular estreito: ficha com o rótulo em cima; cards de cirurgia em uma coluna (no fim para valer sobre as regras de cima) */
 @media (max-width:520px){.ficha div{grid-template-columns:1fr;gap:.25rem}.ficha dt{padding-top:0}}
 @media (max-width:420px){.treat .grid{grid-template-columns:1fr}}
+/* aviso de cookies (LGPD): o Google Analytics só carrega depois do "Aceitar" */
+.cookies{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;width:min(34rem,calc(100% - 2rem));
+  background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r);box-shadow:0 18px 40px -18px rgba(0,0,0,.45);
+  padding:1rem 1.1rem;display:grid;gap:.8rem;font-size:.88rem;line-height:1.45}
+.cookies[hidden]{display:none}
+.cookies p{margin:0;color:var(--ink-2)}
+.cookies .acts{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}
+.cookies .btn{padding:.6rem 1.1rem;font-size:.86rem}
+footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer;justify-self:start}
 </style>
 
 
@@ -626,8 +635,14 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 
 <div class="dock" id="dock"><a class="btn primary" href="#agendar" tabindex="-1">Agendar avaliação</a></div>
 
+<div class="cookies" id="cookies" role="dialog" aria-label="Aviso de cookies" hidden>
+  <p>Uso cookies do Google Analytics só para contar as visitas e ver quais partes do site ajudam mais. Não recebo seu nome nem seu contato. Você aceita?</p>
+  <div class="acts"><button class="btn ghost" type="button" data-ck="nao">Recusar</button><button class="btn primary" type="button" data-ck="sim">Aceitar</button></div>
+</div>
+
 <footer><div class="wrap">
   <span>Dra. Larissa Silva · Ortopedista e Traumatologista · Pé e tornozelo · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span>
   <span>Conteúdo educativo, não substitui consulta. Os esquemas são ilustrativos. Toda cirurgia tem riscos; a indicação, o resultado e a recuperação variam de caso para caso.</span>
+  <button class="linkbtn" type="button" id="ckOpen">Preferências de cookies</button>
 </div></footer>
 
