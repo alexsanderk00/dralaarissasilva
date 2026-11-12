@@ -816,7 +816,7 @@ function Dorsal(){
 function Lateral(){
   const xr=el('g',{'clip-path':'url(#cX)'},svg),sk=el('g',{'clip-path':'url(#cS)','pointer-events':'none'},svg),phX=el('g',{mask:'url(#mRp)'},xr),root=el('g',{},xr),body=el('g',{mask:'url(#mR)'},root),phS=el('g',{mask:'url(#mRp)'},sk),parts={};let K=1,MA=[1,0,1,0,0],QQ=null;
   /* foto real de lado (1200 × 1800 px). O esqueleto é levado até ela por uma afinidade: escala em x, escala em y e inclinação da sola (perspectiva). */
-  const PHL={href:'img/web/pe_lado.webp?v=91664e92',x:0,y:0,width:569,height:852};el('image',Object.assign({filter:'url(#xrayTint)',opacity:.9},PHL),phX);el('image',PHL,phS);
+  const PHL={href:'img/web/pe_lado.webp?v=fb620cb3',x:0,y:0,width:569,height:852};el('image',Object.assign({filter:'url(#xrayTint)',opacity:.9},PHL),phX);el('image',PHL,phS);
   /* encaixe: esqueleto -> pixels da foto (x*.53, y*.85, ancorado no calcanhar e na sola) -> palco (zoom Z) */
   const FIT=(()=>{const Z=1.12,kx=.5724,ky=.517,hx=28,sy0=832,ox=44,oy=-355;   /* kx/ky medidos no pé da foto IMG_3078 (calcanhar, ponta dos dedos, dobra do tornozelo) */ const a=Z*kx,d=Z*ky,e=Z*(hx-kx*117)+ox,f=Z*(sy0-ky*530)+oy;return{MA:[a,0,d,e,f],PT:'matrix('+Z+' 0 0 '+Z+' '+ox+' '+oy+')'}})();
   let LX=54;const MP=p=>[MA[0]*p[0]+MA[3],MA[1]*p[0]+MA[2]*p[1]+MA[4]],QH=q=>[MA[0]*q[0]+MA[3]+LX,MA[2]*q[1]+MA[4]],QT=QH;
