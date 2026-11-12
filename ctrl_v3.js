@@ -68,7 +68,7 @@ const wipeAuto=()=>s<0?seg(s,-1,-.05):1-(1-scene().endW(cond))*seg(s,2.62,3);
 
 function infoHTML(box,id){
   box.textContent='';
-  if(!id){const c=document.createElement('span');c.className='caps';c.textContent='O que a avaliação olha';box.appendChild(c);box.appendChild(document.createTextNode('Escolha um osso, aqui ou no desenho, para ver o que ele faz e o que eu observo nele.'));return}
+  if(!id){const c=document.createElement('span');c.className='caps';c.textContent='O que a avaliação olha';box.appendChild(c);box.appendChild(document.createTextNode('Escolha uma estrutura, aqui ou no desenho, para ver o que ela faz e o que eu observo nela.'));return}
   const P=PARTS[id],c=document.createElement('span');c.className='caps';c.textContent=P[0];box.appendChild(c);
   box.appendChild(document.createTextNode(P[2]+' '));const b=document.createElement('b');b.textContent='Na avaliação: ';box.appendChild(b);box.appendChild(document.createTextNode(P[3]));
 }
