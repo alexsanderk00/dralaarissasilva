@@ -248,14 +248,14 @@ if('IntersectionObserver' in window){
 })();
 </script>
 <script>
-/* ---------- Google Analytics (tag GTM-NR3MFX3J) com consentimento: nada carrega antes do "Aceitar"; só no domínio publicado ---------- */
+/* ---------- Google Analytics 4 (G-MZ36CGL9QS, gtag.js direto: o contêiner GTM-NR3MFX3J não precisa) com consentimento: nada carrega antes do "Aceitar"; só no domínio publicado ---------- */
 (()=>{
-const TAG='GTM-NR3MFX3J', PROD=location.hostname==='dralaarissasilva.com.br';
+const TAG='G-MZ36CGL9QS', PROD=location.hostname==='dralaarissasilva.com.br';
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;
 gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
 let loaded=false;
 function load(){if(loaded||!PROD)return;loaded=true;gtag('consent','update',{analytics_storage:'granted'});
-  const sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtm.js?id='+TAG;document.head.appendChild(sc);gtag('js',new Date())}
+  const sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtag/js?id='+TAG;document.head.appendChild(sc);gtag('js',new Date());gtag('config',TAG)}
 const box=document.getElementById('cookies');
 let ck=null;try{ck=localStorage.getItem('cookies')}catch(e){}
 if(ck==='sim')load();else if(ck!=='nao')box.hidden=false;
