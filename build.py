@@ -88,3 +88,8 @@ full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
         + head + '<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n</head>\n<body>\n' + site + '\n</body>\n</html>\n')
 open('index.html', 'w', encoding='utf-8').write(full)
 print('artifact', len(emb) // 1024, 'KB · index', len(full) // 1024, 'KB')
+
+# Google: mapa do site e regras de rastreamento (enviar sitemap.xml no Search Console)
+import datetime
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>' + URL + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n</urlset>\n')
+open('robots.txt', 'w', encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: ' + URL + 'sitemap.xml\n')
