@@ -543,7 +543,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 </div>
 
 <footer><div class="wrap">
-  <span>Dra. Larissa Silva · Ortopedista e Traumatologista · Pé e tornozelo · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span>
+  <span>Dra. Larissa Silva · Médica ortopedista e traumatologista · Pé e tornozelo · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</span>
   <span>Conteúdo educativo, não substitui consulta. Os esquemas são ilustrativos. Toda cirurgia tem riscos; a indicação, o resultado e a recuperação variam de caso para caso.</span>
   <span><a class="linkbtn" href="privacidade.html">Política de privacidade</a> · <button class="linkbtn" type="button" id="ckOpen">Preferências de cookies</button></span>
 </div></footer>
@@ -566,7 +566,7 @@ document.getElementById('ckOpen').addEventListener('click',()=>{box.hidden=false
 /* eventos: cliques em Agendar e no WhatsApp (só contam se a pessoa aceitou) */
 document.addEventListener('click',e=>{if(!loaded)return;const a=e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href'),sec=a.closest('section,header,footer,.dock');
   const onde=(sec&&(sec.id||sec.className.split(' ')[0]))||'pagina';
-  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h.endsWith('#agendar'))gtag('event','agendar_click',{onde})});
+  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h.endsWith('#agendar'))gtag('event','agendar_click',{onde});else if(h.startsWith('tel:'))gtag('event','telefone_click',{onde})});
 })();
 </script>
 

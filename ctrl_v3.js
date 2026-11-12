@@ -236,7 +236,9 @@ rows.forEach(r=>{r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('ar
   r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(r.dataset.r)}})});dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
 
 /* ---------- vídeos em loop: só tocam quando aparecem na tela, e nunca com movimento reduzido ---------- */
-if(!reduced&&'IntersectionObserver' in window){
+/* economia de dados ou rede 2G/3G lenta: fica a foto parada (o pôster), sem baixar o vídeo de 1,5 MB */
+const poupa=(()=>{const c=navigator.connection;return !!c&&(c.saveData||/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))})();
+if(!reduced&&!poupa&&'IntersectionObserver' in window){
   const vo=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.preload='auto';const p=v.play();if(p)p.catch(()=>{})}else v.pause()}),{threshold:.25});
   document.querySelectorAll('video.loop').forEach(v=>vo.observe(v));
 }
@@ -269,6 +271,6 @@ document.getElementById('ckOpen').addEventListener('click',()=>{box.hidden=false
 /* eventos: cliques em Agendar e no WhatsApp (só contam se a pessoa aceitou) */
 document.addEventListener('click',e=>{if(!loaded)return;const a=e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href'),sec=a.closest('section,header,footer,.dock');
   const onde=(sec&&(sec.id||sec.className.split(' ')[0]))||'pagina';
-  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h.endsWith('#agendar'))gtag('event','agendar_click',{onde})});
+  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h.endsWith('#agendar'))gtag('event','agendar_click',{onde});else if(h.startsWith('tel:'))gtag('event','telefone_click',{onde})});
 })();
 </script>

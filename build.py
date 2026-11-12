@@ -70,6 +70,10 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
       'description': desc, 'medicalSpecialty': 'Musculoskeletal', 'telephone': '+55-21-97289-6222',
       'address': {'@type': 'PostalAddress', 'streetAddress': 'Rua General Venâncio Flores, 184 - Leblon', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
       'areaServed': {'@type': 'City', 'name': 'Rio de Janeiro'},
+      'isAcceptingNewPatients': True,
+      'hasMap': 'https://www.google.com/maps/search/?api=1&query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro',
+      'knowsAbout': ['Joanete (hálux valgo)', 'Deformidade de Haglund', 'Tendão de Aquiles', 'Entorse de tornozelo', 'Instabilidade do tornozelo', 'Fascite plantar', 'Cirurgia minimamente invasiva do pé e tornozelo'],
+      'availableService': [{'@type': 'MedicalProcedure', 'name': n} for n in ['Cirurgia de joanete minimamente invasiva', 'Cirurgia da deformidade de Haglund', 'Sutura do tendão de Aquiles', 'Reparo de ligamentos do tornozelo']],
       'sameAs': ['https://www.instagram.com/dralaarissasilva/', 'https://www.google.com/search?kgmid=/g/11zzlrdytf']}   # Instagram e Perfil da Empresa no Google (kgmid do perfil)
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
