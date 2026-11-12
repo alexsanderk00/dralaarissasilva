@@ -4,7 +4,7 @@ const TXT={
     ['Por fora, o joanete é o calombo na lateral do dedão, com o dedão inclinado para os outros dedos. Role para ver por dentro.'],
     ['Por dentro não existe osso novo. São os mesmos ossos, fora do lugar: o osso longo do dedão, o primeiro metatarso, abriu para fora, e a cabeça dele saiu de cima dos sesamoides.'],
     ['O primeiro metatarso abre para um lado e o dedão entorta para o outro. É o ângulo entre os dois que se mede na radiografia. O “calombo” é a cabeça do osso.'],
-    ['Quando calçado largo, palmilha e fisioterapia não controlam a dor, a cirurgia realinha o osso. Na técnica minimamente invasiva, uma broca fina corta o osso por furinhos na pele, a cabeça é deslocada para o lugar e fixada com parafusos.','A técnica depende do grau do desvio. Toda cirurgia tem riscos, como infecção, rigidez e retorno do desvio.'],
+    ['Quando calçado largo, palmilha e fisioterapia não controlam a dor, a cirurgia corrige o desvio do osso. Na técnica minimamente invasiva, uma broca fina corta o osso por furinhos na pele, a cabeça é deslocada para o lugar e fixada com parafusos.','A técnica depende do grau do desvio. Toda cirurgia tem riscos, como infecção, rigidez e retorno do desvio.'],
     ['O osso consolida na nova posição ao longo das semanas. O apoio, o calçado e a volta às atividades seguem o plano definido para o seu caso.','O resultado e a recuperação variam de pessoa para pessoa.']]},
   haglund:{name:'Calcanhar · Haglund',steps:[
     ['Por fora, o calcanhar tem contorno liso atrás, bem onde o contraforte do sapato encosta. Role para ver por dentro.'],
@@ -23,7 +23,7 @@ const TXT={
     ['Do lado de fora do tornozelo, ligamentos curtos prendem a fíbula ao tálus e ao calcâneo. São eles que seguram o pé quando você pisa torto.'],
     ['Na entorse, o ligamento da frente é o que mais rompe. A maioria cicatriza com proteção e fisioterapia. Quando cicatriza frouxo, o tálus ganha folga e o tornozelo passa a falsear.'],
     ['Se a instabilidade continua depois da reabilitação, o ligamento pode ser reparado: ele é preso de volta no osso com pequenas âncoras e suturas.','Em muitos casos por vídeo. Toda cirurgia tem riscos.'],
-    ['O ligamento reparado volta a limitar o movimento do tálus. Fisioterapia de força e equilíbrio faz parte do tratamento, antes e depois.','O resultado e a recuperação variam de pessoa para pessoa.']]}
+    ['O ligamento reparado volta a limitar o movimento do tálus. O tratamento inclui fisioterapia de força e equilíbrio, antes e depois.','O resultado e a recuperação variam de pessoa para pessoa.']]}
 };
 const PARTS={
   halux:['Dedão (hálux)','2 falanges','É o dedo que mais empurra o chão no fim do passo.','para onde ele aponta, quanto dobra e se dói ao mexer.'],
@@ -157,6 +157,9 @@ miniDorsal(document.getElementById('miniHero'));miniDorsal(document.getElementBy
 miniLateral(document.getElementById('icoHeel'),'heel');miniLateral(document.getElementById('icoAnkle'),'ankle');miniLateral(document.getElementById('icoAquiles'),'aquiles');
 const goEsq=c=>{const b=document.getElementById('tab-'+c);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})};
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goEsq(a.dataset.go)}));
+/* vindo das páginas de cada problema: ./#esquema-joanete abre o esquema já na aba certa */
+{const m=location.hash.match(/^#esquema-(joanete|haglund|aquiles|tornozelo)$/);if(m){const go=()=>{const b=document.getElementById('tab-'+m[1]);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:'auto'})};   /* pulo direto: a rolagem suave some quando a página ainda está carregando */
+  if(document.readyState==='complete')setTimeout(go,60);else addEventListener('load',()=>setTimeout(go,60))}}
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */
 const trail=document.getElementById('trail');
@@ -266,6 +269,6 @@ document.getElementById('ckOpen').addEventListener('click',()=>{box.hidden=false
 /* eventos: cliques em Agendar e no WhatsApp (só contam se a pessoa aceitou) */
 document.addEventListener('click',e=>{if(!loaded)return;const a=e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href'),sec=a.closest('section,header,footer,.dock');
   const onde=(sec&&(sec.id||sec.className.split(' ')[0]))||'pagina';
-  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h==='#agendar')gtag('event','agendar_click',{onde})});
+  if(h.includes('wa.me'))gtag('event','whatsapp_click',{onde});else if(h.endsWith('#agendar'))gtag('event','agendar_click',{onde})});
 })();
 </script>

@@ -24,6 +24,7 @@ open('test.html', 'w', encoding='utf-8').write(t)
 # 2) site publicado: imagens como arquivos WebP em img/web/ (o HTML cai de ~640 KB para ~90 KB)
 os.makedirs('img/web', exist_ok=True)
 site = src
+IMG_URL = {}   # placeholder → arquivo publicado com ?v= (as páginas de cada problema usam também)
 for k, f in IMGS:
     name = os.path.splitext(os.path.basename(f))[0]
     if f.endswith('.png'):
@@ -35,7 +36,8 @@ for k, f in IMGS:
         im = im.convert('RGBA' if 'A' in im.getbands() else 'RGB')   # as fotos do pé do esquema têm fundo transparente: não perder
         if im.width > 1600: im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
         im.save(out, 'WEBP', quality=78, method=6)
-    site = site.replace(k, out + '?v=' + hashlib.md5(open(out, 'rb').read()).hexdigest()[:8])   # versão no nome: o navegador nunca mostra a foto antiga do cache
+    IMG_URL[k] = out + '?v=' + hashlib.md5(open(out, 'rb').read()).hexdigest()[:8]
+    site = site.replace(k, IMG_URL[k])   # versão no nome: o navegador nunca mostra a foto antiga do cache
 
 # imagem de prévia (WhatsApp, Instagram, Google): 1200 × 630
 def font(names, size):
@@ -90,7 +92,11 @@ full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
 open('index.html', 'w', encoding='utf-8').write(full)
 print('artifact', len(emb) // 1024, 'KB · index', len(full) // 1024, 'KB')
 
+# páginas de cada problema (joanete, Haglund, Aquiles, tornozelo): textos tirados do head_v3.html e do ctrl_v3.js
+import paginas
+PAGS = paginas.gerar(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V)
+
 # Google: mapa do site e regras de rastreamento (enviar sitemap.xml no Search Console)
 import datetime
-open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>' + URL + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n</urlset>\n')
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('  <url><loc>' + u + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n' for u in [URL] + PAGS) + '</urlset>\n')
 open('robots.txt', 'w', encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: ' + URL + 'sitemap.xml\n')

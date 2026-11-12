@@ -9,3 +9,5 @@ CLAUDE.md
 FOTOS-SABADO.md
 # material de estudo (prints da live e skills de terceiros): não vai para o repositório público
 skills-tiago-lemos/
+# cache do Python (paginas.py)
+__pycache__/
