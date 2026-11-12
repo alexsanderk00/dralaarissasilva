@@ -63,9 +63,10 @@ fav.paste(m, ((192 - m.width) // 2, (192 - m.height) // 2), m); fav.save('img/we
 FAV_V = hashlib.md5(open('img/web/favicon.png', 'rb').read()).hexdigest()[:8]   # versão no link: navegador guarda favicon no cache com força
 
 desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
-ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'url': URL, 'image': URL + 'img/web/og.jpg',
+ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'alternateName': 'Larissa Silva', 'url': URL, 'image': URL + 'img/web/og.jpg',
       'description': desc, 'medicalSpecialty': 'Musculoskeletal', 'telephone': '+55-21-97289-6222',
       'address': {'@type': 'PostalAddress', 'streetAddress': 'Rua General Venâncio Flores, 184 - Leblon', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
+      'areaServed': {'@type': 'City', 'name': 'Rio de Janeiro'},
       'sameAs': ['https://www.instagram.com/dralaarissasilva/']}
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
