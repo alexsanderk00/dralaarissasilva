@@ -91,6 +91,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
     footer = re.search(r'<footer><div class="wrap">.*?</footer>', src_head, flags=re.S).group(0)
     ga = '<script>' + src_ctrl.rsplit('<script>', 1)[1]
     hoje = datetime.date.today().isoformat()
+    import hashlib; og_v = hashlib.md5(open('img/web/og.jpg', 'rb').read()).hexdigest()[:8]   # mesma versão da prévia que o build.py gera
     csp = re.search(r'<meta http-equiv="Content-Security-Policy"[^>]*>', src_head).group(0)   # mesma regra de segurança da página principal
     out = []
     for p in PAGINAS:
@@ -120,12 +121,13 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
 <meta name="description" content="{html.escape(desc)}">
 <meta name="theme-color" content="#113358">
 <link rel="canonical" href="{url}">
-<link rel="icon" type="image/png" href="img/web/favicon.png?v={fav_v}">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="img/web/favicon.png?v={fav_v}">
 <meta property="og:type" content="article"><meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="{html.escape(p['title'])} · Dra. Larissa Silva">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{URL}img/web/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image" content="{URL}img/web/og.jpg?v={og_v}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 {links}<style>{css}{CSS_PAG}

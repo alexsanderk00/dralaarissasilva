@@ -24,6 +24,33 @@ open('test.html', 'w', encoding='utf-8').write(t)
 
 # 2) site publicado: imagens como arquivos WebP em img/web/ (o HTML cai de ~640 KB para ~90 KB)
 os.makedirs('img/web', exist_ok=True)
+# ---------- avaliações do Google (avaliacoes.json) ----------
+import html as _h
+def secao_avaliacoes():
+    A = json.load(open('avaliacoes.json', encoding='utf-8'))
+    if not A.get('total'): return ''   # sem avaliações, sem seção
+    url = lambda u: u if str(u).startswith('https://') else ''   # só links https
+    STAR = '<svg viewBox="0 0 20 20"><path fill="currentColor" d="M10 1.6l2.6 5.4 5.8.8-4.2 4.1 1 5.8L10 15l-5.2 2.7 1-5.8L1.6 7.8l5.8-.8z"/></svg>'
+    def estrelas(n, rotulo):   # cheias pela nota arredondada (4,5 → 5), as que faltam em cinza
+        k = int(float(n) + 0.5)
+        return '<span class="stars" role="img" aria-label="' + rotulo + '">' + STAR * k + STAR.replace('<svg ', '<svg class="off" ') * (5 - k) + '</span>'
+    nota = ('%.1f' % A['nota']).replace('.', ',')
+    for i in A.get('itens', []):
+        for c in ('nome', 'texto', 'nota'):
+            if c not in i: raise SystemExit('avaliacoes.json: avaliação sem o campo "' + c + '"')
+    itens = ''.join('<li><div class="who"><span class="av" aria-hidden="true">' + _h.escape(i['nome'][:1]) + '</span><strong>' + _h.escape(i['nome']) + '</strong><small>' + _h.escape(i.get('quando', '')) + '</small></div>'
+                    + estrelas(i['nota'], str(i['nota']) + ' de 5 estrelas') + '<p>' + _h.escape(i['texto']) + '</p></li>' for i in A.get('itens', []))
+    avaliar = ('<a href="' + _h.escape(url(A['link_avaliar'])) + '" target="_blank" rel="noopener">Deixar uma avaliação</a>') if url(A.get('link_avaliar', '')) else ''
+    return ('<section class="rev' + ('' if itens else ' solo') + '" id="avaliacoes" aria-label="Avaliações no Google"><div class="wrap">'
+            '<div class="head rv"><span class="caps">Avaliações no Google</span><h2 style="margin-top:.7rem">' + ('O que dizem os <em>pacientes.</em>' if itens else 'Nota no <em>Google.</em>') + '</h2></div>'
+            '<div class="score rv"><span class="g">Google</span><b>' + nota + '</b>' + estrelas(A['nota'], 'Nota ' + nota + ' de 5')
+            + '<span>Com base em <strong>' + str(int(A['total'])) + '</strong> avaliações</span>'
+            '<a href="' + _h.escape(url(A['link_ver'])) + '" target="_blank" rel="noopener">Ver todas no Google</a>' + avaliar + '</div>'
+            + ('<ul class="list rv" aria-label="Algumas avaliações">' + itens + '</ul>' if itens else '')
+            + '<p class="nota">Avaliações do Google' + (', atualizadas em ' + _h.escape(A['atualizado_em']) if A.get('atualizado_em') else '') + '. Cada caso é único; a experiência de um paciente não garante o mesmo resultado para outro.</p>'
+            '</div></section>')
+src = src.replace('<!--AVALIACOES-->', secao_avaliacoes())
+
 site = src
 IMG_URL = {}   # placeholder → arquivo publicado com ?v= (as páginas de cada problema usam também)
 for k, f in IMGS:
@@ -47,22 +74,44 @@ def font(names, size):
         except OSError: pass
     return ImageFont.load_default()
 W, H = 1200, 630
-og = Image.new('RGB', (W, H), '#F7FAF8'); d = ImageDraw.Draw(og)
-ret = ImageOps.fit(Image.open('img/consultorio.jpg').convert('RGB'), (420, 525), centering=(.5, .3))
-mask = Image.new('L', ret.size, 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, *ret.size), 8, fill=255)
-og.paste(ret, (W - 420 - 60, 52), mask)
-logo = Image.open('img/logo.png').convert('RGBA'); logo.thumbnail((90, 90)); og.paste(logo, (64, 52), logo)
-d.text((170, 72), 'Dra. Larissa Silva', fill='#113358', font=font(['C:/Windows/Fonts/seguisb.ttf'], 34))
-d.text((170, 116), 'Ortopedista e Traumatologista', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 22))
-d.text((64, 230), 'ORTOPEDIA · PÉ E TORNOZELO', fill='#146046', font=font(['C:/Windows/Fonts/consola.ttf'], 22))
-d.text((60, 268), 'Seu pé,', fill='#113358', font=font(['C:/Windows/Fonts/seguisb.ttf'], 100))
-d.text((60, 380), 'explicado.', fill='#146046', font=font(['C:/Windows/Fonts/seguisbi.ttf', 'C:/Windows/Fonts/seguisb.ttf'], 100))
-d.text((64, 530), 'Joanete, calcanhar, Aquiles e tornozelo.', fill='#465A60', font=font(['C:/Windows/Fonts/segoeui.ttf'], 23))
-og.save('img/web/og.jpg', quality=86)
+# mesmo visual do topo do site: foto do vídeo desfocada sob película azul, título branco + menta, foto do consultório num cartão
+from PIL import ImageFilter
+def bahn(size, peso='Bold'):
+    f = font(['C:/Windows/Fonts/bahnschrift.ttf', 'C:/Windows/Fonts/seguisb.ttf'], size)
+    try: f.set_variation_by_name(peso)
+    except Exception: pass
+    return f
+og = ImageOps.fit(Image.open('img/perfil_poster.jpg').convert('RGB'), (W, H), centering=(.5, .35)).filter(ImageFilter.GaussianBlur(14))
+veu = Image.new('RGB', (W, H), '#113358'); og = Image.blend(og, veu, .78)
+grad = Image.linear_gradient('L').rotate(90).resize((W, H))   # mais escuro à esquerda, onde fica o texto
+og = Image.composite(Image.new('RGB', (W, H), '#0D2A4A'), og, grad.point(lambda v: int(v * .55)))
+d = ImageDraw.Draw(og)
+ret = ImageOps.fit(Image.open('img/consultorio.jpg').convert('RGB'), (380, 500), centering=(.5, .3))
+mask = Image.new('L', ret.size, 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, *ret.size), 18, fill=255)
+sombra = Image.new('L', (W, H), 0); ImageDraw.Draw(sombra).rounded_rectangle((W - 380 - 70 + 8, 72, W - 70 + 8, 572 + 14), 18, fill=150)
+og.paste(Image.new('RGB', (W, H), '#061526'), (0, 0), sombra.filter(ImageFilter.GaussianBlur(18)))
+og.paste(ret, (W - 380 - 70, 65), mask)
+ImageDraw.Draw(og).rounded_rectangle((W - 380 - 70, 65, W - 70, 565), 18, outline=(255, 255, 255, 60), width=2)
+logo = Image.open('img/logo.png').convert('RGBA'); logo.thumbnail((78, 78))
+branco = Image.new('RGBA', logo.size, (255, 255, 255, 255)); branco.putalpha(logo.getchannel('A'))   # monograma em branco, como no cabeçalho
+og.paste(branco, (64, 56), branco)
+d = ImageDraw.Draw(og)
+d.text((156, 66), 'Dra. Larissa Silva', fill='#FFFFFF', font=bahn(34, 'Bold'))
+d.text((157, 108), 'Médica ortopedista e traumatologista', fill='#C9D6E2', font=font(['C:/Windows/Fonts/segoeui.ttf'], 21))
+d.text((66, 232), 'ORTOPEDIA · PÉ E TORNOZELO', fill='#72C6A2', font=font(['C:/Windows/Fonts/consola.ttf'], 21))
+d.text((60, 262), 'Seu pé,', fill='#FFFFFF', font=bahn(104, 'Bold'))
+d.text((60, 372), 'explicado.', fill='#72C6A2', font=bahn(104, 'Bold'))
+d.text((66, 520), 'Leblon · Rio de Janeiro · CRM 52-126334-0 · RQE 60891', fill='#C9D6E2', font=font(['C:/Windows/Fonts/segoeui.ttf'], 21))
+og.save('img/web/og.jpg', quality=88)
+OG_V = hashlib.md5(open('img/web/og.jpg', 'rb').read()).hexdigest()[:8]   # versão no link: WhatsApp e redes guardam a prévia antiga pelo endereço
 
 # favicon quadrado: só o monograma, sem fundo
-fav = Image.new('RGBA', (192, 192), (0, 0, 0, 0)); m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((184, 184), Image.LANCZOS)   # fundo transparente, monograma ocupando quase tudo
-fav.paste(m, ((192 - m.width) // 2, (192 - m.height) // 2), m); fav.save('img/web/favicon.png', optimize=True)
+# fundo sólido (quadrado arredondado azul da marca) com o monograma branco: aparece no tema escuro das abas, no Google e no atalho do iPhone
+fav = Image.new('RGBA', (192, 192), (0, 0, 0, 0)); ImageDraw.Draw(fav).rounded_rectangle((0, 0, 191, 191), 38, fill='#113358')
+m = Image.open('img/logo.png').convert('RGBA'); m.thumbnail((140, 140), Image.LANCZOS)
+br = Image.new('RGBA', m.size, (255, 255, 255, 255)); br.putalpha(m.getchannel('A'))
+fav.paste(br, ((192 - m.width) // 2, (192 - m.height) // 2), br); fav.save('img/web/favicon.png', optimize=True)
+fav.save('favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])   # na raiz: é onde o Google procura primeiro o ícone dos resultados de busca
 FAV_V = hashlib.md5(open('img/web/favicon.png', 'rb').read()).hexdigest()[:8]   # versão no link: navegador guarda favicon no cache com força
 
 desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
@@ -78,12 +127,12 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
-        '<link rel="icon" type="image/png" href="img/web/favicon.png?v=' + FAV_V + '">\n<link rel="apple-touch-icon" href="img/web/favicon.png?v=' + FAV_V + '">\n'
+        '<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="192x192" href="img/web/favicon.png?v=' + FAV_V + '">\n<link rel="apple-touch-icon" href="img/web/favicon.png?v=' + FAV_V + '">\n'
         '<meta property="og:type" content="website">\n<meta property="og:locale" content="pt_BR">\n'
         '<meta property="og:title" content="Dra. Larissa Silva · Seu pé, explicado.">\n'
         '<meta property="og:description" content="' + desc + '">\n'
         '<meta property="og:url" content="' + URL + '">\n'
-        '<meta property="og:image" content="' + URL + 'img/web/og.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+        '<meta property="og:image" content="' + URL + 'img/web/og.jpg?v=' + OG_V + '">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
         '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>\n')
 # versão avulsa para abrir direto no navegador / GitHub Pages (o viewport vem do head_v3.html: sem ele o celular mostra o layout de computador encolhido): <title> e metas do topo do src vão para o <head>
