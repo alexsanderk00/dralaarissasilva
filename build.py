@@ -1,7 +1,7 @@
 import base64, hashlib, json, os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-URL = 'https://alexsanderk00.github.io/dralaarissasilva/'   # trocar por https://dralaarissasilva.com.br/ quando o DNS estiver pronto (e criar o arquivo CNAME)
+URL = 'https://dralaarissasilva.com.br/'
 IMGS = [('{{IMG_JOANETE}}', 'img/joanete.jpg'), ('{{IMG_BAILARINA}}', 'img/bailarina.jpg'), ('{{IMG_FOTO1}}', 'img/foto1.jpg'), ('{{IMG_FOTO2}}', 'img/foto2.jpg'), ('{{IMG_FOTO3}}', 'img/foto3.jpg'), ('{{IMG_PERFIL}}', 'img/perfil.jpg'), ('{{IMG_CONSULTORIO}}', 'img/consultorio.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
         ('{{IMG_PE_CIMA}}', 'img/pe_cima.webp'), ('{{IMG_PE_LADO}}', 'img/pe_lado.webp'),
         ('{{IMG_PERFIL_POSTER}}', 'img/perfil_poster.jpg')]
