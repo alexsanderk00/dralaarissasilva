@@ -165,8 +165,11 @@ header.top nav a:not(.btn):hover{color:#fff}
 .dormap .hit{fill:transparent;stroke:none}
 @media (max-width:979px){.tab{min-height:40px}}
 /* o esquema */
-.intro .wrap{padding-block:0 2rem;display:grid;gap:1rem}
-.intro p{max-width:40rem;color:var(--ink-2);font-size:1.08rem}
+/* faixa 01 no mesmo azul do topo e do esquema: do vídeo ao raio-X sem quebra branca */
+.intro{background:var(--film);color:var(--film-ink)}
+.intro .wrap{padding-block:clamp(2.6rem,6vw,4rem) 2rem;display:grid;gap:1rem}
+.intro h2{color:#fff}.intro h2 em{color:var(--brand-lite)}.intro .caps{color:var(--brand-lite)}.intro .caps b{color:var(--film-dim)}
+.intro p{max-width:40rem;color:rgba(235,244,239,.8);font-size:1.08rem}
 .story{position:relative;height:540vh;background:var(--film);color:var(--film-ink);overflow-x:clip}
 .stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;
   background:radial-gradient(90% 80% at 50% 38%,var(--film-2),var(--film) 72%)}
@@ -595,8 +598,8 @@ footer .wrap{padding-block:1.6rem 2.2rem;font-size:.84rem;color:var(--ink-3);dis
 <section class="gallery" id="galeria" aria-label="Fotos da Dra. Larissa"><div class="wrap">
   <figure class="photo g4 rv"><img alt="Dra. Larissa em treino de cirurgia do pé, trabalhando numa peça anatômica" src="img/web/perfil.webp?v=fc46f13f" width="1102" height="1400" loading="lazy"><figcaption>Treino</figcaption></figure>
   <figure class="photo g1 rv"><img alt="Dra. Larissa operando um pé no centro cirúrgico" src="img/web/foto1.webp?v=780f5e98" width="1050" height="1400" loading="lazy"><figcaption>Cirurgia</figcaption></figure>
-  <figure class="photo g2 rv"><img alt="Dra. Larissa operando ao lado de outro cirurgião" src="img/web/foto2.webp?v=337ebae6" width="1050" height="1400" loading="lazy"><figcaption>Cirurgia</figcaption></figure>
-  <figure class="photo g3 rv"><img alt="Dra. Larissa com colegas em curso prático no ITC, Rio de Janeiro" src="img/web/foto3.webp?v=2b69cd59" width="936" height="1400" loading="lazy"><figcaption>Curso · ITC Rio</figcaption></figure>
+  <figure class="photo g2 rv"><img alt="Dra. Larissa operando ao lado de outro cirurgião" src="img/web/foto2.webp?v=8058aac2" width="1050" height="1400" loading="lazy"><figcaption>Cirurgia</figcaption></figure>
+  <figure class="photo g3 rv"><img alt="Dra. Larissa com colegas em curso prático no ITC, Rio de Janeiro" src="img/web/foto3.webp?v=59062944" width="936" height="1400" loading="lazy"><figcaption>Curso · ITC Rio</figcaption></figure>
 </div></section>
 
 <section class="faq" id="perguntas"><div class="wrap">

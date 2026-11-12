@@ -143,8 +143,11 @@ header.top nav a:not(.btn):hover{color:#fff}
 .dormap .hit{fill:transparent;stroke:none}
 @media (max-width:979px){.tab{min-height:40px}}
 /* o esquema */
-.intro .wrap{padding-block:0 2rem;display:grid;gap:1rem}
-.intro p{max-width:40rem;color:var(--ink-2);font-size:1.08rem}
+/* faixa 01 no mesmo azul do topo e do esquema: do vídeo ao raio-X sem quebra branca */
+.intro{background:var(--film);color:var(--film-ink)}
+.intro .wrap{padding-block:clamp(2.6rem,6vw,4rem) 2rem;display:grid;gap:1rem}
+.intro h2{color:#fff}.intro h2 em{color:var(--brand-lite)}.intro .caps{color:var(--brand-lite)}.intro .caps b{color:var(--film-dim)}
+.intro p{max-width:40rem;color:rgba(235,244,239,.8);font-size:1.08rem}
 .story{position:relative;height:540vh;background:var(--film);color:var(--film-ink);overflow-x:clip}
 .stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;
   background:radial-gradient(90% 80% at 50% 38%,var(--film-2),var(--film) 72%)}
