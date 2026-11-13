@@ -169,7 +169,7 @@ if TEM_EN:
     en = re.sub(r'aria-label="Nota (\d),(\d) de 5"', lambda m: 'aria-label="Rated ' + m.group(1) + '.' + m.group(2) + ' out of 5"', en)
     # a página fica em /en/ e os arquivos continuam na raiz
     for q in ('"', "'"):
-        for a in ('img/web/', 'video/'): en = en.replace(q + a, q + '../' + a)
+        for a in ('img/web/', 'video/perfil'): en = en.replace(q + a, q + '../' + a)   # só o arquivo do vídeo: "video/mp4" do atributo type não é caminho
     en = re.sub(r'href="([a-z-]+\.html)"', lambda m: 'href="' + ('' if m.group(1) in ('joanete.html', 'haglund.html', 'tendao-de-aquiles.html', 'entorse-de-tornozelo.html') else '../') + m.group(1) + '"', en)   # as 4 páginas têm versão em en/; privacidade fica na raiz
     os.makedirs('en', exist_ok=True)
     open('en/index.html', 'w', encoding='utf-8').write(en)
