@@ -123,10 +123,12 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
       'hasMap': 'https://www.google.com/maps/search/?api=1&query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro',
       'knowsAbout': ['Joanete (hálux valgo)', 'Deformidade de Haglund', 'Tendão de Aquiles', 'Entorse de tornozelo', 'Instabilidade do tornozelo', 'Fascite plantar', 'Cirurgia minimamente invasiva do pé e tornozelo'],
       'availableService': [{'@type': 'MedicalProcedure', 'name': n} for n in ['Cirurgia de joanete minimamente invasiva', 'Cirurgia da deformidade de Haglund', 'Sutura do tendão de Aquiles', 'Reparo de ligamentos do tornozelo']],
+      'knowsLanguage': ['pt-BR', 'en'],
       'sameAs': ['https://www.instagram.com/dralaarissasilva/', 'https://www.google.com/search?kgmid=/g/11zzlrdytf']}   # Instagram e Perfil da Empresa no Google (kgmid do perfil)
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
+        '<link rel="alternate" hreflang="pt-BR" href="' + URL + '">\n<link rel="alternate" hreflang="en" href="' + URL + 'en/">\n<link rel="alternate" hreflang="x-default" href="' + URL + '">\n'
         '<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="192x192" href="img/web/favicon.png?v=' + FAV_V + '">\n<link rel="apple-touch-icon" href="img/web/favicon.png?v=' + FAV_V + '">\n'
         '<meta property="og:type" content="website">\n<meta property="og:locale" content="pt_BR">\n'
         '<meta property="og:title" content="Dra. Larissa Silva · Seu pé, explicado.">\n'
@@ -146,11 +148,42 @@ full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
 open('index.html', 'w', encoding='utf-8').write(full)
 print('artifact', len(emb) // 1024, 'KB · index', len(full) // 1024, 'KB')
 
+# ---------- versão em inglês: en/index.html = o mesmo site com os textos de traducao_en.json (pares [pt, en], do maior para o menor) ----------
+LANG_PT = '<a class="lang" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>'
+TEM_EN = os.path.exists('traducao_en.json')
+if TEM_EN:
+    en = full
+    en = en.replace(LANG_PT, '<a class="lang" href="../" hreflang="pt-BR" lang="pt-BR" aria-label="Versão em português">PT</a>')
+    desc_en = ("Dr. Larissa Silva, orthopedic surgeon in Rio de Janeiro (Leblon) focused on minimally invasive foot and ankle surgery. "
+               "Bunions, Haglund's deformity, Achilles tendon and ankle problems explained from skin to bone. In-person and teleconsultation (Google Meet).")
+    for a, b in [('<html lang="pt-BR">', '<html lang="en">'), ('content="' + desc + '"', 'content="' + desc_en.replace("'", '&#39;') + '"'),
+                 ('<link rel="canonical" href="' + URL + '">', '<link rel="canonical" href="' + URL + 'en/">'),
+                 ('<meta property="og:url" content="' + URL + '">', '<meta property="og:url" content="' + URL + 'en/">'),
+                 ('content="pt_BR"', 'content="en_US"'), ('Dra. Larissa Silva · Seu pé, explicado.', 'Dr. Larissa Silva · Your foot, explained.')]:
+        assert a in en, a[:60]; en = en.replace(a, b)
+    ld_en = dict(ld, description=desc_en, knowsAbout=['Bunion (hallux valgus)', "Haglund's deformity", 'Achilles tendon', 'Ankle sprain', 'Ankle instability', 'Plantar fasciitis', 'Minimally invasive foot and ankle surgery'],
+                 availableService=[{'@type': 'MedicalProcedure', 'name': n} for n in ['Minimally invasive bunion surgery', "Haglund's deformity surgery", 'Achilles tendon repair', 'Ankle ligament repair']])
+    a = json.dumps(ld, ensure_ascii=False); assert a in en; en = en.replace(a, json.dumps(ld_en, ensure_ascii=False))   # dados para o Google em inglês
+    for pt, eng in json.load(open('traducao_en.json', encoding='utf-8')): en = en.replace(pt, eng)   # depois das metas do topo, que usam o texto em português
+    en = re.sub(r'<b>(\d),(\d)</b>', lambda m: '<b>' + m.group(1) + '.' + m.group(2) + '</b>', en)   # nota no formato inglês (5.0)
+    en = re.sub(r'aria-label="Nota (\d),(\d) de 5"', lambda m: 'aria-label="Rated ' + m.group(1) + '.' + m.group(2) + ' out of 5"', en)
+    # a página fica em /en/ e os arquivos continuam na raiz
+    for q in ('"', "'"):
+        for a in ('img/web/', 'video/'): en = en.replace(q + a, q + '../' + a)
+    en = re.sub(r'href="([a-z-]+\.html)"', lambda m: 'href="' + ('' if m.group(1) in ('joanete.html', 'haglund.html', 'tendao-de-aquiles.html', 'entorse-de-tornozelo.html') else '../') + m.group(1) + '"', en)   # as 4 páginas têm versão em en/; privacidade fica na raiz
+    os.makedirs('en', exist_ok=True)
+    open('en/index.html', 'w', encoding='utf-8').write(en)
+    print('en/index.html', len(en) // 1024, 'KB')
+else:   # sem tradução: o botão EN não aparece
+    full = full.replace(LANG_PT, ''); open('index.html', 'w', encoding='utf-8').write(full)
+
 # páginas de cada problema (joanete, Haglund, Aquiles, tornozelo): textos tirados do head_v3.html e do ctrl_v3.js
 import paginas
 PAGS = paginas.gerar(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V)
+if TEM_EN:   # as mesmas 4 páginas em inglês, em en/
+    PAGS += paginas.gerar(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V, 'en', json.load(open('traducao_en.json', encoding='utf-8')))
 
 # Google: mapa do site e regras de rastreamento (enviar sitemap.xml no Search Console)
 import datetime
-open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('  <url><loc>' + u + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n' for u in [URL] + PAGS) + '</urlset>\n')
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('  <url><loc>' + u + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n' for u in [URL] + ([URL + 'en/'] if TEM_EN else []) + PAGS) + '</urlset>\n')
 open('robots.txt', 'w', encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: ' + URL + 'sitemap.xml\n')

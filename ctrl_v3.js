@@ -179,7 +179,7 @@ function compose(){const o=note.querySelector('input[name=onde]:checked').value,
   const outro=planoIn.value==='outro';planoOutro.hidden=outroLbl.hidden=!outro;   /* "Outro plano": aparece a linha para escrever o nome */
   const nome=nomeIn.value.trim(),plano=(outro?planoOutro.value:planoIn.value).trim();
   /* mensagem em linhas: a secretária lê de relance; nome e plano entram quando preenchidos */
-  const m='Olá, Dra. Larissa. Quero agendar uma avaliação '+t+'.'+(nome?'\nNome: '+nome:'')+(plano?'\nPlano de saúde: '+plano:'')+'\nOnde dói: '+o.replace(/^(nos|nas|no|na|em) /,'')+'\nMelhor período: '+q.replace(/^(de|à|em) /,'');
+  const m='Olá, Dra. Larissa. Quero agendar uma avaliação '+t+'.'+(nome?'\nNome: '+nome:'')+(plano?'\nPlano de saúde: '+plano:'')+'\nOnde dói: '+o.replace(/^(nos|nas|no|na|em|in the|on the|at the|under the) /,'')+'\nMelhor período: '+q.replace(/^(de|à|em) /,'');
   noteOut.textContent='“'+m.replace(/\n/g,' · ')+'”';noteSend.dataset.msg=m;if(nome)nomeIn.removeAttribute('aria-invalid');if(plano){planoIn.removeAttribute('aria-invalid');planoOutro.removeAttribute('aria-invalid')}if(nome&&plano)noteErr.hidden=true}
 /* o texto (com o sintoma) só entra no link na hora do clique: o href fica sem ?text, e nenhuma medição de cliques de saída recebe o sintoma (LGPD: dado de saúde) */
 noteSend.addEventListener('click',e=>{e.preventDefault();compose();

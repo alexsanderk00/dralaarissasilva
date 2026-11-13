@@ -63,7 +63,9 @@ header.top .wrap{display:flex;align-items:center;justify-content:space-between;g
 header.top nav{display:flex;align-items:center;gap:1.5rem;font-size:.95rem;color:var(--ink-2)}
 header.top nav a{text-decoration:none}
 header.top nav a:not(.btn):hover{color:var(--ink)}
-@media (max-width:920px){header.top nav a:not(.btn){display:none}header.top .btn{padding:.6rem .95rem;font-size:.9rem}.brand img{height:44px}.brand b{font-size:1.05rem}.brand span span{white-space:nowrap;font-size:.68rem}}
+header.top nav a.lang{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;border:1.5px solid currentColor;border-radius:999px;padding:.3rem .6rem;line-height:1}
+@media (max-width:520px){header.top .brand{min-width:0}header.top .brand span span{white-space:normal}header.top .brand b{white-space:nowrap;font-size:.98rem}header.top .brand img{height:38px}header.top .brand{gap:.55rem}header.top nav{gap:.5rem}header.top .btn{padding:.55rem .8rem;font-size:.86rem}header.top nav a.lang{padding:.28rem .5rem;font-size:.66rem}}   /* celular: o subtítulo quebra em 2 linhas para caber o botão de idioma */
+@media (max-width:920px){header.top nav a:not(.btn):not(.lang){display:none}header.top .btn{padding:.6rem .95rem;font-size:.9rem}.brand img{height:44px}.brand b{font-size:1.05rem}.brand span span{white-space:nowrap;font-size:.68rem}}
 @media (max-width:480px){.xs-hide{display:none}}
 
 /* hero */
@@ -475,7 +477,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 
 <header class="top"><div class="wrap">
   <a class="brand" href="#inicio"><img src="{{IMG_LOGO}}" alt="Monograma LS com uma pegada, marca da Dra. Larissa Silva" width="293" height="349"><span><b>Dra. Larissa Silva</b><span>Ortopedista e Traumatologista</span></span></a>
-  <nav><a href="#sobre">Quem sou</a><a href="#esquema">O esquema</a><a href="#cuidado">O cuidado</a><a href="#trata">Cirurgias</a><a href="#perguntas">Perguntas</a><a class="btn primary" href="#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
+  <nav><a href="#sobre">Quem sou</a><a href="#esquema">O esquema</a><a href="#cuidado">O cuidado</a><a href="#trata">Cirurgias</a><a href="#perguntas">Perguntas</a><a class="lang" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a><a class="btn primary" href="#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
 </div></header>
 
 <section class="hero" id="inicio">
