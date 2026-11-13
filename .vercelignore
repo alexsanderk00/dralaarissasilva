@@ -1,0 +1,12 @@
+*.py
+head_v3.html
+ctrl_v3.js
+geom_v3.js
+shots.js
+traducao_en.json
+avaliacoes.json
+CNAME
+.nojekyll
+img/*.jpg
+img/*.png
+img/*.webp
