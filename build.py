@@ -125,6 +125,9 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
       'availableService': [{'@type': 'MedicalProcedure', 'name': n} for n in ['Cirurgia de joanete minimamente invasiva', 'Cirurgia da deformidade de Haglund', 'Sutura do tendão de Aquiles', 'Reparo de ligamentos do tornozelo']],
       'knowsLanguage': ['pt-BR', 'en'],
       'sameAs': ['https://www.instagram.com/dralaarissasilva/', 'https://www.google.com/search?kgmid=/g/11zzlrdytf']}   # Instagram e Perfil da Empresa no Google (kgmid do perfil)
+# nome do site nos resultados do Google (em cima do endereço): dado WebSite na página principal; o Google escolhe entre name e alternateName
+SITE_NOME = 'Dra. Larissa Silva'   # curto: o Google costuma ignorar nome com profissão e voltar ao domínio
+SITE = {'@context': 'https://schema.org', '@type': 'WebSite', 'name': SITE_NOME, 'alternateName': ['Larissa Silva', 'dralaarissasilva.com.br'], 'url': URL}
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
@@ -136,6 +139,8 @@ head = ('<meta name="description" content="' + desc + '">\n'
         '<meta property="og:url" content="' + URL + '">\n'
         '<meta property="og:image" content="' + URL + 'img/web/og.jpg?v=' + OG_V + '">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
+        '<meta property="og:site_name" content="' + SITE_NOME + '">\n'
+        '<script type="application/ld+json">' + json.dumps(SITE, ensure_ascii=False) + '</script>\n'
         '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>\n')
 # versão avulsa para abrir direto no navegador / GitHub Pages (o viewport vem do head_v3.html: sem ele o celular mostra o layout de computador encolhido): <title> e metas do topo do src vão para o <head>
 import re
@@ -164,6 +169,8 @@ if TEM_EN:
     ld_en = dict(ld, description=desc_en, knowsAbout=['Bunion (hallux valgus)', "Haglund's deformity", 'Achilles tendon', 'Ankle sprain', 'Ankle instability', 'Plantar fasciitis', 'Minimally invasive foot and ankle surgery'],
                  availableService=[{'@type': 'MedicalProcedure', 'name': n} for n in ['Minimally invasive bunion surgery', "Haglund's deformity surgery", 'Achilles tendon repair', 'Ankle ligament repair']])
     a = json.dumps(ld, ensure_ascii=False); assert a in en; en = en.replace(a, json.dumps(ld_en, ensure_ascii=False))   # dados para o Google em inglês
+    SITE_EN = dict(SITE)   # o Google tira o nome do site só da página principal da raiz: o /en/ usa o mesmo
+    en = en.replace(json.dumps(SITE, ensure_ascii=False), json.dumps(SITE_EN, ensure_ascii=False)).replace('content="' + SITE_NOME + '"', 'content="' + SITE_EN['name'] + '"')
     for pt, eng in json.load(open('traducao_en.json', encoding='utf-8')): en = en.replace(pt, eng)   # depois das metas do topo, que usam o texto em português
     en = re.sub(r'<b>(\d),(\d)</b>', lambda m: '<b>' + m.group(1) + '.' + m.group(2) + '</b>', en)   # nota no formato inglês (5.0)
     en = re.sub(r'aria-label="Nota (\d),(\d) de 5"', lambda m: 'aria-label="Rated ' + m.group(1) + '.' + m.group(2) + ' out of 5"', en)
