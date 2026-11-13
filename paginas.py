@@ -221,7 +221,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
 # ======================================================================================================
 
 NOVAS = [
-    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=False,
+    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True,
          title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
          dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
          lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
@@ -231,7 +231,7 @@ NOVAS = [
          trat=['Na grande maioria dos casos, o tratamento é conservador: alongamento da panturrilha e da fáscia, calçado que amortece, palmilha, ajuste do treino e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção.',
                'A melhora costuma ser gradual. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.'],
          quando=['Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.']),
-    dict(slug='neuroma-de-morton', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=False,
+    dict(slug='neuroma-de-morton', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=True,
          title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Dor na “bola” do pé, como pedrinha no sapato', faq=[4],
          lead='A dor na “bola” do pé tem várias causas. Investigo a causa e começo pelo calçado e pela palmilha.',
@@ -240,7 +240,7 @@ NOVAS = [
          trat=['Começo pelo calçado: mais largo, de salto baixo e sola que amortece. Uma palmilha com apoio logo atrás da bola do pé tira a pressão do nervo e dos ossos. Fisioterapia e, em alguns casos, infiltração entram como opções.',
                'A cirurgia fica para quando a dor continua apesar desses cuidados.'],
          quando=['Dormência que não passa, dor que acorda à noite ou inchaço no peito do pé pedem avaliação, porque podem ter outra causa, como fratura por estresse.']),
-    dict(slug='halux-rigido', h1='Hálux rígido', sub='artrose do dedão', revisado=False,
+    dict(slug='halux-rigido', h1='Hálux rígido', sub='artrose do dedão', revisado=True,
          title='Hálux rígido: artrose e dor no dedão', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Dedão duro, que dói ao dobrar', faq=[4],
          lead='Dedão duro e dolorido não é joanete. Trato primeiro com calçado e palmilha e, se a dor continuar, avalio a cirurgia pelo grau do desgaste.',
@@ -249,7 +249,7 @@ NOVAS = [
          trat=['Calçado de sola mais rígida e bico alto, palmilha que limita o movimento do dedão, ajuste das atividades e fisioterapia aliviam muitos casos.',
                'Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.'],
          quando=['Procure avaliação se o dedão dói e endurece há semanas, se incha e fica vermelho de repente ou se a dor muda o seu jeito de pisar.']),
-    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=False,
+    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True,
          title='Pé plano do adulto: o arco que desabou', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Arco que desabou, dor por dentro do tornozelo', faq=[4],
          lead='Quando o arco do pé desaba na vida adulta, na maioria das vezes há um tendão envolvido. Quanto antes avaliar, mais opções de tratamento sem cirurgia.',
