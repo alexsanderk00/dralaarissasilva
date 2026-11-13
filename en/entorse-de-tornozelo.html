@@ -20,7 +20,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Ankle sprain and an ankle that gives way", "url": "https://dralaarissasilva.com.br/en/entorse-de-tornozelo.html", "inLanguage": "en", "lastReviewed": "2026-11-12", "about": {"@type": "MedicalCondition", "name": "Ankle sprain"}, "author": {"@type": "Physician", "name": "Dr. Larissa Silva", "url": "https://dralaarissasilva.com.br/"}, "reviewedBy": {"@type": "Physician", "name": "Dr. Larissa Silva", "url": "https://dralaarissasilva.com.br/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap"></noscript>
 <style>
 /* Tema: "do passo ao osso". Cores e tipografia da logo (petróleo, turquesa, prata; serifa itálica + Montserrat).
    Layout: página editorial em papel; a única faixa escura de tela cheia é o esquema, preso na tela enquanto a rolagem
@@ -64,7 +64,7 @@ h2{font-size:clamp(2rem,4.6vw,3.3rem)}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn.primary:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
 :focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:6px}
-.rv.pre{opacity:.3;transform:translateY(18px)}
+.rv.pre{transform:translateY(18px)}   /* sem esmaecer: texto meio transparente reprova no contraste (PageSpeed) */
 .rv{transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
 
 /* faixa de prévia */
@@ -305,12 +305,13 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .common{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(1.4rem,5vw,4.5rem);margin-top:clamp(1.5rem,4vw,3rem);align-items:start}
 .common p{color:var(--ink-2);margin-top:.9rem;max-width:26rem}
 .symp{margin:0;border-top:1.5px solid var(--brand-deep)}
-.symp div{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
-.symp dt{color:var(--ink-2)}
-.symp dd{margin:0;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:1.05rem;color:var(--brand-deep)}
+.symp button{width:100%;margin:0;font:inherit;color:inherit;background:none;border:0;text-align:start;-webkit-tap-highlight-color:transparent}
+.symp button{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.symp .q{color:var(--ink-2)}
+.symp .a{margin:0;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:1.05rem;color:var(--brand-deep)}
 .common>div:first-child{position:sticky;top:2rem}   /* o título acompanha a lista longa */
 @media (max-width:860px){.common{grid-template-columns:1fr}.common>div:first-child{position:static}}
-@media (max-width:520px){.symp div{grid-template-columns:1fr;gap:.1rem}}
+@media (max-width:520px){.symp button{grid-template-columns:1fr;gap:.1rem}}
 .tcard p{font-size:.95rem;color:var(--ink-2)}
 @media (max-width:900px){.treat .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -335,13 +336,13 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .dorinfo .btn{padding:.6rem 1.05rem;font-size:.88rem}
 .dorinfo .more{font-weight:600;font-size:.9rem;color:var(--brand);text-decoration:none;border-bottom:1.5px solid currentColor}
 .dorinfo small{display:block;margin-top:.45rem;color:var(--ink-3);font-size:.8rem}
-.symp div{cursor:pointer;transition:opacity .25s,background .2s}
-.symp div:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:2px}
+.symp button{cursor:pointer;transition:opacity .25s,background .2s}
+.symp button:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:2px}
 #note{scroll-margin-top:1.2rem}
-.symp div:hover dt{color:var(--ink)}
-.symp.has-sel div{opacity:.32}
-.symp.has-sel div.on{opacity:1}
-.symp div.on dd{color:var(--brand)}
+.symp button:hover .q{color:var(--ink)}
+.symp.has-sel button{opacity:.32}
+.symp.has-sel button.on{opacity:1}
+.symp button.on .a{color:var(--brand)}
 @media (max-width:860px){.dormap{max-width:none}}
 /* vídeos */
 .reels .wrap{padding-block:var(--space);display:grid;gap:2rem}
@@ -464,7 +465,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 .tcard .links{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
 /* textos justificados em todo o site (pedido do Alexsander): ar de organização; hifenização em português evita buracos entre as palavras */
 :where(p,li,dd){text-align:justify;hyphens:auto;-webkit-hyphens:auto}
-.ficha li,.symp dd,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
+.ficha li,.symp .a,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
 /* avaliações do Google (dados em avaliacoes.json; a seção só aparece quando há avaliações). CFM 2.336 art. 14: reproduzir avaliação faz dela publicação da médica; só textos sóbrios, aprovados por ela */
 .rev .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(14rem,.55fr) minmax(0,1.45fr);gap:clamp(1.2rem,4vw,3rem);align-items:center}
 .rev .score{display:grid;gap:.5rem;justify-items:center;text-align:center;padding:1.6rem 1.2rem;background:var(--card);border:1px solid var(--rule);border-radius:var(--r)}

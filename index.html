@@ -32,7 +32,7 @@
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..700;1,100..125,500..600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@600&display=swap"></noscript>
 <style>
 /* Tema: "do passo ao osso". Cores e tipografia da logo (petróleo, turquesa, prata; serifa itálica + Montserrat).
    Layout: página editorial em papel; a única faixa escura de tela cheia é o esquema, preso na tela enquanto a rolagem
@@ -76,7 +76,7 @@ h2{font-size:clamp(2rem,4.6vw,3.3rem)}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn.primary:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
 :focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:6px}
-.rv.pre{opacity:.3;transform:translateY(18px)}
+.rv.pre{transform:translateY(18px)}   /* sem esmaecer: texto meio transparente reprova no contraste (PageSpeed) */
 .rv{transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
 
 /* faixa de prévia */
@@ -317,12 +317,13 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .common{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(1.4rem,5vw,4.5rem);margin-top:clamp(1.5rem,4vw,3rem);align-items:start}
 .common p{color:var(--ink-2);margin-top:.9rem;max-width:26rem}
 .symp{margin:0;border-top:1.5px solid var(--brand-deep)}
-.symp div{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
-.symp dt{color:var(--ink-2)}
-.symp dd{margin:0;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:1.05rem;color:var(--brand-deep)}
+.symp button{width:100%;margin:0;font:inherit;color:inherit;background:none;border:0;text-align:start;-webkit-tap-highlight-color:transparent}
+.symp button{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.symp .q{color:var(--ink-2)}
+.symp .a{margin:0;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:1.05rem;color:var(--brand-deep)}
 .common>div:first-child{position:sticky;top:2rem}   /* o título acompanha a lista longa */
 @media (max-width:860px){.common{grid-template-columns:1fr}.common>div:first-child{position:static}}
-@media (max-width:520px){.symp div{grid-template-columns:1fr;gap:.1rem}}
+@media (max-width:520px){.symp button{grid-template-columns:1fr;gap:.1rem}}
 .tcard p{font-size:.95rem;color:var(--ink-2)}
 @media (max-width:900px){.treat .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -347,13 +348,13 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .dorinfo .btn{padding:.6rem 1.05rem;font-size:.88rem}
 .dorinfo .more{font-weight:600;font-size:.9rem;color:var(--brand);text-decoration:none;border-bottom:1.5px solid currentColor}
 .dorinfo small{display:block;margin-top:.45rem;color:var(--ink-3);font-size:.8rem}
-.symp div{cursor:pointer;transition:opacity .25s,background .2s}
-.symp div:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:2px}
+.symp button{cursor:pointer;transition:opacity .25s,background .2s}
+.symp button:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:2px}
 #note{scroll-margin-top:1.2rem}
-.symp div:hover dt{color:var(--ink)}
-.symp.has-sel div{opacity:.32}
-.symp.has-sel div.on{opacity:1}
-.symp div.on dd{color:var(--brand)}
+.symp button:hover .q{color:var(--ink)}
+.symp.has-sel button{opacity:.32}
+.symp.has-sel button.on{opacity:1}
+.symp button.on .a{color:var(--brand)}
 @media (max-width:860px){.dormap{max-width:none}}
 /* vídeos */
 .reels .wrap{padding-block:var(--space);display:grid;gap:2rem}
@@ -476,7 +477,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 .tcard .links{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
 /* textos justificados em todo o site (pedido do Alexsander): ar de organização; hifenização em português evita buracos entre as palavras */
 :where(p,li,dd){text-align:justify;hyphens:auto;-webkit-hyphens:auto}
-.ficha li,.symp dd,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
+.ficha li,.symp .a,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
 /* avaliações do Google (dados em avaliacoes.json; a seção só aparece quando há avaliações). CFM 2.336 art. 14: reproduzir avaliação faz dela publicação da médica; só textos sóbrios, aprovados por ela */
 .rev .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(14rem,.55fr) minmax(0,1.45fr);gap:clamp(1.2rem,4vw,3rem);align-items:center}
 .rev .score{display:grid;gap:.5rem;justify-items:center;text-align:center;padding:1.6rem 1.2rem;background:var(--card);border:1px solid var(--rule);border-radius:var(--r)}
@@ -602,20 +603,20 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <button type="button" class="dortodo" data-r="todo" aria-pressed="false">O pé todo · tenho diabetes</button>
       <div class="dorinfo" id="dorinfo" aria-live="polite"></div>
     </div>
-    <dl class="symp rv" id="symp">
-      <div data-r="dedao" data-esq="joanete"><dt>Calombo na lateral do dedão, que dói no sapato</dt><dd>Joanete</dd></div>
-      <div data-r="calcbaixo"><dt>Dor embaixo do calcanhar ao levantar da cama</dt><dd>Fascite plantar</dd></div>
-      <div data-r="tornozelo" data-esq="tornozelo"><dt>Torceu o pé e semanas depois ainda incha</dt><dd>Entorse de tornozelo</dd></div>
-      <div data-r="calctras" data-esq="aquiles"><dt>Dor atrás do tornozelo ao começar a correr</dt><dd>Tendinite de Aquiles</dd></div>
-      <div data-r="calctras" data-esq="haglund"><dt>Calombo atrás do calcanhar, onde o sapato encosta</dt><dd>Deformidade de Haglund</dd></div>
-      <div data-r="bola"><dt>Dor na “bola” do pé, como pedrinha no sapato</dt><dd>Metatarsalgia e neuroma de Morton</dd></div>
-      <div data-r="dedos"><dt>Dedos dobrados que roçam no calçado</dt><dd>Dedo em garra e em martelo</dd></div>
-      <div data-r="dedao"><dt>Canto da unha vermelho e dolorido</dt><dd>Unha encravada</dd></div>
-      <div data-r="arco"><dt>Arco que desabou, dor por dentro do tornozelo</dt><dd>Pé plano do adulto</dd></div>
-      <div data-r="dedao"><dt>Dedão duro, que dói ao dobrar</dt><dd>Hálux rígido (artrose)</dd></div>
-      <div data-r="peito"><dt>Dor no peito do pé que piora com o treino</dt><dd>Fratura por estresse</dd></div>
-      <div data-r="todo"><dt>Ferida ou dormência no pé de quem tem diabetes</dt><dd>Pé diabético</dd></div>
-    </dl>
+    <div class="symp rv" id="symp" role="group" aria-label="Sintomas e problemas">
+      <button type="button" data-r="dedao" data-esq="joanete"><span class="q">Calombo na lateral do dedão, que dói no sapato</span><span class="a">Joanete</span></button>
+      <button type="button" data-r="calcbaixo"><span class="q">Dor embaixo do calcanhar ao levantar da cama</span><span class="a">Fascite plantar</span></button>
+      <button type="button" data-r="tornozelo" data-esq="tornozelo"><span class="q">Torceu o pé e semanas depois ainda incha</span><span class="a">Entorse de tornozelo</span></button>
+      <button type="button" data-r="calctras" data-esq="aquiles"><span class="q">Dor atrás do tornozelo ao começar a correr</span><span class="a">Tendinite de Aquiles</span></button>
+      <button type="button" data-r="calctras" data-esq="haglund"><span class="q">Calombo atrás do calcanhar, onde o sapato encosta</span><span class="a">Deformidade de Haglund</span></button>
+      <button type="button" data-r="bola"><span class="q">Dor na “bola” do pé, como pedrinha no sapato</span><span class="a">Metatarsalgia e neuroma de Morton</span></button>
+      <button type="button" data-r="dedos"><span class="q">Dedos dobrados que roçam no calçado</span><span class="a">Dedo em garra e em martelo</span></button>
+      <button type="button" data-r="dedao"><span class="q">Canto da unha vermelho e dolorido</span><span class="a">Unha encravada</span></button>
+      <button type="button" data-r="arco"><span class="q">Arco que desabou, dor por dentro do tornozelo</span><span class="a">Pé plano do adulto</span></button>
+      <button type="button" data-r="dedao"><span class="q">Dedão duro, que dói ao dobrar</span><span class="a">Hálux rígido (artrose)</span></button>
+      <button type="button" data-r="peito"><span class="q">Dor no peito do pé que piora com o treino</span><span class="a">Fratura por estresse</span></button>
+      <button type="button" data-r="todo"><span class="q">Ferida ou dormência no pé de quem tem diabetes</span><span class="a">Pé diabético</span></button>
+    </div>
   </div>
 </div></section>
 
@@ -707,7 +708,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     <div class="rx" aria-hidden="true"><span>Dor</span><i id="rxOnde"></i><span>Período</span><i id="rxQuando"></i><span>Consulta</span><i id="rxTipo"></i></div>
     <p class="noteErr" id="noteErr" role="alert" hidden>Preencha o seu nome completo e escolha o plano de saúde (ou "Particular").</p>
     <output id="noteOut" for="nomeIn planoIn tipo-1 onde-1 quando-1"></output>
-    <a class="btn primary" id="noteSend" href="https://wa.me/5521972896222" target="_blank" rel="noopener">Agendar avaliação</a>
+    <a class="btn primary" id="noteSend" href="https://wa.me/5521972896222" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
     <small>Abre o WhatsApp com essa mensagem pronta. Você revisa antes de enviar. A cobertura do seu plano é confirmada pelo WhatsApp.</small>
     <footer class="rxfoot">Rio de Janeiro · Médica · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</footer>
   </form>
@@ -1189,7 +1190,7 @@ const DOR={dedao:{n:'Dedão',onde:1},dedos:{n:'Dedos',onde:4,v:'nos dedos'},bola
   calcbaixo:{n:'Calcanhar, embaixo',onde:2,v:'embaixo do calcanhar'},calctras:{n:'Calcanhar, atrás',onde:2,v:'atrás do calcanhar'},tornozelo:{n:'Tornozelo',onde:3},
   peito:{n:'Peito do pé',onde:4,v:'no peito do pé'},todo:{n:'O pé todo',onde:4,v:'no pé (tenho diabetes)'}};
 const mapSola=document.getElementById('mapSola'),mapLado=document.getElementById('mapLado'),dorinfo=document.getElementById('dorinfo'),symp=document.getElementById('symp'),
-      rows=[...symp.querySelectorAll('div[data-r]')],dortodo=document.querySelector('.dortodo');
+      rows=[...symp.querySelectorAll('button[data-r]')],dortodo=document.querySelector('.dortodo');
 const rg=(host,id)=>{const g=el('g',{class:'rg','data-r':id,tabindex:0,role:'button','aria-pressed':'false','aria-label':DOR[id].n},host);g.addEventListener('click',()=>pickDor(id));
   g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(id)}});return g};
 const ell=(host,cx,cy,rx,ry,r=0,cls)=>el('ellipse',Object.assign({cx,cy,rx,ry,transform:'rotate('+r+' '+cx+' '+cy+')'},cls?{class:cls}:{}),host);
@@ -1218,10 +1219,10 @@ function setOnde(id){ondeReset();if(!id){compose();return}const D=DOR[id],r=docu
 function dorHTML(){dorinfo.textContent='';const c=document.createElement('span');c.className='caps';
   if(!dsel){c.textContent='Toque numa região';dorinfo.append(c,'O mapa mostra os problemas mais comuns de cada lugar do pé. Na avaliação vemos juntos o que é.');return}
   c.textContent=DOR[dsel].n;dorinfo.append(c,'Pode estar ligado a: ');
-  const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('dd').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
+  const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('.a').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
   const acts=document.createElement('div');acts.className='acts';const ag=document.createElement('a');ag.className='btn primary';ag.href='#note';ag.textContent='Agendar avaliação';
   ag.addEventListener('click',()=>setOnde(dsel));acts.appendChild(ag);
-  rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver no esquema: '+r.querySelector('dd').textContent;
+  rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver no esquema: '+r.querySelector('.a').textContent;
     m.addEventListener('click',e=>{e.preventDefault();goEsq(r.dataset.esq)});acts.appendChild(m)});
   const sm=document.createElement('small');sm.textContent='Na avaliação vemos juntos o que é. Ao agendar, a região já vai no pedido.';dorinfo.append(acts,sm)}
 function pickDor(id){dsel=(id===dsel)?null:id;
@@ -1235,8 +1236,8 @@ function pickDor(id){dsel=(id===dsel)?null:id;
 requestAnimationFrame(()=>document.querySelectorAll('.dormap .rg').forEach(g=>{const sv=g.ownerSVGElement,k=sv.viewBox.baseVal.width/Math.max(1,sv.getBoundingClientRect().width),b=g.getBBox(),m=40*k;
   const w=Math.max(b.width,m),h=Math.max(b.height,m);if(w===b.width&&h===b.height)return;
   g.insertBefore(el('rect',{class:'hit',x:b.x+b.width/2-w/2,y:b.y+b.height/2-h/2,width:w,height:h,rx:m/2}),g.firstChild)}));
-rows.forEach(r=>{r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r));
-  r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(r.dataset.r)}})});dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
+rows.forEach(r=>{r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r))});   // <button> de verdade: Enter/Espaço já funcionam
+dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
 
 /* ---------- vídeos em loop: só tocam quando aparecem na tela, e nunca com movimento reduzido ---------- */
 /* economia de dados ou rede 2G/3G lenta: fica a foto parada (o pôster), sem baixar o vídeo de 1,5 MB */

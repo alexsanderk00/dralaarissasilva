@@ -332,8 +332,8 @@
   "'The map shows the most common problems in each part of the foot. At the appointment we work out together what it is.'"
  ],
  [
-  "<dt>Dor na “bola” do pé, como pedrinha no sapato</dt><dd>Metatarsalgia e neuroma de Morton</dd>",
-  "<dt>Pain in the “ball” of the foot, like a pebble in your shoe</dt><dd>Metatarsalgia and Morton’s neuroma</dd>"
+  "<span class=\"q\">Dor na “bola” do pé, como pedrinha no sapato</span><span class=\"a\">Metatarsalgia e neuroma de Morton</span>",
+  "<span class=\"q\">Pain in the “ball” of the foot, like a pebble in your shoe</span><span class=\"a\">Metatarsalgia and Morton’s neuroma</span>"
  ],
  [
   "'A escolha depende da idade, da atividade e do tempo desde a lesão. Toda cirurgia tem riscos.'",
@@ -352,8 +352,8 @@
   "<title>Dr. Larissa Silva · Orthopedic Surgeon · Foot & Ankle · Rio de Janeiro (Leblon)</title>"
  ],
  [
-  "<dt>Calombo atrás do calcanhar, onde o sapato encosta</dt><dd>Deformidade de Haglund</dd>",
-  "<dt>A bump at the back of the heel, where the shoe rubs</dt><dd>Haglund’s deformity</dd>"
+  "<span class=\"q\">Calombo atrás do calcanhar, onde o sapato encosta</span><span class=\"a\">Deformidade de Haglund</span>",
+  "<span class=\"q\">A bump at the back of the heel, where the shoe rubs</span><span class=\"a\">Haglund’s deformity</span>"
  ],
  [
   "<h3>Tornozelo</h3><p>Reparo os ligamentos do tornozelo que falseia e fixo fraturas.</p>",
@@ -368,40 +368,40 @@
   "<span>Orthopedic and Trauma Surgeon<i class=\"xs-hide\"> · Foot and ankle</i></span>"
  ],
  [
-  "<dt>Arco que desabou, dor por dentro do tornozelo</dt><dd>Pé plano do adulto</dd>",
-  "<dt>A collapsed arch, pain on the inner side of the ankle</dt><dd>Adult-acquired flatfoot</dd>"
+  "<span class=\"q\">Arco que desabou, dor por dentro do tornozelo</span><span class=\"a\">Pé plano do adulto</span>",
+  "<span class=\"q\">A collapsed arch, pain on the inner side of the ankle</span><span class=\"a\">Adult-acquired flatfoot</span>"
  ],
  [
-  "<dt>Dor atrás do tornozelo ao começar a correr</dt><dd>Tendinite de Aquiles</dd>",
-  "<dt>Pain at the back of the ankle when you start running</dt><dd>Achilles tendinitis</dd>"
+  "<span class=\"q\">Dor atrás do tornozelo ao começar a correr</span><span class=\"a\">Tendinite de Aquiles</span>",
+  "<span class=\"q\">Pain at the back of the ankle when you start running</span><span class=\"a\">Achilles tendinitis</span>"
  ],
  [
-  "<dt>Dedos dobrados que roçam no calçado</dt><dd>Dedo em garra e em martelo</dd>",
-  "<dt>Bent toes that rub against your shoes</dt><dd>Claw toe and hammertoe</dd>"
+  "<span class=\"q\">Dedos dobrados que roçam no calçado</span><span class=\"a\">Dedo em garra e em martelo</span>",
+  "<span class=\"q\">Bent toes that rub against your shoes</span><span class=\"a\">Claw toe and hammertoe</span>"
  ],
  [
-  "<dt>Dor no peito do pé que piora com o treino</dt><dd>Fratura por estresse</dd>",
-  "<dt>Pain on the top of the foot that gets worse with training</dt><dd>Stress fracture</dd>"
+  "<span class=\"q\">Dor no peito do pé que piora com o treino</span><span class=\"a\">Fratura por estresse</span>",
+  "<span class=\"q\">Pain on the top of the foot that gets worse with training</span><span class=\"a\">Stress fracture</span>"
  ],
  [
   "alt=\"Dra. Larissa em treino de cirurgia do pé, trabalhando numa peça anatômica\"",
   "alt=\"Dr. Larissa during foot surgery training, working on an anatomical specimen\""
  ],
  [
-  "<dt>Torceu o pé e semanas depois ainda incha</dt><dd>Entorse de tornozelo</dd>",
-  "<dt>You twisted your ankle and weeks later it still swells</dt><dd>Ankle sprain</dd>"
+  "<span class=\"q\">Torceu o pé e semanas depois ainda incha</span><span class=\"a\">Entorse de tornozelo</span>",
+  "<span class=\"q\">You twisted your ankle and weeks later it still swells</span><span class=\"a\">Ankle sprain</span>"
  ],
  [
   "value=\"por teleconsulta (Google Meet)\"><span>Teleconsulta (Google Meet)</span>",
   "value=\"by teleconsultation (Google Meet)\"><span>Teleconsultation (Google Meet)</span>"
  ],
  [
-  "<dt>Dor embaixo do calcanhar ao levantar da cama</dt><dd>Fascite plantar</dd>",
-  "<dt>Pain under the heel when getting out of bed</dt><dd>Plantar fasciitis</dd>"
+  "<span class=\"q\">Dor embaixo do calcanhar ao levantar da cama</span><span class=\"a\">Fascite plantar</span>",
+  "<span class=\"q\">Pain under the heel when getting out of bed</span><span class=\"a\">Plantar fasciitis</span>"
  ],
  [
-  "<dt>Ferida ou dormência no pé de quem tem diabetes</dt><dd>Pé diabético</dd>",
-  "<dt>A sore or numbness in the foot of someone with diabetes</dt><dd>Diabetic foot</dd>"
+  "<span class=\"q\">Ferida ou dormência no pé de quem tem diabetes</span><span class=\"a\">Pé diabético</span>",
+  "<span class=\"q\">A sore or numbness in the foot of someone with diabetes</span><span class=\"a\">Diabetic foot</span>"
  ],
  [
   "<dt>Telefone</dt><dd><a href=\"tel:+5521972896222\">Ligar: (21) 97289-6222</a>",
@@ -428,20 +428,20 @@
   "alt=\"Video cover (in Portuguese): Bunion surgery through tiny incisions? Minimally invasive surgery\""
  ],
  [
-  "<dt>Calombo na lateral do dedão, que dói no sapato</dt><dd>Joanete</dd>",
-  "<dt>A bump on the side of the big toe that hurts in shoes</dt><dd>Bunion (hallux valgus)</dd>"
+  "<span class=\"q\">Calombo na lateral do dedão, que dói no sapato</span><span class=\"a\">Joanete</span>",
+  "<span class=\"q\">A bump on the side of the big toe that hurts in shoes</span><span class=\"a\">Bunion (hallux valgus)</span>"
  ],
  [
   "alt=\"Dra. Larissa com colegas em curso prático no ITC, Rio de Janeiro\"",
   "alt=\"Dr. Larissa with colleagues at a hands-on course at ITC, Rio de Janeiro\""
  ],
  [
-  "<dt>Dedão duro, que dói ao dobrar</dt><dd>Hálux rígido (artrose)</dd>",
-  "<dt>A stiff big toe that hurts when it bends</dt><dd>Hallux rigidus (arthritis)</dd>"
+  "<span class=\"q\">Dedão duro, que dói ao dobrar</span><span class=\"a\">Hálux rígido (artrose)</span>",
+  "<span class=\"q\">A stiff big toe that hurts when it bends</span><span class=\"a\">Hallux rigidus (arthritis)</span>"
  ],
  [
-  "<dt>Canto da unha vermelho e dolorido</dt><dd>Unha encravada</dd>",
-  "<dt>Red, sore corner of the toenail</dt><dd>Ingrown toenail</dd>"
+  "<span class=\"q\">Canto da unha vermelho e dolorido</span><span class=\"a\">Unha encravada</span>",
+  "<span class=\"q\">Red, sore corner of the toenail</span><span class=\"a\">Ingrown toenail</span>"
  ],
  [
   "value=\"no dedão ou joanete\" checked><span>Dedão ou joanete</span>",
@@ -1098,5 +1098,13 @@
  [
   "'TÁLUS'",
   "'TALUS'"
+ ],
+ [
+  ">Agendar pelo WhatsApp</a>",
+  ">Book on WhatsApp</a>"
+ ],
+ [
+  "aria-label=\"Sintomas e problemas\"",
+  "aria-label=\"Symptoms and conditions\""
  ]
 ]

@@ -194,7 +194,7 @@ const DOR={dedao:{n:'Dedão',onde:1},dedos:{n:'Dedos',onde:4,v:'nos dedos'},bola
   calcbaixo:{n:'Calcanhar, embaixo',onde:2,v:'embaixo do calcanhar'},calctras:{n:'Calcanhar, atrás',onde:2,v:'atrás do calcanhar'},tornozelo:{n:'Tornozelo',onde:3},
   peito:{n:'Peito do pé',onde:4,v:'no peito do pé'},todo:{n:'O pé todo',onde:4,v:'no pé (tenho diabetes)'}};
 const mapSola=document.getElementById('mapSola'),mapLado=document.getElementById('mapLado'),dorinfo=document.getElementById('dorinfo'),symp=document.getElementById('symp'),
-      rows=[...symp.querySelectorAll('div[data-r]')],dortodo=document.querySelector('.dortodo');
+      rows=[...symp.querySelectorAll('button[data-r]')],dortodo=document.querySelector('.dortodo');
 const rg=(host,id)=>{const g=el('g',{class:'rg','data-r':id,tabindex:0,role:'button','aria-pressed':'false','aria-label':DOR[id].n},host);g.addEventListener('click',()=>pickDor(id));
   g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(id)}});return g};
 const ell=(host,cx,cy,rx,ry,r=0,cls)=>el('ellipse',Object.assign({cx,cy,rx,ry,transform:'rotate('+r+' '+cx+' '+cy+')'},cls?{class:cls}:{}),host);
@@ -223,10 +223,10 @@ function setOnde(id){ondeReset();if(!id){compose();return}const D=DOR[id],r=docu
 function dorHTML(){dorinfo.textContent='';const c=document.createElement('span');c.className='caps';
   if(!dsel){c.textContent='Toque numa região';dorinfo.append(c,'O mapa mostra os problemas mais comuns de cada lugar do pé. Na avaliação vemos juntos o que é.');return}
   c.textContent=DOR[dsel].n;dorinfo.append(c,'Pode estar ligado a: ');
-  const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('dd').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
+  const rs=rows.filter(r=>r.dataset.r===dsel);rs.forEach((r,i)=>{const b=document.createElement('b');b.textContent=r.querySelector('.a').textContent;dorinfo.append(b,i<rs.length-1?', ':'.')});
   const acts=document.createElement('div');acts.className='acts';const ag=document.createElement('a');ag.className='btn primary';ag.href='#note';ag.textContent='Agendar avaliação';
   ag.addEventListener('click',()=>setOnde(dsel));acts.appendChild(ag);
-  rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver no esquema: '+r.querySelector('dd').textContent;
+  rs.filter(r=>r.dataset.esq).forEach(r=>{const m=document.createElement('a');m.className='more';m.href='#esquema';m.textContent='Ver no esquema: '+r.querySelector('.a').textContent;
     m.addEventListener('click',e=>{e.preventDefault();goEsq(r.dataset.esq)});acts.appendChild(m)});
   const sm=document.createElement('small');sm.textContent='Na avaliação vemos juntos o que é. Ao agendar, a região já vai no pedido.';dorinfo.append(acts,sm)}
 function pickDor(id){dsel=(id===dsel)?null:id;
@@ -240,8 +240,8 @@ function pickDor(id){dsel=(id===dsel)?null:id;
 requestAnimationFrame(()=>document.querySelectorAll('.dormap .rg').forEach(g=>{const sv=g.ownerSVGElement,k=sv.viewBox.baseVal.width/Math.max(1,sv.getBoundingClientRect().width),b=g.getBBox(),m=40*k;
   const w=Math.max(b.width,m),h=Math.max(b.height,m);if(w===b.width&&h===b.height)return;
   g.insertBefore(el('rect',{class:'hit',x:b.x+b.width/2-w/2,y:b.y+b.height/2-h/2,width:w,height:h,rx:m/2}),g.firstChild)}));
-rows.forEach(r=>{r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r));
-  r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickDor(r.dataset.r)}})});dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
+rows.forEach(r=>{r.setAttribute('aria-pressed','false');r.addEventListener('click',()=>pickDor(r.dataset.r))});   // <button> de verdade: Enter/Espaço já funcionam
+dortodo.addEventListener('click',()=>pickDor('todo'));dorHTML();
 
 /* ---------- vídeos em loop: só tocam quando aparecem na tela, e nunca com movimento reduzido ---------- */
 /* economia de dados ou rede 2G/3G lenta: fica a foto parada (o pôster), sem baixar o vídeo de 1,5 MB */
