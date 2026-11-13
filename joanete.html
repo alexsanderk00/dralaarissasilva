@@ -428,6 +428,15 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .rx{display:grid;grid-template-columns:auto 1fr;column-gap:.8rem;align-items:end;background:repeating-linear-gradient(transparent 0 2.15rem,rgba(20,96,70,.28) 2.15rem calc(2.15rem + 1px));padding:0 .1rem}
 .rx span{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:2.2rem}
 .rx i{font-style:normal;font-family:var(--hand);font-weight:600;font-size:1.55rem;line-height:2.2rem;color:var(--pen);transform:rotate(-1deg);transform-origin:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-in input{font-family:var(--hand);font-weight:600;font-size:1.45rem;line-height:2.2rem;height:2.2rem;color:var(--pen);border:0;background:transparent;padding:0;width:100%;min-width:0;outline:none}
+.rx-in select{font-family:var(--hand);font-weight:600;font-size:1.45rem;line-height:2.2rem;height:2.2rem;color:var(--pen);border:0;background:transparent;padding:0;width:100%;min-width:0;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--pen) 50%),linear-gradient(135deg,var(--pen) 50%,transparent 50%);background-position:calc(100% - 12px) 55%,calc(100% - 6px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+.rx-in select:invalid{color:#B9B3A6;font-weight:400}
+.rx-in select:focus-visible{box-shadow:0 2px 0 var(--brand)}
+.rx-in input::placeholder{color:#B9B3A6;font-weight:400}
+.rx-in input:not(:focus){text-overflow:ellipsis}
+.rx-in input:focus-visible{box-shadow:0 2px 0 var(--brand)}
+.rx label{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:2.2rem}
+.noteErr{margin:0;font-size:.84rem;color:#B3261E;font-weight:600}
 .note output{display:block;font-size:.84rem;line-height:1.45;color:var(--ink-3)}
 .note output::before{content:"Mensagem: "}
 @media (max-width:520px){.rxhead{grid-template-columns:auto 1fr}.rxhead em{grid-column:1/-1;text-align:left}.rxhead em br{display:none}}

@@ -173,12 +173,20 @@ if(!reduced&&'IntersectionObserver' in window){
 
 /* ---------- bilhete: monta o pedido e leva ao WhatsApp ---------- */
 const note=document.getElementById('note'),noteOut=document.getElementById('noteOut'),noteSend=document.getElementById('noteSend');
-const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando');
-function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value;rxOnde.textContent=o;rxQuando.textContent=q;
-  const m='Olá, Dra. Larissa. Quero agendar uma avaliação. Sinto dor '+o+' e posso ir '+q+'.';noteOut.textContent='“'+m+'”';noteSend.dataset.msg=m}
+const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando'),rxTipo=document.getElementById('rxTipo'),nomeIn=document.getElementById('nomeIn'),planoIn=document.getElementById('planoIn'),planoOutro=document.getElementById('planoOutro'),outroLbl=note.querySelector('.outroLbl'),noteErr=document.getElementById('noteErr');
+function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value,t=note.querySelector('input[name=tipo]:checked').value;
+  rxOnde.textContent=o;rxQuando.textContent=q;rxTipo.textContent=t.replace('por ','');
+  const outro=planoIn.value==='outro';planoOutro.hidden=outroLbl.hidden=!outro;   /* "Outro plano": aparece a linha para escrever o nome */
+  const nome=nomeIn.value.trim(),plano=(outro?planoOutro.value:planoIn.value).trim();
+  /* mensagem em linhas: a secretária lê de relance; nome e plano entram quando preenchidos */
+  const m='Olá, Dra. Larissa. Quero agendar uma avaliação '+t+'.'+(nome?'\nNome: '+nome:'')+(plano?'\nPlano de saúde: '+plano:'')+'\nOnde dói: '+o.replace(/^(nos|nas|no|na|em) /,'')+'\nMelhor período: '+q.replace(/^(de|à|em) /,'');
+  noteOut.textContent='“'+m.replace(/\n/g,' · ')+'”';noteSend.dataset.msg=m;if(nome)nomeIn.removeAttribute('aria-invalid');if(plano){planoIn.removeAttribute('aria-invalid');planoOutro.removeAttribute('aria-invalid')}if(nome&&plano)noteErr.hidden=true}
 /* o texto (com o sintoma) só entra no link na hora do clique: o href fica sem ?text, e nenhuma medição de cliques de saída recebe o sintoma (LGPD: dado de saúde) */
-noteSend.addEventListener('click',e=>{const m=noteSend.dataset.msg;if(!m)return;e.preventDefault();window.open('https://wa.me/5521972896222?text='+encodeURIComponent(m),'_blank','noopener')});
-note.addEventListener('change',compose);note.addEventListener('submit',e=>e.preventDefault());compose();
+noteSend.addEventListener('click',e=>{e.preventDefault();compose();
+  const pl=planoIn.value==='outro'?planoOutro:planoIn;
+  if(!nomeIn.value.trim()||!pl.value.trim()){[nomeIn,pl].forEach(i=>{if(!i.value.trim())i.setAttribute('aria-invalid','true')});noteErr.hidden=true;requestAnimationFrame(()=>noteErr.hidden=false);(nomeIn.value.trim()?pl:nomeIn).focus();return}   /* esconde e mostra de novo: o leitor de tela anuncia a cada clique */   /* nome completo e plano são obrigatórios */
+  const m=noteSend.dataset.msg;if(!m)return;window.open('https://wa.me/5521972896222?text='+encodeURIComponent(m),'_blank','noopener')});
+note.addEventListener('change',compose);note.addEventListener('input',compose);note.addEventListener('submit',e=>e.preventDefault());compose();
 
 /* ---------- toque onde dói: região do pé ↔ lista ↔ pedido do WhatsApp ---------- */
 // onde: qual opção do bilhete recebe a região; v: como a região entra na frase (sem v, fica o texto da opção)

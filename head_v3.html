@@ -413,6 +413,15 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 .rx{display:grid;grid-template-columns:auto 1fr;column-gap:.8rem;align-items:end;background:repeating-linear-gradient(transparent 0 2.15rem,rgba(20,96,70,.28) 2.15rem calc(2.15rem + 1px));padding:0 .1rem}
 .rx span{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:2.2rem}
 .rx i{font-style:normal;font-family:var(--hand);font-weight:600;font-size:1.55rem;line-height:2.2rem;color:var(--pen);transform:rotate(-1deg);transform-origin:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-in input{font-family:var(--hand);font-weight:600;font-size:1.45rem;line-height:2.2rem;height:2.2rem;color:var(--pen);border:0;background:transparent;padding:0;width:100%;min-width:0;outline:none}
+.rx-in select{font-family:var(--hand);font-weight:600;font-size:1.45rem;line-height:2.2rem;height:2.2rem;color:var(--pen);border:0;background:transparent;padding:0;width:100%;min-width:0;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--pen) 50%),linear-gradient(135deg,var(--pen) 50%,transparent 50%);background-position:calc(100% - 12px) 55%,calc(100% - 6px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+.rx-in select:invalid{color:#B9B3A6;font-weight:400}
+.rx-in select:focus-visible{box-shadow:0 2px 0 var(--brand)}
+.rx-in input::placeholder{color:#B9B3A6;font-weight:400}
+.rx-in input:not(:focus){text-overflow:ellipsis}
+.rx-in input:focus-visible{box-shadow:0 2px 0 var(--brand)}
+.rx label{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:2.2rem}
+.noteErr{margin:0;font-size:.84rem;color:#B3261E;font-weight:600}
 .note output{display:block;font-size:.84rem;line-height:1.45;color:var(--ink-3)}
 .note output::before{content:"Mensagem: "}
 @media (max-width:520px){.rxhead{grid-template-columns:auto 1fr}.rxhead em{grid-column:1/-1;text-align:left}.rxhead em br{display:none}}
@@ -638,12 +647,22 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5521972896222" target="_blank" rel="noopener">(21) 97289-6222</a></dd></div>
       <div><dt>Telefone</dt><dd><a href="tel:+5521972896222">Ligar: (21) 97289-6222</a></dd></div>
       <div><dt>Endereço</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro" target="_blank" rel="noopener">Rua General Venâncio Flores, 184<br>Leblon, Rio de Janeiro</a></dd></div>
+      <div><dt>Teleconsulta</dt><dd>Também atendo por teleconsulta (Google Meet), para pacientes em todo o Brasil. Quando o exame físico for necessário, combinamos a consulta presencial.</dd></div>
       <div><dt>Horários</dt><dd>Conforme agendamento</dd></div>
       <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dralaarissasilva/" target="_blank" rel="noopener">@dralaarissasilva</a></dd></div>
     </dl>
   </div>
   <form class="note" id="note" aria-label="Montar o pedido de avaliação">
     <header class="rxhead"><img src="{{IMG_LOGO}}" alt="" width="293" height="349"><div><b>Dra. Larissa Silva</b><span>Ortopedista e Traumatologista<i class="xs-hide"> · Pé e tornozelo</i></span></div><em>Pedido de <br>avaliação</em></header>
+    <div class="rx rx-in">
+      <label for="nomeIn">Nome</label><input id="nomeIn" name="nome" autocomplete="name" placeholder="seu nome completo" required aria-describedby="noteErr">
+      <label for="planoIn">Plano</label><select id="planoIn" name="plano" required aria-describedby="noteErr"><option value="" selected disabled>escolha</option><option>Particular</option><option>Amil</option><option>Bradesco Saúde</option><option>SulAmérica</option><option>Porto Seguro Saúde</option><option>Golden Cross</option><option>Assim Saúde</option><option>NotreDame Intermédica</option><option value="outro">Outro plano</option></select>
+      <label for="planoOutro" class="outroLbl" hidden>Qual</label><input id="planoOutro" name="planoOutro" autocomplete="off" placeholder="nome do plano" hidden aria-describedby="noteErr">
+    </div>
+    <fieldset><legend>Tipo de consulta</legend><div class="chips">
+      <label><input type="radio" name="tipo" id="tipo-1" value="presencial" checked><span>Presencial</span></label>
+      <label><input type="radio" name="tipo" id="tipo-2" value="por teleconsulta (Google Meet)"><span>Teleconsulta (Google Meet)</span></label>
+    </div></fieldset>
     <fieldset><legend>Onde dói</legend><div class="chips">
       <label><input type="radio" name="onde" id="onde-1" value="no dedão ou joanete" checked><span>Dedão ou joanete</span></label>
       <label><input type="radio" name="onde" id="onde-2" value="no calcanhar"><span>Calcanhar</span></label>
@@ -655,10 +674,11 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <label><input type="radio" name="quando" id="quando-2" value="à tarde"><span>Tarde</span></label>
       <label><input type="radio" name="quando" id="quando-3" value="em qualquer horário"><span>Tanto faz</span></label>
     </div></fieldset>
-    <div class="rx" aria-hidden="true"><span>Dor</span><i id="rxOnde"></i><span>Período</span><i id="rxQuando"></i></div>
-    <output id="noteOut" for="onde-1 quando-1"></output>
+    <div class="rx" aria-hidden="true"><span>Dor</span><i id="rxOnde"></i><span>Período</span><i id="rxQuando"></i><span>Consulta</span><i id="rxTipo"></i></div>
+    <p class="noteErr" id="noteErr" role="alert" hidden>Preencha o seu nome completo e escolha o plano de saúde (ou "Particular").</p>
+    <output id="noteOut" for="nomeIn planoIn tipo-1 onde-1 quando-1"></output>
     <a class="btn primary" id="noteSend" href="https://wa.me/5521972896222" target="_blank" rel="noopener">Agendar avaliação</a>
-    <small>Abre o WhatsApp com essa mensagem pronta. Você revisa antes de enviar.</small>
+    <small>Abre o WhatsApp com essa mensagem pronta. Você revisa antes de enviar. A cobertura do seu plano é confirmada pelo WhatsApp.</small>
     <footer class="rxfoot">Rio de Janeiro · Médica · CRM&nbsp;52-126334-0 · RQE&nbsp;60891 · TEOT&nbsp;21251</footer>
   </form>
 </div></section>
