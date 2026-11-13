@@ -221,7 +221,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
 # ======================================================================================================
 
 NOVAS = [
-    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True,
+    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True, esq='fascite',
          title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
          dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
          lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
@@ -249,7 +249,7 @@ NOVAS = [
          trat=['Calçado de sola mais rígida e bico alto, palmilha que limita o movimento do dedão, ajuste das atividades e fisioterapia aliviam muitos casos.',
                'Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.'],
          quando=['Procure avaliação se o dedão dói e endurece há semanas, se incha e fica vermelho de repente ou se a dor muda o seu jeito de pisar.']),
-    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True,
+    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True, esq='peplano',
          title='Pé plano do adulto: o arco que desabou', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Arco que desabou, dor por dentro do tornozelo', faq=[4],
          lead='Quando o arco do pé desaba na vida adulta, na maioria das vezes há um tendão envolvido. Quanto antes avaliar, mais opções de tratamento sem cirurgia.',
@@ -369,7 +369,7 @@ def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
     <span class="crumbs"><a href="{home}">{L['inicio']}</a> · {L['area']}</span>
     <h1>{p['h1']}<small>{p['sub']}</small></h1>
     <p class="lead">{p['lead']}</p>
-    <div class="acts"><a class="btn primary" href="{home}#agendar">{L['agendar']}</a></div>
+    <div class="acts"><a class="btn primary" href="{home}#agendar">{L['agendar']}</a>{('<a class="more" href="' + home + '#esquema-' + p['esq'] + '">' + L['ver'] + '</a>') if p.get('esq') else ''}</div>
   </div>
   <figure><img{' class="lado"' if p['img'] == '{{IMG_PE_LADO}}' else ''} src="{pre + img_url[p['img']]}" alt="{p['alt']}" width="569" height="852"></figure>
 </div></section>

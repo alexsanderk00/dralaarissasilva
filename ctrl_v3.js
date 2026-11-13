@@ -23,7 +23,19 @@ const TXT={
     ['Do lado de fora do tornozelo, ligamentos curtos prendem a fíbula ao tálus e ao calcâneo. São eles que seguram o pé quando você pisa torto.'],
     ['Na entorse, o ligamento da frente é o que mais rompe. A maioria cicatriza com proteção e fisioterapia. Quando cicatriza frouxo, o tálus ganha folga e o tornozelo passa a falsear.'],
     ['Se a instabilidade continua depois da reabilitação, o ligamento pode ser reparado: ele é preso de volta no osso com pequenas âncoras e suturas.','Em muitos casos por vídeo. Toda cirurgia tem riscos.'],
-    ['O ligamento reparado volta a limitar o movimento do tálus. O tratamento inclui fisioterapia de força e equilíbrio, antes e depois.','O resultado e a recuperação variam de pessoa para pessoa.']]}
+    ['O ligamento reparado volta a limitar o movimento do tálus. O tratamento inclui fisioterapia de força e equilíbrio, antes e depois.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  fascite:{name:'Fascite plantar',t4:'O tratamento',m4:'Tratamento',steps:[
+    ['Por fora, a dor da fascite fica embaixo do calcanhar, na parte de dentro, no ponto que pisa primeiro. Role para ver por dentro.'],
+    ['A fáscia plantar é uma faixa firme que sai do calcanhar e se abre em leque até a base dos dedos. Ela sustenta o arco do pé.'],
+    ['Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar. A dor é mais forte nos primeiros passos da manhã. O esporão que pode aparecer na radiografia acompanha a fascite em algumas pessoas, mas não é ele que causa a dor.'],
+    ['Na grande maioria dos casos, o tratamento é sem cirurgia: alongamento, calçado que amortece, palmilha e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção: o aparelho é apoiado na pele do calcanhar e emite pulsos de energia sobre o ponto da dor, sem corte.','É feita em sessões. A indicação depende da avaliação.'],
+    ['A melhora costuma ser gradual. Alongamento e calçado adequado continuam fazendo parte do cuidado. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  peplano:{name:'Pé plano do adulto',t4:'O tratamento',m4:'Tratamento',steps:[
+    ['No pé plano, o arco do lado de dentro do pé fica baixo. Role para ver por dentro, nos ossos.'],
+    ['O arco é sustentado pelos ossos do meio do pé e pelo tendão tibial posterior, que passa por dentro do tornozelo. Na radiografia em pé, o eixo do tálus aponta para o primeiro metatarso.'],
+    ['No adulto, o arco pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior perde força. O tálus inclina para baixo, o eixo dele passa a apontar para o chão e o calcanhar desvia para fora.'],
+    ['No início, palmilha com apoio do arco, calçado firme, fortalecimento e fisioterapia controlam a dor e ajudam a frear a progressão.','Quando o pé continua deformando ou doendo, a cirurgia é planejada caso a caso, conforme a rigidez e o estágio.'],
+    ['A palmilha apoia o arco no dia a dia e o fortalecimento ajuda o tendão. O acompanhamento mostra se o pé está estável.','O resultado varia de pessoa para pessoa.']]}
 };
 const PARTS={
   halux:['Dedão (hálux)','2 falanges','É o dedo que mais empurra o chão no fim do passo.','para onde ele aponta, quanto dobra e se dói ao mexer.'],
@@ -36,12 +48,14 @@ const PARTS={
   fascia:['Fáscia plantar','sola do pé','Faixa firme que sustenta o arco. Inflamada, dói embaixo do calcanhar nos primeiros passos do dia.','dor ao apertar a origem dela, no calcanhar.'],
   talus:['Tálus','encaixe do tornozelo','Fica entre a perna e o calcanhar e faz o pé subir e descer.','folga e estalos ao mover o tornozelo.'],
   fibula:['Fíbula','osso de fora','A ponta dela é o osso saliente do lado de fora do tornozelo, de onde saem os ligamentos que mais rompem.','dor ao apertar o osso, que pode indicar fratura.'],
-  ligamento:['Ligamentos','fíbula ao tálus','Seguram o pé quando você pisa torto.','testes de gaveta e de inclinação, comparando os dois lados.']
+  ligamento:['Ligamentos','fíbula ao tálus','Seguram o pé quando você pisa torto.','testes de gaveta e de inclinação, comparando os dois lados.'],
+  arco:['Arco do pé','ossos do meio do pé','Os ossos do meio do pé formam uma ponte entre o calcanhar e a frente do pé.','a altura do arco em pé e sentado e a radiografia com carga.'],
+  tibpost:['Tendão tibial posterior','por dentro do tornozelo','Sustenta o arco pelo lado de dentro. Quando perde força, o arco desaba.','dor e inchaço por dentro do tornozelo e se você sobe na ponta de um pé só.']
 };
-const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aquiles','calcaneo','fascia','talus'],aquiles:['aquiles','calcaneo','talus','fascia'],tornozelo:['fibula','talus','ligamento','calcaneo']};
+const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aquiles','calcaneo','fascia','talus'],aquiles:['aquiles','calcaneo','talus','fascia'],tornozelo:['fibula','talus','ligamento','calcaneo'],fascite:['fascia','calcaneo','metas','halux'],peplano:['arco','tibpost','talus','calcaneo']};
 
 /* ---------- cenas, varredura e alça ---------- */
-const scenes={dorsal:Dorsal(),lateral:Lateral()};
+const scenes={dorsal:Dorsal(),lateral:Lateral(),plantar:Plantar()};
 const hand=el('g',{},svg),edge=el('line',{id:'edge',y1:-20,y2:660},hand),grip=el('g',{id:'grip',tabindex:0,role:'slider','aria-label':'Arraste para ver por fora ou em raio-x','aria-valuemin':0,'aria-valuemax':100},hand);
 el('circle',{r:29},grip);el('path',{d:'M-17 -3l-6 5 6 5M17 -3l6 5-6 5'},grip);{const t=el('text',{y:-7},grip);t.textContent='ARRASTE'}
 grip.style.display='none';grip.removeAttribute('tabindex');grip.setAttribute('aria-hidden','true');   // sem alça: o esquema anda pela rolagem e pelo botão "Ver em raio-x"
@@ -59,7 +73,7 @@ const story=document.getElementById('story'),stepsLi=[...document.querySelectorA
       meter=document.getElementById('meter'),viewTag=document.getElementById('viewTag'),kicker=document.getElementById('kicker'),tabs=[...document.querySelectorAll('.tab')],
       partgrid=document.getElementById('partgrid'),partinfo=document.getElementById('partinfo'),xrayToggle=document.getElementById('xrayToggle');
 let cond='joanete',target=-1,s=-1,active=-1,dirty=true,w=0,wUser=null,sel=null;
-const scene=()=>cond==='joanete'?scenes.dorsal:scenes.lateral;
+const scene=()=>cond==='joanete'?scenes.dorsal:(cond==='fascite'?scenes.plantar:scenes.lateral);
 const STOPS=[[0,-1],[.05,-1],[.2,0],[.26,0],[.44,1],[.5,1],[.72,2],[.78,2],[.93,3],[1,3]];
 function mapS(p){for(let i=1;i<STOPS.length;i++){const[a,va]=STOPS[i-1],[b,vb]=STOPS[i];if(p<=b)return va+(vb-va)*clamp((p-a)/(b-a))}return 3}
 const REST=[.02,.23,.47,.75,.97];
@@ -82,8 +96,9 @@ function select(id){
   dirty=true;
 }
 function stepText(){const T=TXT[cond].steps[Math.max(active,0)];stepDesc.textContent=T[0];if(T[1]){const sm=document.createElement('small');sm.textContent=T[1];stepDesc.appendChild(sm)}}
+const stepT4=stepsLi[3].querySelector('.t'),meterT4=meter.querySelectorAll('span')[3];
 function fill(){
-  const T=TXT[cond];stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
+  const T=TXT[cond];stepT4.textContent=T.t4||'A cirurgia';meterT4.textContent=T.m4||'Cirurgia';stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
   viewTag.textContent=T.name;kicker.textContent=scene().view;
   for(const k in scenes){const on=scenes[k]===scene();scenes[k].xr.style.display=scenes[k].sk.style.display=scenes[k].an.style.display=on?'':'none'}
   partgrid.textContent='';PARTLIST[cond].forEach(id=>{const b=document.createElement('button');b.type='button';b.className='part';b.dataset.p=id;b.id='part-'+id;b.setAttribute('aria-pressed','false');
@@ -116,7 +131,7 @@ function frame(){
   const wt=wUser!=null?wUser:wipeAuto();w=(reduced||drag)?wt:mix(w,wt,.16);if(Math.abs(w-wt)<.002)w=wt;
   if(vis&&(dirty||s!==ps||w!==pw||live)){
     const sc=scene(),sv=Math.max(s,0);
-    live=cond==='joanete'?sc.update(sv):sc.update(sv,cond);setWipe(sc.dir,w);dirty=false;
+    setWipe(sc.dir,w);live=cond==='joanete'?sc.update(sv):sc.update(sv,cond);dirty=false;   // cortina antes do desenho: os rótulos usam a posição dela
     xrayToggle.textContent=w>.5?'Ver por fora':'Ver em raio-x';
     const f=(s+1)/4;meter.querySelector('i').style.width=(f*100)+'%';meter.querySelector('u').style.left=(f*100)+'%';
   }
@@ -158,7 +173,7 @@ miniLateral(document.getElementById('icoHeel'),'heel');miniLateral(document.getE
 const goEsq=c=>{const b=document.getElementById('tab-'+c);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})};
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goEsq(a.dataset.go)}));
 /* vindo das páginas de cada problema: ./#esquema-joanete abre o esquema já na aba certa */
-{const m=location.hash.match(/^#esquema-(joanete|haglund|aquiles|tornozelo)$/);if(m){const go=()=>{const b=document.getElementById('tab-'+m[1]);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:'auto'})};   /* pulo direto: a rolagem suave some quando a página ainda está carregando */
+{const m=location.hash.match(/^#esquema-(joanete|haglund|aquiles|tornozelo|fascite|peplano)$/);if(m){const go=()=>{const b=document.getElementById('tab-'+m[1]);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:'auto'})};   /* pulo direto: a rolagem suave some quando a página ainda está carregando */
   if(document.readyState==='complete')setTimeout(go,60);else addEventListener('load',()=>setTimeout(go,60))}}
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */

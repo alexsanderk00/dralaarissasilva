@@ -187,10 +187,10 @@ header.top nav a:not(.btn):hover{color:#fff}
 .stage .caps{color:var(--brand-lite)}
 .stage h3{font-size:clamp(1.7rem,2.6vw,2.3rem);color:#fff;margin:.6rem 0 1.1rem}
 .stage h3 em{color:var(--brand-lite)}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin:0 0 1.1rem}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin:0 0 1.1rem}
 .tab{font-family:var(--sans);text-align:left;background:transparent;border:1.5px solid var(--film-rule);border-radius:var(--r);padding:.45rem .75rem;cursor:pointer;color:var(--film-dim);line-height:1.2;transition:border-color .2s,background .2s,color .2s}
-.tab b{display:block;font-family:var(--display);font-stretch:112%;font-size:1.02rem;color:var(--film-ink)}
-.tab span{font-size:.76rem}
+.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink);overflow-wrap:anywhere}
+.tab span{display:none}   /* 6 abas em 3 colunas: só o nome, senão o texto da etapa 04 passa da tela do notebook */
 .tab:hover{border-color:var(--film-dim)}
 .tab[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink-2)}
 .tab[aria-pressed="true"] b{color:var(--brand-deep)}
@@ -268,7 +268,7 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 
   .stage .wrap{grid-template-columns:1fr;gap:.5rem;padding-block:.7rem}
   .textcol>.caps,.textcol>h3,.panel{display:none}
-  .tabs{margin:.1rem 0 .1rem;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem}
+  .tabs{margin:.1rem 0 .1rem;grid-template-columns:repeat(3,minmax(0,1fr));gap:.3rem}
   .tab{min-width:0;padding:.4rem .3rem;text-align:center}.tab b{font-size:.84rem;font-stretch:100%}.tab span{display:none}
   .filmcol{order:2}.textcol{display:contents}
   .film{width:min(100%,calc(min(60svh,100svh - 15rem)*600/640))}
@@ -541,6 +541,8 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
         <button class="tab" type="button" id="tab-haglund" data-c="haglund" aria-pressed="false"><b>Heel</b><span>back, where the shoe rubs</span></button>
         <button class="tab" type="button" id="tab-aquiles" data-c="aquiles" aria-pressed="false"><b>Achilles</b><span>like a kick to the back of the leg</span></button>
         <button class="tab" type="button" id="tab-tornozelo" data-c="tornozelo" aria-pressed="false"><b>Ankle</b><span>sprains and gives way</span></button>
+        <button class="tab" type="button" id="tab-fascite" data-c="fascite" aria-pressed="false"><b>Fasciitis</b><span>under the heel</span></button>
+        <button class="tab" type="button" id="tab-peplano" data-c="peplano" aria-pressed="false"><b>Flat foot</b><span>the arch that collapsed</span></button>
       </div>
       <ol class="steps" id="steps">
         <li><button class="step" type="button" id="step-0"><span class="n">01</span><span class="t">Outside</span><span class="d"><div></div></span></button></li>
@@ -605,14 +607,14 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     </div>
     <div class="symp rv" id="symp" role="group" aria-label="Symptoms and conditions">
       <button type="button" data-r="dedao" data-esq="joanete"><span class="q">A bump on the side of the big toe that hurts in shoes</span><span class="a">Bunion (hallux valgus)</span></button>
-      <button type="button" data-r="calcbaixo"><span class="q">Pain under the heel when getting out of bed</span><span class="a">Plantar fasciitis</span></button>
+      <button type="button" data-r="calcbaixo" data-esq="fascite"><span class="q">Pain under the heel when getting out of bed</span><span class="a">Plantar fasciitis</span></button>
       <button type="button" data-r="tornozelo" data-esq="tornozelo"><span class="q">You twisted your ankle and weeks later it still swells</span><span class="a">Ankle sprain</span></button>
       <button type="button" data-r="calctras" data-esq="aquiles"><span class="q">Pain at the back of the ankle when you start running</span><span class="a">Achilles tendinitis</span></button>
       <button type="button" data-r="calctras" data-esq="haglund"><span class="q">A bump at the back of the heel, where the shoe rubs</span><span class="a">Haglund’s deformity</span></button>
       <button type="button" data-r="bola"><span class="q">Pain in the “ball” of the foot, like a pebble in your shoe</span><span class="a">Metatarsalgia and Morton’s neuroma</span></button>
       <button type="button" data-r="dedos"><span class="q">Bent toes that rub against your shoes</span><span class="a">Claw toe and hammertoe</span></button>
       <button type="button" data-r="dedao"><span class="q">Red, sore corner of the toenail</span><span class="a">Ingrown toenail</span></button>
-      <button type="button" data-r="arco"><span class="q">A collapsed arch, pain on the inner side of the ankle</span><span class="a">Adult-acquired flatfoot</span></button>
+      <button type="button" data-r="arco" data-esq="peplano"><span class="q">A collapsed arch, pain on the inner side of the ankle</span><span class="a">Adult-acquired flatfoot</span></button>
       <button type="button" data-r="dedao"><span class="q">A stiff big toe that hurts when it bends</span><span class="a">Hallux rigidus (arthritis)</span></button>
       <button type="button" data-r="peito"><span class="q">Pain on the top of the foot that gets worse with training</span><span class="a">Stress fracture</span></button>
       <button type="button" data-r="todo"><span class="q">A sore or numbness in the foot of someone with diabetes</span><span class="a">Diabetic foot</span></button>
@@ -885,6 +887,58 @@ function Dorsal(){
 }
 
 /* =====================================================================
+   CENA 3 · vista de baixo (fascite plantar), desenhada no espaço da foto da sola (1500 × 2000 px, img/pe_sola.webp: pé direito pela planta,
+   dedão à direita, calcanhar embaixo). Pontos medidos na foto: ponta e base de cada dedo, cabeças dos metatarsos, calcanhar.
+   ===================================================================== */
+function Plantar(){
+  const SC=.36,OX=0,OY=-41,TR='translate('+OX+' '+OY+') scale('+SC+')',G=(x,y)=>[(x-OX)/SC,(y-OY)/SC];   // G: posição no filme (0–600) → espaço da foto
+  const xr=el('g',{'clip-path':'url(#cX)'},svg),sk=el('g',{'clip-path':'url(#cS)','pointer-events':'none'},svg),root=el('g',{transform:TR},xr),skRoot=el('g',{transform:TR},sk),parts={};
+  const PH={href:'../img/web/pe_sola.webp?v=6ca22eab',x:0,y:0,width:1500,height:2000};
+  const ghost=el('image',Object.assign({filter:'url(#xrayTint)',opacity:.9},PH),root);el('image',PH,skRoot);
+  const dimG=el('g',{class:'bn dim'},root),midG=el('g',{class:'bn mid'},root),hiG=el('g',{class:'bn hi'},root);
+  const reg=(e,part)=>{if(part){e.setAttribute('data-part',part);(parts[part]=parts[part]||[]).push(e)}return e};
+  const P=(g,d,part)=>reg(el('path',{d},g),part);
+  // retropé e mediopé
+  P(dimG,blob([870,1440],95,85,.2));                                   // cabeça do tálus (por cima do calcâneo)
+  const calc=P(hiG,blob([770,1555],150,205,-.1,.05,12),'calcaneo');
+  P(midG,blob([915,1335],100,58,-.25));P(midG,blob([600,1295],86,96,.15));   // navicular, cuboide
+  [[960,1225,58,68],[852,1200,44,56],[752,1215,44,56]].forEach(([x,y,rx,ry])=>P(midG,blob([x,y],rx,ry,.05)));   // cuneiformes
+  // metatarsos (base → cabeça) e dedos (cabeça → ponta), medidos na foto
+  const RAYS=[{b:[965,1150],h:[1040,790],tip:[1040,240],w:[100,62,104],big:1},{b:[835,1110],h:[790,705],tip:[722,300]},{b:[735,1130],h:[690,760],tip:[640,450]},
+              {b:[645,1160],h:[592,830],tip:[528,565]},{b:[545,1215],h:[482,925],tip:[410,715]}];
+  RAYS.forEach(r=>{P(midG,bone(r.b,r.h,...(r.w||[64,34,62])).d,'metas');
+    const v=[r.tip[0]-r.h[0],r.tip[1]-r.h[1]],L=Math.hypot(v[0],v[1]),u=[v[0]/L,v[1]/L],at=t=>[r.h[0]+u[0]*t,r.h[1]+u[1]*t],a=34,z=L-26;
+    const segs=r.big?[[a,a+(z-a)*.55-8,[92,60,78]],[a+(z-a)*.55+8,z,[80,52,62]]]:[[a,a+(z-a)*.48-6,[48,28,40]],[a+(z-a)*.48+6,a+(z-a)*.77-5,[38,24,32]],[a+(z-a)*.77+5,z,[32,22,26]]];
+    segs.forEach(([t0,t1,w])=>P(dimG,bone(at(t0),at(t1),...w).d,r.big?'halux':null))});
+  P(hiG,blob([995,800],28,36,.1));P(hiG,blob([1085,785],28,36,.1));   // sesamoides
+  // fáscia plantar: leque que sai da tuberosidade medial do calcâneo e abre até a base de cada dedo
+  const O=[815,1672],fan=reg(el('path',{class:'tendon',d:spline([[760,1665],[872,1662],[985,1330],[1100,850],[1010,760],[800,690],[688,742],[585,815],[470,915],[548,1250]])}),'fascia');
+  root.insertBefore(fan,hiG);
+  const slips=el('g',{},root);RAYS.forEach(r=>el('path',{d:'M'+O[0]+' '+(O[1]-40)+'Q'+f1((O[0]+r.h[0])/2)+' '+f1((O[1]+r.h[1])/2+40)+' '+r.h[0]+' '+(r.h[1]+20),stroke:'#F3DABB','stroke-width':11,'stroke-linecap':'round',fill:'none',opacity:.8},slips));
+  // origem inflamada, aplicador de ondas de choque e as ondas
+  const infl=el('path',{fill:'#F0714C'},root),probe=el('g',{},root),prRing=el('circle',{r:74,fill:'rgba(114,198,162,.22)',stroke:'#72C6A2','stroke-width':10},probe),
+        prHandle=el('path',{fill:'#DCE6F2',stroke:'#fff','stroke-width':4},probe),waves=[0,1,2].map(()=>el('circle',{fill:'none',stroke:'#9FE3C5','stroke-width':9},root));
+  const lbG=el('g',{transform:TR},svg),lb=c=>label(lbG,c,()=>1/SC,p=>[p[0]*SC+OX,p[1]*SC+OY]);
+  const L={fas:lb(1),cal:lb(1),met:lb(1),dor:lb(0),des:lb(0),ond:lb(0),apl:lb(0),rec:lb(1)};
+  function update(s){
+    const t=performance.now()/1000,fi=seg(s,.55,1)*(1-.75*seg(s,2.3,2.9)),pul=(!reduced&&fi>.5)?1+.12*Math.sin(t*4):1;
+    fan.style.opacity=mix(.3,.55,seg(s,0,.5));fan.style.fill=fi>.4?'#F3B79F':'';slips.style.opacity=mix(.6,1,seg(s,0,.5));
+    show(infl,fi*.92);setD(infl,blob(O,(46+30*fi)*pul,(34+22*fi)*pul,.2,.05));
+    // ondas de choque: o aplicador encosta na pele sobre o ponto da dor (de baixo é um círculo) e as ondas se abrem a partir dele
+    const pin=seg(s,1.3,1.6)*(1-seg(s,2.3,2.6)),wv=win(s,1.45,1.6,2.3,2.5);show(probe,pin);
+    probe.setAttribute('transform','translate('+f1(O[0]+mix(260,0,pin))+' '+f1(O[1]+mix(120,0,pin))+')');setD(prHandle,'M40 50L210 250L250 214L80 14Z');
+    waves.forEach((e,i)=>{const ph=reduced?(i+1)/4:((t*.9+i/3)%1);e.setAttribute('cx',O[0]);e.setAttribute('cy',O[1]);e.setAttribute('r',f1(80+ph*190));show(e,wv*(1-ph)*.9)});
+    const o0=1-clamp((s-.22)/.25),o1=win(s,.6,.9,1.06,1.22),o3=seg(s,2.55,2.9);
+    L.fas([840,1250],G(445,250),'PLANTAR\nFASCIA',o0);L.cal([700,1640],G(445,470),'CALCANEUS',o0);L.met([690,900],G(445,150),'METATARSALS',o0);
+    L.dor(O,G(445,530),'HURTS WITH\nFIRST STEPS',o1);L.des([850,1560],G(445,400),'THE FASCIA\nWEARS HERE',o1);
+    L.ond(O,G(445,520),'SHOCKWAVES,\nNO INCISION',wv);L.apl([O[0]+150,O[1]+130],G(445,605),'APPLICATOR\nON THE SKIN',win(s,1.5,1.65,2.3,2.5));
+    L.rec(O,G(445,520),'STRETCHING\nAND SHOES',o3);
+    return fi>.5||wv>0;
+  }
+  return{xr,sk,an:lbG,update,parts,view:'View from below',dir:'right',endW:()=>.62};
+}
+
+/* =====================================================================
    CENA 2 · vista de lado (calcanhar e tornozelo)
    ===================================================================== */
 function Lateral(){
@@ -901,9 +955,12 @@ function Lateral(){
   const tU=el('path',{class:'tendon','data-part':'aquiles'},foot),tL=el('path',{class:'tendon','data-part':'aquiles'},foot),tCal=el('path',{fill:'#F3DABB'},foot);
   const gDim=el('g',{class:'bn dim'},foot),gCal=el('g',{class:'bn hi'},foot),gTal=el('g',{class:'bn hi'},foot);
   const calc=el('path',{'data-part':'calcaneo'},gCal),talus=el('path',{'data-part':'talus'},gTal);
-  [blob([450,381],17,27,.15),blob([444,442],27,22,.1),blob([497,393],25,21,.2),bone([470,447],[660,506],30,16,26).d,bone([520,402],[680,476],34,20,34).d].forEach(d=>el('path',{d},gDim));
+  const arcoP=[blob([450,381],17,27,.15),blob([444,442],27,22,.1),blob([497,393],25,21,.2),bone([470,447],[660,506],30,16,26).d,bone([520,402],[680,476],34,20,34).d].map(d=>el('path',{d,'data-part':'arco'},gDim));
   const fibG=el('g',{class:'bn hi'},body),fibula=el('path',{'data-part':'fibula'},fibG);
   const lig=el('g',{},body),extra=el('g',{},root);
+  /* pé plano: tendão tibial posterior (passa por dentro do tornozelo, atrás do maléolo medial, até o navicular); aqui só a sombra dele, tracejada */
+  const tibP=el('path',{'data-part':'tibpost',stroke:'#E9C9A4','stroke-width':7,'stroke-dasharray':'10 7','stroke-linecap':'round',fill:'none'},body);
+  const eixoT=el('path',{class:'cor','stroke-width':2.6,'stroke-dasharray':'7 6'},extra),insole=el('path',{fill:'rgba(114,198,162,.55)',stroke:'#72C6A2','stroke-width':2},extra);
   const ann=el('g',{},svg);
   setD(tibia,bone([294,-260],[322,318],60,46,84).d);setD(fibula,bone([240,-260],[281,368],24,15,34).d);   /* inclinadas como a perna da foto */
   const talN=[[268,338],[292,324],[322,319],[352,326],[374,340],[400,353],[424,367],[430,388],[412,402],[380,401],[346,399],[312,403],[282,397],[264,377]];
@@ -932,15 +989,15 @@ function Lateral(){
   const fray=el('path',{class:'cor','stroke-width':2},lig),anch=el('g',{},lig),anchL=el('path',{stroke:'#fff','stroke-width':5,'stroke-linecap':'round'},anch),anchB=el('path',{stroke:'#fff','stroke-width':1.6,fill:'none'},anch),sut=el('path',{stroke:'#fff','stroke-width':1.5,'stroke-dasharray':'3 3',fill:'none'},lig);
   const dArrow=el('path',{class:'cor','stroke-width':2.4},extra);
   const tFray=el('path',{class:'cor','stroke-width':2.2},extra),tSut=el('path',{stroke:'#fff','stroke-width':1.8,'stroke-dasharray':'4 3',fill:'none','stroke-linecap':'round'},extra);
-  [tend,tU,tL,fasc,calc,talus,fibula,atflA,atflB,cfl].forEach(e=>{const k=e.getAttribute('data-part');(parts[k]=parts[k]||[]).push(e)});
+  [tend,tU,tL,fasc,calc,talus,fibula,atflA,atflB,cfl,tibP,...arcoP].forEach(e=>{const k=e.getAttribute('data-part');(parts[k]=parts[k]||[]).push(e)});
   const lb=c=>{const f=label(ann,c,()=>1);return(p,q,t,o,an)=>f(MP(p),QQ(q),t,o,an)};
-  const L={ten:lb(1),bur:lb(1),cal:lb(1),sal:lb(0),sap:lb(0),fas:lb(1),ret:lb(0),esp:lb(1),fib:lb(1),tal:lb(1),lg:lb(1),rom:lb(0),fol:lb(0),anc:lb(0),rep:lb(1),rup:lb(0),enc:lb(0),sut:lb(0),cic:lb(1)};
+  const L={ten:lb(1),bur:lb(1),cal:lb(1),sal:lb(0),sap:lb(0),fas:lb(1),ret:lb(0),esp:lb(1),fib:lb(1),tal:lb(1),lg:lb(1),rom:lb(0),fol:lb(0),anc:lb(0),rep:lb(1),rup:lb(0),enc:lb(0),sut:lb(0),cic:lb(1),pa:lb(1),pt:lb(1),pe:lb(1),pdes:lb(0),pinc:lb(0),pfr:lb(0),ppal:lb(0),pap:lb(1)};
   function update(s,cond){
-    const H=cond==='haglund',T=cond==='tornozelo',Q=cond==='aquiles',t=performance.now()/1000,sc=1;K=1;
+    const H=cond==='haglund',T=cond==='tornozelo',Q=cond==='aquiles',P=cond==='peplano',t=performance.now()/1000,sc=1;K=1;
     MA=FIT.MA;LX=Q?0:(H?80:54);QQ=T?QT:QH;root.setAttribute('transform','matrix('+MA[0]+' '+MA[1]+' 0 '+MA[2]+' '+MA[3]+' '+MA[4]+')');
     const PT=FIT.PT;phX.setAttribute('transform',PT);phS.setAttribute('transform',PT);
-    gCal.setAttribute('class','bn '+(H?'hi':'mid'));gTal.setAttribute('class','bn mid');fibG.setAttribute('class','bn '+(T?'hi':'mid'));
-    tend.style.opacity=T?.28:(Q?.8:.6);show(lig,T?1:0);
+    gCal.setAttribute('class','bn '+(H?'hi':'mid'));gTal.setAttribute('class','bn '+(P?'hi':'mid'));fibG.setAttribute('class','bn '+(T?'hi':'mid'));gDim.setAttribute('class','bn '+(P?'mid':'dim'));
+    tend.style.opacity=(T||P)?.28:(Q?.8:.6);show(lig,T?1:0);
     // ---- Haglund
     const hg=H?ease(clamp(s)):0,rs=H?seg(s,1.45,1.85):0,ring=calN.map((p,i)=>mixP(mixP(p,calH[i],hg),calR[i],rs));
     setD(calc,spline(ring));
@@ -977,6 +1034,15 @@ function Lateral(){
     show(tCal,Q?qh*.85:0);if(Q)setD(tCal,blob([xm,YR],15,40,-.1,.02));
     show(tFray,Q?clamp((ql-.35)/.3):0);if(Q){const a=st[2],b=st[3];setD(tFray,'M'+f1(xm-9)+' '+f1(a+2)+'l-3 9m8 -8l1 10m7 -11l4 9M'+f1(xm-9)+' '+f1(b-2)+'l-3 -9m8 8l1 -10m7 11l4 -9')}
     show(tSut,Q?win(s,1.45,1.6,2.5,2.9):0);if(Q){const a=st[2],b=st[3];setD(tSut,'M'+f1(xp(a)+5)+' '+f1(a-30)+'L'+f1(xa(b)-5)+' '+f1(b+30)+'M'+f1(xa(a)-5)+' '+f1(a-30)+'L'+f1(xp(b)+5)+' '+f1(b+30)+'M'+f1(xp(a)+4)+' '+f1(a-16)+'L'+f1(xa(a)-4)+' '+f1(a-16)+'M'+f1(xp(b)+4)+' '+f1(b+16)+'L'+f1(xa(b)-4)+' '+f1(b+16))}
+    // ---- pé plano: o tálus inclina para baixo, o meio do pé desce, o calcâneo abaixa; a palmilha apoia o arco
+    const pc=P?ease(clamp(s))*(1-.25*seg(s,1.45,1.9)):0,pins=P?seg(s,1.3,1.7):0;
+    const rot=(p,c,a)=>{const r=a*Math.PI/180,x=p[0]-c[0],y=p[1]-c[1];return[c[0]+x*Math.cos(r)-y*Math.sin(r),c[1]+x*Math.sin(r)+y*Math.cos(r)]};
+    gTal.setAttribute('transform',P?'rotate('+f1(14*pc)+' 330 335)':'');gDim.setAttribute('transform',P?'rotate('+f1(-6*pc)+' 670 500)':'');gCal.setAttribute('transform',P?'rotate('+f1(5*pc)+' 170 490)':'');
+    show(tibP,P?.85:0);tibP.setAttribute('stroke',P&&pc>.5&&s<1.6?'#F0714C':'#E9C9A4');tibP.setAttribute('stroke-width',P?mix(7,4,clamp(pc*1.5)):7);
+    setD(tibP,'M262 150C258 300 262 380 300 410C340 '+f1(438+12*pc)+' 400 '+f1(420+18*pc)+' 446 '+f1(400+22*pc));
+    const e0=rot([330,360],[330,335],14*pc),e1=rot([430,388],[330,335],14*pc),ev=[e1[0]-e0[0],e1[1]-e0[1]],eL=Math.hypot(ev[0],ev[1]),eEnd=[e0[0]+ev[0]/eL*360,e0[1]+ev[1]/eL*360];
+    show(eixoT,P?win(s,-.3,-.02,2.3,2.6):0);setD(eixoT,'M'+f1(e0[0]-ev[0]/eL*40)+' '+f1(e0[1]-ev[1]/eL*40)+'L'+f1(eEnd[0])+' '+f1(eEnd[1]));
+    show(insole,P?pins*.95:0);setD(insole,'M176 534C250 528 330 '+f1(mix(530,506,pins))+' 440 '+f1(mix(531,500,pins))+'C540 '+f1(mix(532,508,pins))+' 610 530 664 534L664 '+f1(mix(534,546,pins))+'L176 '+f1(mix(534,546,pins))+'Z');
     // ---- rótulos
     const o0=1-clamp((s-.22)/.25),o1=win(s,.6,.9,1.06,1.22),o3=seg(s,2.55,2.9);
     // Aquiles: o tendão é estreito e não sobra fundo atrás dele, então os rótulos vão à frente do tendão, sobre a perna, em placa
@@ -989,6 +1055,12 @@ function Lateral(){
     L.fib([270,268],[212,236],'FIBULA',T?o0:0,'end');L.tal([378,372],[424,318],'TALUS',T?o0:0);L.lg(mixP(o,ins,.5),[424,232],'TALOFIBULAR\nLIGAMENT',T?o0:0);
     L.rom(mixP(o,ins,.5),[424,232],'TORN\nLIGAMENT',T?o1:0);L.fol([420+dx,330],[436,330],'THE TALUS\nBECOMES LOOSE',T?win(s,.75,.95,1.3,1.5):0);
     L.anc(a0,[424,232],'ANCHOR\nAND SUTURE',T?win(s,1.5,1.6,2.3,2.5):0);L.rep(mixP(o,ins,.5),[424,232],'LIGAMENT\nREPAIRED',T?o3:0);
+    // pé plano
+    L.pt(rot([378,372],[330,335],14*pc),[400,262],'TALUS',P?o0:0);L.pa(rot([470,400],[670,500],-6*pc),[520,330],'ARCH',P?o0:0);
+    L.pe(mixP(e0,eEnd,.55),[520,440],'TALUS AXIS ON\nTHE METATARSAL',P?win(s,-.3,-.02,.75,.9):0);
+    L.pdes(rot([470,400],[670,500],-6*pc),[520,330],'ARCH COLLAPSES',P?o1:0);L.pinc(mixP(e0,eEnd,.75),[520,440],'TALUS AXIS\nTO THE FLOOR',P?o1:0);
+    L.pfr([262,300],[400,190],'POSTERIOR\nTIBIAL TENDON\nWEAKENS',P?o1:0);
+    L.ppal([420,515],[600,470],'INSOLE\nSUPPORTS ARCH',P?win(s,1.45,1.6,2.3,2.5):0);L.pap([420,515],[580,470],'INSOLE AND\nSTRENGTHENING',P?o3:0);
     return (infl>.5)||(loose>.6)||(rp>0&&rp<1);
   }
   return{xr,sk,an:ann,update,parts,view:'Side view',dir:'left',endW:c=>c==='tornozelo'?1:.58,geo:{talN,calN,calH,tenN,tenH,skN,skH,skQ,stumps}};
@@ -1019,7 +1091,19 @@ const TXT={
     ['On the outer side of the ankle, short ligaments connect the fibula to the talus and the calcaneus. They are what hold the foot when you step awkwardly.'],
     ['In an ankle sprain, the front ligament is the one that tears most often. Most heal with protection and physical therapy. When it heals loose, the talus moves too much and the ankle starts to give way.'],
     ['If the instability persists after rehabilitation, the ligament can be repaired: it is reattached to the bone with small anchors and sutures.','In many cases arthroscopically. Every surgery has risks.'],
-    ['The repaired ligament once again limits the movement of the talus. Treatment includes strength and balance physical therapy, before and after.','Results and recovery vary from person to person.']]}
+    ['The repaired ligament once again limits the movement of the talus. Treatment includes strength and balance physical therapy, before and after.','Results and recovery vary from person to person.']]},
+  fascite:{name:'Plantar fasciitis',t4:'The treatment',m4:'Treatment',steps:[
+    ['From the outside, fasciitis pain sits under the heel, toward the inner side, at the spot that touches the ground first. Scroll to see inside.'],
+    ['The plantar fascia is a firm band that starts at the heel and fans out to the base of the toes. It supports the arch of the foot.'],
+    ['With repeated overload, it wears down and hurts where it attaches to the heel. The pain is worst with the first steps in the morning. The heel spur that may show on an X-ray comes with fasciitis in some people, but it is not what causes the pain.'],
+    ['In the vast majority of cases, treatment does not involve surgery: stretching, cushioned shoes, insoles and physical therapy. When the pain persists, shockwave therapy is an option: the device rests on the skin of the heel and delivers energy pulses over the painful spot, with no incision.','It is done in sessions. Whether it is indicated depends on the evaluation.'],
+    ['Improvement is usually gradual. Stretching and proper shoes remain part of the care. Surgery is rare and is reserved for those who do not improve after several months of well-done treatment.','Results and recovery vary from person to person.']]},
+  peplano:{name:'Adult-acquired flatfoot',t4:'The treatment',m4:'Treatment',steps:[
+    ['In a flat foot, the inner arch of the foot sits low. Scroll to see inside, in the bones.'],
+    ['The arch is held up by the bones of the midfoot and by the posterior tibial tendon, which runs along the inner side of the ankle. On a standing X-ray, the axis of the talus points to the first metatarsal.'],
+    ['In adults, the arch can collapse over time, most often because the posterior tibial tendon loses strength. The talus tilts down, its axis starts pointing to the ground and the heel drifts outward.'],
+    ['Early on, an arch-support insole, firm shoes, strengthening and physical therapy control the pain and help slow the progression.','When the foot keeps deforming or hurting, surgery is planned case by case, according to stiffness and stage.'],
+    ['The insole supports the arch day to day and strengthening helps the tendon. Follow-up shows whether the foot is stable.','Results vary from person to person.']]}
 };
 const PARTS={
   halux:['Big toe (hallux)','2 phalanges','It is the toe that pushes hardest against the ground at the end of each step.','where it points, how far it bends and whether it hurts to move.'],
@@ -1032,12 +1116,14 @@ const PARTS={
   fascia:['Plantar fascia','sole of the foot','A firm band that supports the arch. When inflamed, it hurts under the heel with the first steps of the day.','pain when pressing on its origin, at the heel.'],
   talus:['Talus','ankle joint','Sits between the leg and the heel and lets the foot move up and down.','looseness and clicking when the ankle moves.'],
   fibula:['Fibula','outer bone','Its tip is the bony bump on the outer side of the ankle, where the ligaments that tear most often begin.','pain when pressing on the bone, which may indicate a fracture.'],
-  ligamento:['Ligaments','fibula to talus','They hold the foot when you step awkwardly.','anterior drawer and talar tilt tests, comparing both sides.']
+  ligamento:['Ligaments','fibula to talus','They hold the foot when you step awkwardly.','anterior drawer and talar tilt tests, comparing both sides.'],
+  arco:['Arch of the foot','midfoot bones','The midfoot bones form a bridge between the heel and the front of the foot.','arch height standing and sitting, and the weight-bearing X-ray.'],
+  tibpost:['Posterior tibial tendon','inner side of the ankle','Holds up the arch from the inner side. When it loses strength, the arch collapses.','pain and swelling on the inner side of the ankle, and whether you can rise onto the toes of one foot.']
 };
-const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aquiles','calcaneo','fascia','talus'],aquiles:['aquiles','calcaneo','talus','fascia'],tornozelo:['fibula','talus','ligamento','calcaneo']};
+const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aquiles','calcaneo','fascia','talus'],aquiles:['aquiles','calcaneo','talus','fascia'],tornozelo:['fibula','talus','ligamento','calcaneo'],fascite:['fascia','calcaneo','metas','halux'],peplano:['arco','tibpost','talus','calcaneo']};
 
 /* ---------- cenas, varredura e alça ---------- */
-const scenes={dorsal:Dorsal(),lateral:Lateral()};
+const scenes={dorsal:Dorsal(),lateral:Lateral(),plantar:Plantar()};
 const hand=el('g',{},svg),edge=el('line',{id:'edge',y1:-20,y2:660},hand),grip=el('g',{id:'grip',tabindex:0,role:'slider','aria-label':'Drag to see the outside or the X-ray','aria-valuemin':0,'aria-valuemax':100},hand);
 el('circle',{r:29},grip);el('path',{d:'M-17 -3l-6 5 6 5M17 -3l6 5-6 5'},grip);{const t=el('text',{y:-7},grip);t.textContent='DRAG'}
 grip.style.display='none';grip.removeAttribute('tabindex');grip.setAttribute('aria-hidden','true');   // sem alça: o esquema anda pela rolagem e pelo botão "Ver em raio-x"
@@ -1055,7 +1141,7 @@ const story=document.getElementById('story'),stepsLi=[...document.querySelectorA
       meter=document.getElementById('meter'),viewTag=document.getElementById('viewTag'),kicker=document.getElementById('kicker'),tabs=[...document.querySelectorAll('.tab')],
       partgrid=document.getElementById('partgrid'),partinfo=document.getElementById('partinfo'),xrayToggle=document.getElementById('xrayToggle');
 let cond='joanete',target=-1,s=-1,active=-1,dirty=true,w=0,wUser=null,sel=null;
-const scene=()=>cond==='joanete'?scenes.dorsal:scenes.lateral;
+const scene=()=>cond==='joanete'?scenes.dorsal:(cond==='fascite'?scenes.plantar:scenes.lateral);
 const STOPS=[[0,-1],[.05,-1],[.2,0],[.26,0],[.44,1],[.5,1],[.72,2],[.78,2],[.93,3],[1,3]];
 function mapS(p){for(let i=1;i<STOPS.length;i++){const[a,va]=STOPS[i-1],[b,vb]=STOPS[i];if(p<=b)return va+(vb-va)*clamp((p-a)/(b-a))}return 3}
 const REST=[.02,.23,.47,.75,.97];
@@ -1078,8 +1164,9 @@ function select(id){
   dirty=true;
 }
 function stepText(){const T=TXT[cond].steps[Math.max(active,0)];stepDesc.textContent=T[0];if(T[1]){const sm=document.createElement('small');sm.textContent=T[1];stepDesc.appendChild(sm)}}
+const stepT4=stepsLi[3].querySelector('.t'),meterT4=meter.querySelectorAll('span')[3];
 function fill(){
-  const T=TXT[cond];stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
+  const T=TXT[cond];stepT4.textContent=T.t4||'The surgery';meterT4.textContent=T.m4||'Surgery';stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
   viewTag.textContent=T.name;kicker.textContent=scene().view;
   for(const k in scenes){const on=scenes[k]===scene();scenes[k].xr.style.display=scenes[k].sk.style.display=scenes[k].an.style.display=on?'':'none'}
   partgrid.textContent='';PARTLIST[cond].forEach(id=>{const b=document.createElement('button');b.type='button';b.className='part';b.dataset.p=id;b.id='part-'+id;b.setAttribute('aria-pressed','false');
@@ -1112,7 +1199,7 @@ function frame(){
   const wt=wUser!=null?wUser:wipeAuto();w=(reduced||drag)?wt:mix(w,wt,.16);if(Math.abs(w-wt)<.002)w=wt;
   if(vis&&(dirty||s!==ps||w!==pw||live)){
     const sc=scene(),sv=Math.max(s,0);
-    live=cond==='joanete'?sc.update(sv):sc.update(sv,cond);setWipe(sc.dir,w);dirty=false;
+    setWipe(sc.dir,w);live=cond==='joanete'?sc.update(sv):sc.update(sv,cond);dirty=false;   // cortina antes do desenho: os rótulos usam a posição dela
     xrayToggle.textContent=w>.5?'See outside':'See X-ray';
     const f=(s+1)/4;meter.querySelector('i').style.width=(f*100)+'%';meter.querySelector('u').style.left=(f*100)+'%';
   }
@@ -1154,7 +1241,7 @@ miniLateral(document.getElementById('icoHeel'),'heel');miniLateral(document.getE
 const goEsq=c=>{const b=document.getElementById('tab-'+c);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:reduced?'auto':'smooth'})};
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goEsq(a.dataset.go)}));
 /* vindo das páginas de cada problema: ./#esquema-joanete abre o esquema já na aba certa */
-{const m=location.hash.match(/^#esquema-(joanete|haglund|aquiles|tornozelo)$/);if(m){const go=()=>{const b=document.getElementById('tab-'+m[1]);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:'auto'})};   /* pulo direto: a rolagem suave some quando a página ainda está carregando */
+{const m=location.hash.match(/^#esquema-(joanete|haglund|aquiles|tornozelo|fascite|peplano)$/);if(m){const go=()=>{const b=document.getElementById('tab-'+m[1]);if(b)b.click();const total=story.offsetHeight-innerHeight,top=story.getBoundingClientRect().top+scrollY;scrollTo({top:top+total*REST[0],behavior:'auto'})};   /* pulo direto: a rolagem suave some quando a página ainda está carregando */
   if(document.readyState==='complete')setTimeout(go,60);else addEventListener('load',()=>setTimeout(go,60))}}
 
 /* ---------- entrada suave das seções (só o que está abaixo da dobra) ---------- */

@@ -175,10 +175,10 @@ header.top nav a:not(.btn):hover{color:#fff}
 .stage .caps{color:var(--brand-lite)}
 .stage h3{font-size:clamp(1.7rem,2.6vw,2.3rem);color:#fff;margin:.6rem 0 1.1rem}
 .stage h3 em{color:var(--brand-lite)}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin:0 0 1.1rem}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin:0 0 1.1rem}
 .tab{font-family:var(--sans);text-align:left;background:transparent;border:1.5px solid var(--film-rule);border-radius:var(--r);padding:.45rem .75rem;cursor:pointer;color:var(--film-dim);line-height:1.2;transition:border-color .2s,background .2s,color .2s}
-.tab b{display:block;font-family:var(--display);font-stretch:112%;font-size:1.02rem;color:var(--film-ink)}
-.tab span{font-size:.76rem}
+.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink);overflow-wrap:anywhere}
+.tab span{display:none}   /* 6 abas em 3 colunas: só o nome, senão o texto da etapa 04 passa da tela do notebook */
 .tab:hover{border-color:var(--film-dim)}
 .tab[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink-2)}
 .tab[aria-pressed="true"] b{color:var(--brand-deep)}
@@ -256,7 +256,7 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 
   .stage .wrap{grid-template-columns:1fr;gap:.5rem;padding-block:.7rem}
   .textcol>.caps,.textcol>h3,.panel{display:none}
-  .tabs{margin:.1rem 0 .1rem;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem}
+  .tabs{margin:.1rem 0 .1rem;grid-template-columns:repeat(3,minmax(0,1fr));gap:.3rem}
   .tab{min-width:0;padding:.4rem .3rem;text-align:center}.tab b{font-size:.84rem;font-stretch:100%}.tab span{display:none}
   .filmcol{order:2}.textcol{display:contents}
   .film{width:min(100%,calc(min(60svh,100svh - 15rem)*600/640))}

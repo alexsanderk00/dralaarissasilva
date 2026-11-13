@@ -1110,5 +1110,137 @@
  [
   ">Avaliação no Leblon</a>",
   ">Visit in Leblon (in Portuguese)</a>"
+ ],
+ [
+  "<b>Fascite</b><span>embaixo do calcanhar</span>",
+  "<b>Fasciitis</b><span>under the heel</span>"
+ ],
+ [
+  "<b>Pé plano</b><span>o arco que desabou</span>",
+  "<b>Flat foot</b><span>the arch that collapsed</span>"
+ ],
+ [
+  "stepT4.textContent=T.t4||'A cirurgia';meterT4.textContent=T.m4||'Cirurgia';",
+  "stepT4.textContent=T.t4||'The surgery';meterT4.textContent=T.m4||'Surgery';"
+ ],
+ [
+  "t4:'O tratamento',m4:'Tratamento'",
+  "t4:'The treatment',m4:'Treatment'"
+ ],
+ [
+  "name:'Fascite plantar'",
+  "name:'Plantar fasciitis'"
+ ],
+ [
+  "'Por fora, a dor da fascite fica embaixo do calcanhar, na parte de dentro, no ponto que pisa primeiro. Role para ver por dentro.'",
+  "'From the outside, fasciitis pain sits under the heel, toward the inner side, at the spot that touches the ground first. Scroll to see inside.'"
+ ],
+ [
+  "'A fáscia plantar é uma faixa firme que sai do calcanhar e se abre em leque até a base dos dedos. Ela sustenta o arco do pé.'",
+  "'The plantar fascia is a firm band that starts at the heel and fans out to the base of the toes. It supports the arch of the foot.'"
+ ],
+ [
+  "'Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar. A dor é mais forte nos primeiros passos da manhã. O esporão que pode aparecer na radiografia acompanha a fascite em algumas pessoas, mas não é ele que causa a dor.'",
+  "'With repeated overload, it wears down and hurts where it attaches to the heel. The pain is worst with the first steps in the morning. The heel spur that may show on an X-ray comes with fasciitis in some people, but it is not what causes the pain.'"
+ ],
+ [
+  "'Na grande maioria dos casos, o tratamento é sem cirurgia: alongamento, calçado que amortece, palmilha e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção: o aparelho é apoiado na pele do calcanhar e emite pulsos de energia sobre o ponto da dor, sem corte.','É feita em sessões. A indicação depende da avaliação.'",
+  "'In the vast majority of cases, treatment does not involve surgery: stretching, cushioned shoes, insoles and physical therapy. When the pain persists, shockwave therapy is an option: the device rests on the skin of the heel and delivers energy pulses over the painful spot, with no incision.','It is done in sessions. Whether it is indicated depends on the evaluation.'"
+ ],
+ [
+  "'A melhora costuma ser gradual. Alongamento e calçado adequado continuam fazendo parte do cuidado. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.'",
+  "'Improvement is usually gradual. Stretching and proper shoes remain part of the care. Surgery is rare and is reserved for those who do not improve after several months of well-done treatment.'"
+ ],
+ [
+  "name:'Pé plano do adulto'",
+  "name:'Adult-acquired flatfoot'"
+ ],
+ [
+  "'O arco é sustentado pelos ossos do meio do pé e pelo tendão tibial posterior, que passa por dentro do tornozelo. Na radiografia em pé, o eixo do tálus aponta para o primeiro metatarso.'",
+  "'The arch is held up by the bones of the midfoot and by the posterior tibial tendon, which runs along the inner side of the ankle. On a standing X-ray, the axis of the talus points to the first metatarsal.'"
+ ],
+ [
+  "'No adulto, o arco pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior perde força. O tálus inclina para baixo, o eixo dele passa a apontar para o chão e o calcanhar desvia para fora.'",
+  "'In adults, the arch can collapse over time, most often because the posterior tibial tendon loses strength. The talus tilts down, its axis starts pointing to the ground and the heel drifts outward.'"
+ ],
+ [
+  "'No início, palmilha com apoio do arco, calçado firme, fortalecimento e fisioterapia controlam a dor e ajudam a frear a progressão.','Quando o pé continua deformando ou doendo, a cirurgia é planejada caso a caso, conforme a rigidez e o estágio.'",
+  "'Early on, an arch-support insole, firm shoes, strengthening and physical therapy control the pain and help slow the progression.','When the foot keeps deforming or hurting, surgery is planned case by case, according to stiffness and stage.'"
+ ],
+ [
+  "'A palmilha apoia o arco no dia a dia e o fortalecimento ajuda o tendão. O acompanhamento mostra se o pé está estável.','O resultado varia de pessoa para pessoa.'",
+  "'The insole supports the arch day to day and strengthening helps the tendon. Follow-up shows whether the foot is stable.','Results vary from person to person.'"
+ ],
+ [
+  "arco:['Arco do pé','ossos do meio do pé','Os ossos do meio do pé formam uma ponte entre o calcanhar e a frente do pé.','a altura do arco em pé e sentado e a radiografia com carga.']",
+  "arco:['Arch of the foot','midfoot bones','The midfoot bones form a bridge between the heel and the front of the foot.','arch height standing and sitting, and the weight-bearing X-ray.']"
+ ],
+ [
+  "tibpost:['Tendão tibial posterior','por dentro do tornozelo','Sustenta o arco pelo lado de dentro. Quando perde força, o arco desaba.','dor e inchaço por dentro do tornozelo e se você sobe na ponta de um pé só.']",
+  "tibpost:['Posterior tibial tendon','inner side of the ankle','Holds up the arch from the inner side. When it loses strength, the arch collapses.','pain and swelling on the inner side of the ankle, and whether you can rise onto the toes of one foot.']"
+ ],
+ [
+  "view:'Vista de baixo'",
+  "view:'View from below'"
+ ],
+ [
+  "'FÁSCIA\\nPLANTAR'",
+  "'PLANTAR\\nFASCIA'"
+ ],
+ [
+  "'METATARSOS'",
+  "'METATARSALS'"
+ ],
+ [
+  "'DÓI AO PISAR,\\nDE MANHÃ'",
+  "'HURTS WITH\\nFIRST STEPS'"
+ ],
+ [
+  "'A FÁSCIA SE\\nDESGASTA AQUI'",
+  "'THE FASCIA\\nWEARS HERE'"
+ ],
+ [
+  "'ONDAS DE\\nCHOQUE,\\nSEM CORTE'",
+  "'SHOCKWAVES,\\nNO INCISION'"
+ ],
+ [
+  "'APLICADOR\\nNA PELE'",
+  "'APPLICATOR\\nON THE SKIN'"
+ ],
+ [
+  "'ARCO DO PÉ'",
+  "'ARCH'"
+ ],
+ [
+  "'EIXO DO TÁLUS\\nNO METATARSO'",
+  "'TALUS AXIS ON\\nTHE METATARSAL'"
+ ],
+ [
+  "'O ARCO DESABA'",
+  "'ARCH COLLAPSES'"
+ ],
+ [
+  "'EIXO DO TÁLUS\\nPARA O CHÃO'",
+  "'TALUS AXIS\\nTO THE FLOOR'"
+ ],
+ [
+  "'TENDÃO TIBIAL\\nPOSTERIOR\\nPERDE FORÇA'",
+  "'POSTERIOR\\nTIBIAL TENDON\\nWEAKENS'"
+ ],
+ [
+  "'PALMILHA\\nAPOIA O ARCO'",
+  "'INSOLE\\nSUPPORTS ARCH'"
+ ],
+ [
+  "'ALONGAMENTO\\nE CALÇADO'",
+  "'STRETCHING\\nAND SHOES'"
+ ],
+ [
+  "'PALMILHA E\\nFORTALECIMENTO'",
+  "'INSOLE AND\\nSTRENGTHENING'"
+ ],
+ [
+  "'No pé plano, o arco do lado de dentro do pé fica baixo. Role para ver por dentro, nos ossos.'",
+  "'In a flat foot, the inner arch of the foot sits low. Scroll to see inside, in the bones.'"
  ]
 ]
