@@ -10,3 +10,9 @@ CNAME
 img/*.jpg
 img/*.png
 img/*.webp
+
+# rascunhos de páginas para a Dra. Larissa revisar (não vão para o site)
+_rascunho/
+
+# arquivos para o Perfil da Empresa no Google (não vão para o site)
+google-perfil/

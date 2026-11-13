@@ -127,7 +127,7 @@ ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Lari
       'sameAs': ['https://www.instagram.com/dralaarissasilva/', 'https://www.google.com/search?kgmid=/g/11zzlrdytf']}   # Instagram e Perfil da Empresa no Google (kgmid do perfil)
 # nome do site nos resultados do Google (em cima do endereço): dado WebSite na página principal; o Google escolhe entre name e alternateName
 SITE_NOME = 'Dra. Larissa Silva'   # curto: o Google costuma ignorar nome com profissão e voltar ao domínio
-SITE = {'@context': 'https://schema.org', '@type': 'WebSite', 'name': SITE_NOME, 'alternateName': ['Larissa Silva', 'dralaarissasilva.com.br'], 'url': URL}
+SITE = {'@context': 'https://schema.org', '@type': 'WebSite', 'name': SITE_NOME, 'alternateName': ['Larissa Silva'], 'url': URL}
 head = ('<meta name="description" content="' + desc + '">\n'
         '<meta name="theme-color" content="#113358">\n'
         '<link rel="canonical" href="' + URL + '">\n'
@@ -169,9 +169,11 @@ if TEM_EN:
     ld_en = dict(ld, description=desc_en, knowsAbout=['Bunion (hallux valgus)', "Haglund's deformity", 'Achilles tendon', 'Ankle sprain', 'Ankle instability', 'Plantar fasciitis', 'Minimally invasive foot and ankle surgery'],
                  availableService=[{'@type': 'MedicalProcedure', 'name': n} for n in ['Minimally invasive bunion surgery', "Haglund's deformity surgery", 'Achilles tendon repair', 'Ankle ligament repair']])
     a = json.dumps(ld, ensure_ascii=False); assert a in en; en = en.replace(a, json.dumps(ld_en, ensure_ascii=False))   # dados para o Google em inglês
-    SITE_EN = dict(SITE)   # o Google tira o nome do site só da página principal da raiz: o /en/ usa o mesmo
-    en = en.replace(json.dumps(SITE, ensure_ascii=False), json.dumps(SITE_EN, ensure_ascii=False)).replace('content="' + SITE_NOME + '"', 'content="' + SITE_EN['name'] + '"')
+    # nome do site (WebSite + og:site_name) igual nas duas línguas: um nome só para o Google; os pares de tradução não podem trocar "Dra." por "Dr." aqui
+    SITE_TAGS = ('<script type="application/ld+json">' + json.dumps(SITE, ensure_ascii=False) + '</script>', '<meta property="og:site_name" content="' + SITE_NOME + '">')
+    for i, t in enumerate(SITE_TAGS): assert t in en, t[:60]; en = en.replace(t, '@@SITE%d@@' % i)
     for pt, eng in json.load(open('traducao_en.json', encoding='utf-8')): en = en.replace(pt, eng)   # depois das metas do topo, que usam o texto em português
+    for i, t in enumerate(SITE_TAGS): en = en.replace('@@SITE%d@@' % i, t)
     en = re.sub(r'<b>(\d),(\d)</b>', lambda m: '<b>' + m.group(1) + '.' + m.group(2) + '</b>', en)   # nota no formato inglês (5.0)
     en = re.sub(r'aria-label="Nota (\d),(\d) de 5"', lambda m: 'aria-label="Rated ' + m.group(1) + '.' + m.group(2) + ' out of 5"', en)
     # a página fica em /en/ e os arquivos continuam na raiz
@@ -189,6 +191,8 @@ import paginas
 PAGS = paginas.gerar(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V)
 if TEM_EN:   # as mesmas 4 páginas em inglês, em en/
     PAGS += paginas.gerar(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V, 'en', json.load(open('traducao_en.json', encoding='utf-8')))
+PAGS += paginas.gerar_leblon(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V, ld)   # "ortopedista pé e tornozelo Leblon"
+PAGS += paginas.gerar_novas(open('head_v3.html', encoding='utf-8').read(), open('ctrl_v3.js', encoding='utf-8').read(), IMG_URL, URL, IMG_URL['{{IMG_LOGO}}'], FAV_V)   # só as já revisadas pela Dra. Larissa entram no sitemap
 
 # Google: mapa do site e regras de rastreamento (enviar sitemap.xml no Search Console)
 import datetime

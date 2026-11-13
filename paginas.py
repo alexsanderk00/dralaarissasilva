@@ -111,7 +111,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
     header = re.search(r'<header class="top">.*?</header>', src_head, flags=re.S).group(0)
     header = header.replace('href="#inicio"', 'href="./"').replace('href="#', 'href="./#').replace('{{IMG_LOGO}}', logo_url)
     cookies = re.search(r'<div class="cookies" id="cookies".*?</div>\n</div>', src_head, flags=re.S).group(0).replace('href="privacidade.html"', 'href="' + pre + 'privacidade.html"')
-    footer = re.search(r'<footer><div class="wrap">.*?</footer>', src_head, flags=re.S).group(0).replace('href="privacidade.html"', 'href="' + pre + 'privacidade.html"')
+    footer = re.search(r'<footer><div class="wrap">.*?</footer>', src_head, flags=re.S).group(0).replace('href="privacidade.html"', 'href="' + pre + 'privacidade.html"').replace('href="ortopedista-leblon', 'href="' + pre + 'ortopedista-leblon')
     ga = '<script>' + src_ctrl.rsplit('<script>', 1)[1]
     hoje = datetime.date.today().isoformat()
     import hashlib; og_v = hashlib.md5(open('img/web/og.jpg', 'rb').read()).hexdigest()[:8]   # mesma versão da prévia que o build.py gera
@@ -130,6 +130,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
         obs = ''.join(('<div><dt>%s<small>%s</small></dt><dd>%s</dd><dd><b>' + L['observo'] + '</b> %s</dd></div>') % (parts[k][0], parts[k][1], parts[k][2], parts[k][3]) for k in plist[c])
         perg = ''.join('<details%s><summary>%s</summary><p>%s</p></details>' % (' open' if i == 0 else '', faq[j][0], faq[j][1]) for i, j in enumerate(p['faq']))
         outros = ''.join('<li><a href="%s.html">%s</a></li>' % (q['slug'], (q['en']['h1'] if lang == 'en' else q['h1'])) for q in PAGINAS if q is not p)
+        if lang == 'pt': outros += ''.join('<li><a href="%s.html">%s</a></li>' % (q['slug'], q['h1']) for q in NOVAS if q['revisado']) + '<li><a href="%s.html">Avaliação no Leblon</a></li>' % LEBLON['slug']
         LANG_EN = '<a class="lang" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>'
         cab = header.replace(LANG_EN, ('<a class="lang" href="en/' + p['slug'] + '.html" hreflang="en" lang="en" aria-label="English version">EN</a>') if lang == 'pt'
                              else ('<a class="lang" href="../' + p['slug'] + '.html" hreflang="pt-BR" lang="pt-BR" aria-label="Versão em português">PT</a>'))
@@ -208,3 +209,250 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
         open(pasta + p['slug'] + '.html', 'w', encoding='utf-8').write(doc)
         out.append(url)
     return out
+
+
+# ======================================================================================================
+# Páginas novas (proposta Growth360, 13/11/2026)
+# 1) Avaliação no Leblon: página para a busca "ortopedista pé e tornozelo Leblon", montada SÓ com textos já revisados
+#    (Quem sou, ficha, "Como é o cuidado", lista de sintomas, perguntas, endereço). Texto novo: só títulos e chamadas.
+# 2) Problemas da lista "O que mais aparece" que ainda não têm página: texto médico NOVO. Enquanto `revisado` for False,
+#    a página sai em _rascunho/ (fora do git e da Vercel, com noindex) para a Dra. Larissa ler. Revisou? revisado=True:
+#    a página vai para a raiz, entra no sitemap, nas listas "Outros problemas" e na página do Leblon.
+# ======================================================================================================
+
+NOVAS = [
+    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=False,
+         title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
+         dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
+         lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
+         oque=['A fáscia plantar é uma faixa firme que vai do calcanhar até a base dos dedos e sustenta o arco do pé. Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar.'],
+         aparece=['A dor é mais forte nos primeiros passos da manhã ou depois de ficar sentado, alivia um pouco ao andar e volta no fim do dia. É comum em quem passa muito tempo em pé, corre, ganhou peso ou usa calçado baixo e duro.',
+                  'O esporão de calcâneo que aparece na radiografia pode acompanhar a fascite, mas não é ele que causa a dor.'],
+         trat=['Na grande maioria dos casos, o tratamento é conservador: alongamento da panturrilha e da fáscia, calçado que amortece, palmilha, ajuste do treino e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção.',
+               'A melhora costuma ser gradual. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.'],
+         quando=['Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.']),
+    dict(slug='neuroma-de-morton', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=False,
+         title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+         dor='Dor na “bola” do pé, como pedrinha no sapato', faq=[4],
+         lead='A dor na “bola” do pé tem várias causas. Investigo a causa e começo pelo calçado e pela palmilha.',
+         oque=['Metatarsalgia é o nome geral da dor na “bola” do pé, a região de apoio logo atrás dos dedos. Uma das causas é o neuroma de Morton: um espessamento do nervo que passa entre os ossos, mais comum entre o terceiro e o quarto dedo.'],
+         aparece=['Sensação de pedrinha ou de meia dobrada dentro do sapato, queimação, choque ou dormência que corre para os dedos. Piora com salto alto e bico fino e alivia ao tirar o sapato e massagear o pé.'],
+         trat=['Começo pelo calçado: mais largo, de salto baixo e sola que amortece. Uma palmilha com apoio logo atrás da bola do pé tira a pressão do nervo e dos ossos. Fisioterapia e, em alguns casos, infiltração entram como opções.',
+               'A cirurgia fica para quando a dor continua apesar desses cuidados.'],
+         quando=['Dormência que não passa, dor que acorda à noite ou inchaço no peito do pé pedem avaliação, porque podem ter outra causa, como fratura por estresse.']),
+    dict(slug='halux-rigido', h1='Hálux rígido', sub='artrose do dedão', revisado=False,
+         title='Hálux rígido: artrose e dor no dedão', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+         dor='Dedão duro, que dói ao dobrar', faq=[4],
+         lead='Dedão duro e dolorido não é joanete. Trato primeiro com calçado e palmilha e, se a dor continuar, avalio a cirurgia pelo grau do desgaste.',
+         oque=['É o desgaste da articulação na base do dedão. A cartilagem afina, o osso forma bicos nas bordas e o dedão perde a capacidade de dobrar para cima.'],
+         aparece=['Dor e rigidez no dedão ao andar, subir escada, agachar ou usar salto. Às vezes aparece um calombo em cima da articulação, que machuca no sapato. No joanete, o dedão desvia para o lado; no hálux rígido, ele fica duro.'],
+         trat=['Calçado de sola mais rígida e bico alto, palmilha que limita o movimento do dedão, ajuste das atividades e fisioterapia aliviam muitos casos.',
+               'Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.'],
+         quando=['Procure avaliação se o dedão dói e endurece há semanas, se incha e fica vermelho de repente ou se a dor muda o seu jeito de pisar.']),
+    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=False,
+         title='Pé plano do adulto: o arco que desabou', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+         dor='Arco que desabou, dor por dentro do tornozelo', faq=[4],
+         lead='Quando o arco do pé desaba na vida adulta, na maioria das vezes há um tendão envolvido. Quanto antes avaliar, mais opções de tratamento sem cirurgia.',
+         oque=['Muita gente tem pé plano desde a infância, sem dor. No adulto, o arco também pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior, que sustenta o arco por dentro do tornozelo, perde força.'],
+         aparece=['Dor e inchaço por dentro do tornozelo, cansaço ao andar, o arco mais baixo de um lado só e o calcanhar desviando para fora. Em fases mais avançadas, a dor passa para a parte de fora do pé.'],
+         trat=['No início, palmilha com apoio do arco, calçado firme, fortalecimento e fisioterapia controlam a dor e ajudam a frear a progressão.',
+               'Quando o pé continua deformando ou doendo, a cirurgia é planejada caso a caso, conforme a rigidez e o estágio.'],
+         quando=['Procure avaliação se o pé mudou de formato de um lado só, se a dor por dentro do tornozelo não passa ou se ficou difícil subir na ponta do pé. Quem tem diabetes e nota o pé quente, inchado e com o arco desabando de repente precisa de avaliação urgente.']),
+]
+
+LEBLON = dict(slug='ortopedista-leblon-pe-tornozelo',
+              title='Ortopedista no Leblon · Pé e tornozelo · Dra. Larissa Silva',   # "Ortopedista de Pé e Tornozelo" não é área registrada no CFM: manter separado
+              desc='Avaliação do pé e do tornozelo no Leblon, Rio de Janeiro, com a Dra. Larissa Silva, ortopedista e traumatologista formada pelo INTO. Consulta presencial ou por teleconsulta. Primeiro, sem cirurgia.')
+
+def _casca(src_head, src_ctrl, pre, logo_url, home):
+    # pedaços comuns: CSS, fontes, cabeçalho, aviso de cookies, rodapé, GA e regra de segurança da página principal
+    css = re.search(r'<style>(.*?)</style>', src_head, flags=re.S).group(1)
+    links = ''.join(l + '\n' for l in src_head.splitlines() if l.startswith('<link '))
+    header = re.search(r'<header class="top">.*?</header>', src_head, flags=re.S).group(0)
+    header = (header.replace('href="en/"', 'href="' + pre + 'en/"').replace('href="#inicio"', 'href="' + home + '"')
+              .replace('href="#', 'href="' + home + '#').replace('{{IMG_LOGO}}', logo_url))
+    cookies = re.search(r'<div class="cookies" id="cookies".*?</div>\n</div>', src_head, flags=re.S).group(0).replace('href="privacidade.html"', 'href="' + pre + 'privacidade.html"')
+    footer = re.search(r'<footer><div class="wrap">.*?</footer>', src_head, flags=re.S).group(0).replace('href="privacidade.html"', 'href="' + pre + 'privacidade.html"').replace('href="ortopedista-leblon', 'href="' + pre + 'ortopedista-leblon')
+    ga = '<script>' + src_ctrl.rsplit('<script>', 1)[1]
+    csp = re.search(r'<meta http-equiv="Content-Security-Policy"[^>]*>', src_head).group(0)
+    import hashlib; og_v = hashlib.md5(open('img/web/og.jpg', 'rb').read()).hexdigest()[:8]
+    return css, links, header, cookies, footer, ga, csp, og_v
+
+CSS_NOVAS = '''
+.art .txt ol.trail{margin-top:.4rem}
+.art .txt .obs{margin-top:1rem}
+.lst{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.6rem;max-width:44rem}
+.lst a,.lst span.it{display:block;height:100%;box-sizing:border-box;background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:.85rem 1rem;text-decoration:none;color:var(--ink-2);font-size:.92rem}
+.lst b{display:block;font-family:var(--display);font-stretch:125%;font-weight:600;color:var(--brand-deep);font-size:1rem;margin-bottom:.2rem}
+.lst a:hover{border-color:var(--brand-deep)}
+.lst a b::after{content:" →";color:var(--brand)}
+.lst li,.art .txt .obs dd,.art .txt .obs li{text-align:start;hyphens:manual;-webkit-hyphens:manual}   /* cartões estreitos: justificado abre buracos entre as palavras */
+.ph figure img.foto{object-fit:cover;object-position:50% 30%}
+.rasc{background:#FFF4D6;color:#5A4300;font:600 .85rem/1.4 var(--sans);text-align:center;padding:.6rem 1rem;position:relative;z-index:60}
+@media (max-width:520px){.lst{grid-template-columns:minmax(0,1fr)}}
+'''
+
+def _doc(csp, title, desc, url, fav_v, pre, og_v, ld, links, css, extra_head, cab, corpo, cookies, footer, ga, og_type='article'):
+    return f'''<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{csp}
+<title>{html.escape(title)}</title>
+<meta name="description" content="{html.escape(desc)}">
+<meta name="theme-color" content="#113358">
+{extra_head}<link rel="canonical" href="{url}">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="{pre}img/web/favicon.png?v={fav_v}">
+<meta property="og:type" content="{og_type}"><meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="{html.escape(title)}">
+<meta property="og:description" content="{html.escape(desc)}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="https://dralaarissasilva.com.br/img/web/og.jpg?v={og_v}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+{links}<style>{css}{CSS_PAG}{CSS_NOVAS}
+:root{{color-scheme:light}}body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}
+</style>
+</head>
+<body>
+{cab}
+{corpo}
+{cookies}
+
+{footer}
+{ga}
+</body>
+</html>
+'''
+
+def _sintomas(src_head):
+    # lista "O que mais aparece": [(sintoma, problema)], na ordem do site
+    return re.findall(r'<button type="button" data-r="[^"]*"[^>]*><span class="q">(.*?)</span><span class="a">(.*?)</span></button>', src_head)
+
+PAGINA_DO_PROBLEMA = {'Joanete': 'joanete', 'Entorse de tornozelo': 'entorse-de-tornozelo', 'Tendinite de Aquiles': 'tendao-de-aquiles', 'Deformidade de Haglund': 'haglund',
+                      'Fascite plantar': 'fascite-plantar', 'Metatarsalgia e neuroma de Morton': 'neuroma-de-morton', 'Hálux rígido (artrose)': 'halux-rigido', 'Pé plano do adulto': 'pe-plano-do-adulto'}
+
+def _pagina_de(problema):
+    # problema da lista → página publicada (as 4 revisadas e as novas já revisadas); None se ainda não tem
+    s = PAGINA_DO_PROBLEMA.get(problema)
+    if s and any(n['slug'] == s and not n['revisado'] for n in NOVAS): return None
+    return s
+
+def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
+    # problemas novos: revisados → raiz (vão para o sitemap); não revisados → _rascunho/ (noindex, fora do git e da Vercel)
+    import os
+    faq = re.findall(r'<details[^>]*><summary>(.*?)</summary><p>(.*?)</p></details>', src_head.split('id="perguntas"')[1].split('</section>')[0])
+    L = T['pt']; publicadas = []
+    for p in NOVAS:
+        pasta = '' if p['revisado'] else '_rascunho/'; pre = '' if p['revisado'] else '../'; home = pre or './'
+        if pasta: os.makedirs(pasta, exist_ok=True)
+        css, links, header, cookies, footer, ga, csp, og_v = _casca(src_head, src_ctrl, pre, pre + logo_url, home)
+        url = URL + p['slug'] + '.html'
+        par = lambda xs: ''.join('<p%s>%s</p>' % (' class="nota"' if i > 0 else '', x) for i, x in enumerate(xs))
+        perg = ''.join('<details%s><summary>%s</summary><p>%s</p></details>' % (' open' if i == 0 else '', faq[j][0], faq[j][1]) for i, j in enumerate(p['faq']))
+        # links: as 4 revisadas (na raiz) + as novas já revisadas; no rascunho, as outras novas também (ficam lado a lado em _rascunho/)
+        irmas = [(pre + q['slug'], q['h1']) for q in PAGINAS]
+        for q in NOVAS:
+            if q is p: continue
+            if q['revisado']: irmas.append((pre + q['slug'], q['h1']))   # publicada, na raiz
+            elif not p['revisado']: irmas.append((q['slug'], q['h1']))   # outro rascunho, na mesma pasta
+        outros = ''.join('<li><a href="%s.html">%s</a></li>' % s for s in irmas) + '<li><a href="%s.html">Avaliação no Leblon</a></li>' % (pre + LEBLON['slug'])
+        ld = {'@context': 'https://schema.org', '@type': 'MedicalWebPage', 'name': p['title'], 'url': url, 'inLanguage': 'pt-BR',
+              'about': {'@type': 'MedicalCondition', 'name': p['h1']}, 'author': {'@type': 'Physician', 'name': L['nome'], 'url': URL}}
+        if p['revisado']: ld['reviewedBy'] = {'@type': 'Physician', 'name': L['nome'], 'url': URL}
+        aviso = '' if p['revisado'] else '<div class="rasc">RASCUNHO para revisão da Dra. Larissa · esta página ainda não está no site</div>\n'
+        corpo = aviso + f'''
+<section class="ph"><div class="wrap">
+  <div>
+    <span class="crumbs"><a href="{home}">{L['inicio']}</a> · {L['area']}</span>
+    <h1>{p['h1']}<small>{p['sub']}</small></h1>
+    <p class="lead">{p['lead']}</p>
+    <div class="acts"><a class="btn primary" href="{home}#agendar">{L['agendar']}</a></div>
+  </div>
+  <figure><img{' class="lado"' if p['img'] == '{{IMG_PE_LADO}}' else ''} src="{pre + img_url[p['img']]}" alt="{p['alt']}" width="569" height="852"></figure>
+</div></section>
+
+<main class="art"><div class="wrap">
+  <section><h2>{L['oque']}</h2><div class="txt">{par(p['oque'])}<p class="nota">{L['aparece']}: “{p['dor']}”.</p></div></section>
+  <section><h2>Como aparece</h2><div class="txt">{par(p['aparece'])}</div></section>
+  <section><h2>{L['trat']}</h2><div class="txt">{par(p['trat'])}</div></section>
+  <section><h2>Quando procurar</h2><div class="txt">{par(p['quando'])}</div></section>
+</div></main>
+
+<section class="faq pag-faq"><div class="wrap">
+  <div><span class="caps">{L['perg']}</span><h2 style="margin-top:.7rem">{L['perg_h']}</h2></div>
+  <div>{perg}</div>
+</div></section>
+
+<section class="outros"><div class="wrap">
+  <span class="caps">{L['outros']}</span>
+  <ul>{outros}</ul>
+</div></section>
+
+<section class="pcta"><div class="wrap">
+  <div><h2>{L['cta']}</h2><p>Rua General Venâncio Flores, 184 · Leblon · Rio de Janeiro</p></div>
+  <a class="btn primary" href="{home}#agendar">{L['agendar']}</a>
+</div></section>
+'''
+        extra = '' if p['revisado'] else '<meta name="robots" content="noindex,nofollow">\n'
+        open(pasta + p['slug'] + '.html', 'w', encoding='utf-8').write(
+            _doc(csp, p['title'] + L['sufixo'], re.sub('<[^>]+>', '', p['oque'][0]), url, fav_v, pre, og_v, ld, links, css, extra, header, corpo, cookies, footer, ga))
+        if p['revisado']: publicadas.append(url)
+    return publicadas
+
+def gerar_leblon(src_head, src_ctrl, img_url, URL, logo_url, fav_v, ld_medico):
+    # "Ortopedista de pé e tornozelo no Leblon": só textos já revisados da página principal
+    css, links, header, cookies, footer, ga, csp, og_v = _casca(src_head, src_ctrl, '', logo_url, './')
+    quem = re.search(r'<span class="caps"><b>06</b>[^<]*</span>\s*<h2>.*?</h2>\s*<p>(.*?)</p>', src_head, flags=re.S).group(1)
+    ficha = re.search(r'<dl class="ficha">(.*?)</dl>', src_head, flags=re.S).group(1)
+    cuid = src_head.split('id="cuidado"')[1]
+    intro = re.search(r'<h2>.*?</h2>\s*<p>(.*?)</p>', cuid, flags=re.S).group(1)
+    trail = re.search(r'<ol class="trail" id="trail">(.*?)</ol>', cuid, flags=re.S).group(1)
+    agendar = src_head.split('id="agendar"')[1]
+    lead_ag = re.search(r'<p class="lead">(.*?)</p>', agendar).group(1)
+    assert lead_ag.startswith('E os exames que você já tem. '), lead_ag[:40]   # na página principal continua o título "Traga o sapato que mais dói"
+    lead_ag = 'Traga o sapato que mais dói e os exames que você já tem. ' + lead_ag.split('. ', 1)[1]
+    contato = re.search(r'<dl>(.*?)</dl>', agendar, flags=re.S).group(1)
+    maps = re.search(r'href="(https://www\.google\.com/maps/[^"]*)"', agendar).group(1)
+    faq = re.findall(r'<details[^>]*><summary>(.*?)</summary><p>(.*?)</p></details>', src_head.split('id="perguntas"')[1].split('</section>')[0])
+    def item(q, a):
+        s = _pagina_de(a)
+        return ('<li><a href="%s.html"><b>%s</b>%s</a></li>' % (s, a, q)) if s else ('<li><span class="it"><b>%s</b>%s</span></li>' % (a, q))
+    lista = ''.join(item(q, a) for q, a in _sintomas(src_head))
+    assert lista.count('<li>') == 12, 'lista de sintomas mudou'
+    perg = ''.join('<details%s><summary>%s</summary><p>%s</p></details>' % (' open' if i == 0 else '', q, a) for i, (q, a) in enumerate(faq))
+    url = URL + LEBLON['slug'] + '.html'
+    ld = {'@context': 'https://schema.org', '@type': 'MedicalWebPage', 'name': LEBLON['title'], 'url': url, 'inLanguage': 'pt-BR', 'about': ld_medico}
+    corpo = f'''
+<section class="ph"><div class="wrap">
+  <div>
+    <span class="crumbs"><a href="./">Início</a> · Leblon, Rio de Janeiro</span>
+    <h1>Ortopedista no Leblon<small>Pé e tornozelo · consulta presencial ou por teleconsulta</small></h1>
+    <p class="lead">{intro}</p>
+    <div class="acts"><a class="btn primary" href="./#agendar">Agendar avaliação</a><a class="more" href="{maps}" target="_blank" rel="noopener">Como chegar →</a></div>
+  </div>
+  <figure><img class="foto" src="{img_url['{{IMG_CONSULTORIO}}']}" alt="Dra. Larissa Silva no consultório, sentada à mesa" width="1043" height="1800"></figure>
+</div></section>
+
+<main class="art"><div class="wrap">
+  <section><h2>Quem atende</h2><div class="txt"><p>{quem}</p><dl class="obs">{ficha}</dl></div></section>
+  <section><h2>Como é a avaliação</h2><div class="txt"><ol class="trail">{trail}</ol></div></section>
+  <section><h2>O que eu trato</h2><div class="txt"><ul class="lst">{lista}</ul></div></section>
+  <section><h2>Contato e endereço</h2><div class="txt"><p>{lead_ag}</p><dl class="obs">{contato}</dl></div></section>
+</div></main>
+
+<section class="faq pag-faq"><div class="wrap">
+  <div><span class="caps">Perguntas</span><h2 style="margin-top:.7rem">O que todo mundo <em>pergunta.</em></h2></div>
+  <div>{perg}</div>
+</div></section>
+
+<section class="pcta"><div class="wrap">
+  <div><h2>Traga o sapato que <em>mais dói.</em></h2><p>Rua General Venâncio Flores, 184 · Leblon · Rio de Janeiro</p></div>
+  <a class="btn primary" href="./#agendar">Agendar avaliação</a>
+</div></section>
+'''
+    open(LEBLON['slug'] + '.html', 'w', encoding='utf-8').write(
+        _doc(csp, LEBLON['title'], LEBLON['desc'], url, fav_v, '', og_v, ld, links, css, '', header, corpo, cookies, footer, ga, 'website'))
+    return [url]
