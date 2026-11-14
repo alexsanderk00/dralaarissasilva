@@ -176,7 +176,7 @@ header.top nav a:not(.btn):hover{color:#fff}
 .stage h3 em{color:var(--brand-lite)}
 .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin:0 0 1.1rem}
 .tab{font-family:var(--sans);text-align:left;background:transparent;border:1.5px solid var(--film-rule);border-radius:var(--r);padding:.45rem .75rem;cursor:pointer;color:var(--film-dim);line-height:1.2;transition:border-color .2s,background .2s,color .2s}
-.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink);overflow-wrap:anywhere}
+.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink)}
 .tab span{display:none}   /* 6 abas em 3 colunas: só o nome, senão o texto da etapa 04 passa da tela do notebook */
 .tab:hover{border-color:var(--film-dim)}
 .tab[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink-2)}
@@ -248,6 +248,7 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
   .stage h3{font-size:1.6rem;margin:.4rem 0 .8rem}
   .step .t{font-size:1.05rem}.step .d{font-size:.88rem}
   .part b{font-size:.88rem;font-stretch:100%}.partinfo{font-size:.86rem;min-height:8.5rem}
+  .tabs{gap:.25rem}.tab{padding:.4rem .15rem;text-align:center}.tab b{font-size:.74rem}   /* coluna de 15rem: 3 abas de ~76px, o nome inteiro cabe numa linha */
 }
 @media (max-width:979px){
   .story{height:480vh}
@@ -464,6 +465,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 .tcard .links{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
 /* textos justificados em todo o site (pedido do Alexsander): ar de organização; hifenização em português evita buracos entre as palavras */
 :where(p,li,dd){text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.step .d div,.partinfo{text-align:justify;hyphens:auto;-webkit-hyphens:auto}   /* esquema: texto das etapas e da estrutura (o <button> volta o alinhamento para o começo) */
 .ficha li,.symp .a,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
 /* avaliações do Google (dados em avaliacoes.json; a seção só aparece quando há avaliações). CFM 2.336 art. 14: reproduzir avaliação faz dela publicação da médica; só textos sóbrios, aprovados por ela */
 .rev .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(14rem,.55fr) minmax(0,1.45fr);gap:clamp(1.2rem,4vw,3rem);align-items:center}
@@ -559,13 +561,14 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     <p class="lead">Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.</p>
     <div class="acts"><a class="btn primary" href="./#agendar">Agendar avaliação</a><a class="more" href="./#esquema-fascite">Ver no esquema →</a></div>
   </div>
-  <figure><img class="lado" src="img/web/pe_lado.webp?v=1802e681" alt="Pé visto de lado, com o calcanhar à esquerda" width="569" height="852"></figure>
+  <figure><img src="img/web/pe_sola.webp?v=6ca22eab" alt="Sola do pé, do calcanhar aos dedos" width="1500" height="2000"></figure>
 </div></section>
 
 <main class="art"><div class="wrap">
   <section><h2>O que é</h2><div class="txt"><p>A fáscia plantar é uma faixa firme que vai do calcanhar até a base dos dedos e sustenta o arco do pé. Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar.</p><p class="nota">Costuma aparecer assim: “Dor embaixo do calcanhar ao levantar da cama”.</p></div></section>
   <section><h2>Como aparece</h2><div class="txt"><p>A dor é mais forte nos primeiros passos da manhã ou depois de ficar sentado, alivia um pouco ao andar e volta no fim do dia. É comum em quem passa muito tempo em pé, corre, ganhou peso ou usa calçado baixo e duro.</p><p class="nota">O esporão de calcâneo que aparece na radiografia pode acompanhar a fascite, mas não é ele que causa a dor.</p></div></section>
   <section><h2>Tratamento</h2><div class="txt"><p>Na grande maioria dos casos, o tratamento é conservador: alongamento da panturrilha e da fáscia, calçado que amortece, palmilha, ajuste do treino e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção.</p><p class="nota">A melhora costuma ser gradual. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.</p></div></section>
+<section><h2>Ondas de choque</h2><div class="txt"><p>A terapia por ondas de choque aplica pulsos de energia sobre a pele, no ponto da dor, sem corte e sem ponto. O objetivo é estimular a cicatrização do tecido desgastado na origem da fáscia, no calcanhar.</p><p>Fiz o curso de onda de choque certificado pela Sociedade Médica Brasileira de Tratamento por Ondas de Choque (SMBTOC).</p></div></section><section><h2>Como é a sessão</h2><div class="txt"><p>Você fica de barriga para baixo, na maca. Localizo o ponto da dor, passo um gel e apoio o aplicador na pele do calcanhar. A aplicação dura poucos minutos e é feita sem anestesia.</p><p>Durante os pulsos é comum sentir incômodo no ponto da dor; a intensidade é ajustada ao longo da sessão. Depois, você sai andando. Por um ou dois dias, evite corrida e impacto. A região pode ficar vermelha, dolorida ou com pequenos roxos.</p><p>Costumam ser algumas sessões, com cerca de uma semana entre elas. O número depende do seu caso.</p></div></section><section><h2>Quando é indicada</h2><div class="txt"><p>É indicada quando a dor continua apesar de alongamento, calçado, palmilha e fisioterapia bem feitos. Não substitui esses cuidados: os exercícios continuam durante e depois das sessões.</p><p>Nem todo mundo pode fazer. Gravidez, alterações da coagulação ou uso de anticoagulante, infecção ou tumor no local, entre outros casos, contraindicam. Avalio isso na consulta.</p><p>A resposta varia de pessoa para pessoa e a melhora costuma ser gradual, nas semanas seguintes.</p></div></section>
   <section><h2>Quando procurar</h2><div class="txt"><p>Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.</p></div></section>
 </div></main>
 

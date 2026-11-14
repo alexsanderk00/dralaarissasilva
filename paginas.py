@@ -222,7 +222,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
 
 NOVAS = [
     dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True, esq='fascite',
-         title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
+         title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
          lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
          oque=['A fáscia plantar é uma faixa firme que vai do calcanhar até a base dos dedos e sustenta o arco do pé. Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar.'],
@@ -230,7 +230,16 @@ NOVAS = [
                   'O esporão de calcâneo que aparece na radiografia pode acompanhar a fascite, mas não é ele que causa a dor.'],
          trat=['Na grande maioria dos casos, o tratamento é conservador: alongamento da panturrilha e da fáscia, calçado que amortece, palmilha, ajuste do treino e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção.',
                'A melhora costuma ser gradual. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.'],
-         quando=['Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.']),
+         quando=['Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.'],
+         # ondas de choque: texto NOVO (14/11/2026), para a Dra. Larissa aprovar
+         secoes=[('Ondas de choque', ['A terapia por ondas de choque aplica pulsos de energia sobre a pele, no ponto da dor, sem corte e sem ponto. O objetivo é estimular a cicatrização do tecido desgastado na origem da fáscia, no calcanhar.',
+                                      'Fiz o curso de onda de choque certificado pela Sociedade Médica Brasileira de Tratamento por Ondas de Choque (SMBTOC).']),
+                 ('Como é a sessão', ['Você fica de barriga para baixo, na maca. Localizo o ponto da dor, passo um gel e apoio o aplicador na pele do calcanhar. A aplicação dura poucos minutos e é feita sem anestesia.',
+                                      'Durante os pulsos é comum sentir incômodo no ponto da dor; a intensidade é ajustada ao longo da sessão. Depois, você sai andando. Por um ou dois dias, evite corrida e impacto. A região pode ficar vermelha, dolorida ou com pequenos roxos.',
+                                      'Costumam ser algumas sessões, com cerca de uma semana entre elas. O número depende do seu caso.']),
+                 ('Quando é indicada', ['É indicada quando a dor continua apesar de alongamento, calçado, palmilha e fisioterapia bem feitos. Não substitui esses cuidados: os exercícios continuam durante e depois das sessões.',
+                                        'Nem todo mundo pode fazer. Gravidez, alterações da coagulação ou uso de anticoagulante, infecção ou tumor no local, entre outros casos, contraindicam. Avalio isso na consulta.',
+                                        'A resposta varia de pessoa para pessoa e a melhora costuma ser gradual, nas semanas seguintes.'])]),
     dict(slug='neuroma-de-morton', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=True,
          title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Dor na “bola” do pé, como pedrinha no sapato', faq=[4],
@@ -371,13 +380,14 @@ def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
     <p class="lead">{p['lead']}</p>
     <div class="acts"><a class="btn primary" href="{home}#agendar">{L['agendar']}</a>{('<a class="more" href="' + home + '#esquema-' + p['esq'] + '">' + L['ver'] + '</a>') if p.get('esq') else ''}</div>
   </div>
-  <figure><img{' class="lado"' if p['img'] == '{{IMG_PE_LADO}}' else ''} src="{pre + img_url[p['img']]}" alt="{p['alt']}" width="569" height="852"></figure>
+  <figure><img{' class="lado"' if p['img'] == '{{IMG_PE_LADO}}' else ''} src="{pre + img_url[p['img']]}" alt="{p['alt']}" width="{p.get('wh', (569, 852))[0]}" height="{p.get('wh', (569, 852))[1]}"></figure>
 </div></section>
 
 <main class="art"><div class="wrap">
   <section><h2>{L['oque']}</h2><div class="txt">{par(p['oque'])}<p class="nota">{L['aparece']}: “{p['dor']}”.</p></div></section>
   <section><h2>Como aparece</h2><div class="txt">{par(p['aparece'])}</div></section>
   <section><h2>{L['trat']}</h2><div class="txt">{par(p['trat'])}</div></section>
+{''.join('<section><h2>' + h + '</h2><div class="txt">' + ''.join('<p>' + x + '</p>' for x in xs) + '</div></section>' for h, xs in p.get('secoes', []))}
   <section><h2>Quando procurar</h2><div class="txt">{par(p['quando'])}</div></section>
 </div></main>
 

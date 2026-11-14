@@ -176,7 +176,7 @@ header.top nav a:not(.btn):hover{color:#fff}
 .stage h3 em{color:var(--brand-lite)}
 .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin:0 0 1.1rem}
 .tab{font-family:var(--sans);text-align:left;background:transparent;border:1.5px solid var(--film-rule);border-radius:var(--r);padding:.45rem .75rem;cursor:pointer;color:var(--film-dim);line-height:1.2;transition:border-color .2s,background .2s,color .2s}
-.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink);overflow-wrap:anywhere}
+.tab b{display:block;font-family:var(--display);font-stretch:100%;font-size:.9rem;color:var(--film-ink)}
 .tab span{display:none}   /* 6 abas em 3 colunas: só o nome, senão o texto da etapa 04 passa da tela do notebook */
 .tab:hover{border-color:var(--film-dim)}
 .tab[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink-2)}
@@ -248,6 +248,7 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
   .stage h3{font-size:1.6rem;margin:.4rem 0 .8rem}
   .step .t{font-size:1.05rem}.step .d{font-size:.88rem}
   .part b{font-size:.88rem;font-stretch:100%}.partinfo{font-size:.86rem;min-height:8.5rem}
+  .tabs{gap:.25rem}.tab{padding:.4rem .15rem;text-align:center}.tab b{font-size:.74rem}   /* coluna de 15rem: 3 abas de ~76px, o nome inteiro cabe numa linha */
 }
 @media (max-width:979px){
   .story{height:480vh}
@@ -464,6 +465,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 .tcard .links{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
 /* textos justificados em todo o site (pedido do Alexsander): ar de organização; hifenização em português evita buracos entre as palavras */
 :where(p,li,dd){text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.step .d div,.partinfo{text-align:justify;hyphens:auto;-webkit-hyphens:auto}   /* esquema: texto das etapas e da estrutura (o <button> volta o alinhamento para o começo) */
 .ficha li,.symp .a,.cta dd,.pcta p,.cookies p{text-align:start}   /* itens curtos (credenciais, endereço, nomes) e o aviso de cookies: justificar abre buracos entre as palavras no celular */   /* todos os textos corridos; :where não pesa, então regras com text-align próprio (centralizado) continuam valendo */
 /* avaliações do Google (dados em avaliacoes.json; a seção só aparece quando há avaliações). CFM 2.336 art. 14: reproduzir avaliação faz dela publicação da médica; só textos sóbrios, aprovados por ela */
 .rev .wrap{padding-block:0 var(--space);display:grid;grid-template-columns:minmax(14rem,.55fr) minmax(0,1.45fr);gap:clamp(1.2rem,4vw,3rem);align-items:center}
@@ -566,6 +568,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
   <section><h2>O que é</h2><div class="txt"><p>Muita gente tem pé plano desde a infância, sem dor. No adulto, o arco também pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior, que sustenta o arco por dentro do tornozelo, perde força.</p><p class="nota">Costuma aparecer assim: “Arco que desabou, dor por dentro do tornozelo”.</p></div></section>
   <section><h2>Como aparece</h2><div class="txt"><p>Dor e inchaço por dentro do tornozelo, cansaço ao andar, o arco mais baixo de um lado só e o calcanhar desviando para fora. Em fases mais avançadas, a dor passa para a parte de fora do pé.</p></div></section>
   <section><h2>Tratamento</h2><div class="txt"><p>No início, palmilha com apoio do arco, calçado firme, fortalecimento e fisioterapia controlam a dor e ajudam a frear a progressão.</p><p class="nota">Quando o pé continua deformando ou doendo, a cirurgia é planejada caso a caso, conforme a rigidez e o estágio.</p></div></section>
+
   <section><h2>Quando procurar</h2><div class="txt"><p>Procure avaliação se o pé mudou de formato de um lado só, se a dor por dentro do tornozelo não passa ou se ficou difícil subir na ponta do pé. Quem tem diabetes e nota o pé quente, inchado e com o arco desabando de repente precisa de avaliação urgente.</p></div></section>
 </div></main>
 
