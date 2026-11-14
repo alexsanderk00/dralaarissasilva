@@ -235,8 +235,7 @@ NOVAS = [
                'A melhora costuma ser gradual. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.'],
          quando=['Procure avaliação se a dor dura mais de algumas semanas, se começou depois de uma pancada, se há dormência ou se dói também à noite, em repouso. Nesses casos, investigo outras causas.'],
          # ondas de choque: texto NOVO (14/11/2026), para a Dra. Larissa aprovar
-         secoes=[('Ondas de choque', ['A terapia por ondas de choque aplica pulsos de energia sobre a pele, no ponto da dor, sem corte e sem ponto. O objetivo é estimular a cicatrização do tecido desgastado na origem da fáscia, no calcanhar.',
-                                      'Fiz o curso de onda de choque certificado pela Sociedade Médica Brasileira de Tratamento por Ondas de Choque (SMBTOC).']),
+         secoes=[('Ondas de choque', ['A terapia por ondas de choque aplica pulsos de energia sobre a pele, no ponto da dor, sem corte e sem ponto. O objetivo é estimular a cicatrização do tecido desgastado na origem da fáscia, no calcanhar.']),   # frase do curso SMBTOC: volta no dia 23/11/2026, a pedido do Alexsander
                  ('Como é a sessão', ['Você fica de barriga para baixo, na maca. Localizo o ponto da dor, passo um gel e apoio o aplicador na pele do calcanhar. A aplicação dura poucos minutos e é feita sem anestesia.',
                                       'Durante os pulsos é comum sentir incômodo no ponto da dor; a intensidade é ajustada ao longo da sessão. Depois, você sai andando. Por um ou dois dias, evite corrida e impacto. A região pode ficar vermelha, dolorida ou com pequenos roxos.',
                                       'Costumam ser algumas sessões, com cerca de uma semana entre elas. O número depende do seu caso.']),
