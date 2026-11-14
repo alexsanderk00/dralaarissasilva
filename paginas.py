@@ -80,7 +80,7 @@ CSS_PAG = '''
 @media (max-width:860px){.art .wrap{grid-template-columns:minmax(0,1fr);gap:.8rem}.art h2{margin-top:1.4rem}}
 .obs{min-width:0}
 @media (max-width:520px){.obs{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:520px){.ph .wrap{grid-template-columns:1fr}.ph figure{width:9rem;justify-self:end;margin-top:-.5rem}}
+@media (max-width:520px){.ph .wrap{grid-template-columns:minmax(0,1fr) auto;column-gap:1rem;align-items:center}.ph .wrap>div{display:contents}.ph .crumbs,.ph h1,.ph .lead{grid-column:1/-1}.ph .acts{grid-column:1;min-width:0;flex-direction:column;align-items:flex-start;gap:1.1rem}.ph .acts .btn{white-space:normal;text-align:center;max-width:100%}.ph figure{grid-column:2;width:clamp(6rem,28vw,8.5rem);justify-self:end;margin:0}}   /* celular: botões e foto lado a lado */
 '''
 
 def _js_strings(block):
