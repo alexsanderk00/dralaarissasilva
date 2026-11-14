@@ -56,7 +56,7 @@ const PARTLIST={joanete:['halux','m1','sesamoides','dedos','metas'],haglund:['aq
 
 /* ---------- cenas, varredura e alça ---------- */
 const scenes={dorsal:Dorsal(),lateral:Lateral(),plantar:Plantar()};
-const hand=el('g',{},svg),edge=el('line',{id:'edge',y1:-20,y2:660},hand),grip=el('g',{id:'grip',tabindex:0,role:'slider','aria-label':'Arraste para ver por fora ou em raio-x','aria-valuemin':0,'aria-valuemax':100},hand);
+const hand=el('g',{},svg),edge=el('line',{id:'edge',y1:0,y2:640},hand),grip=el('g',{id:'grip',tabindex:0,role:'slider','aria-label':'Arraste para ver por fora ou em raio-x','aria-valuemin':0,'aria-valuemax':100},hand);
 el('circle',{r:29},grip);el('path',{d:'M-17 -3l-6 5 6 5M17 -3l6 5-6 5'},grip);{const t=el('text',{y:-7},grip);t.textContent='ARRASTE'}
 grip.style.display='none';grip.removeAttribute('tabindex');grip.setAttribute('aria-hidden','true');   // sem alça: o esquema anda pela rolagem e pelo botão "Ver em raio-x"
 const GY=604;
@@ -97,8 +97,9 @@ function select(id){
 }
 function stepText(){const T=TXT[cond].steps[Math.max(active,0)];stepDesc.textContent=T[0];if(T[1]){const sm=document.createElement('small');sm.textContent=T[1];stepDesc.appendChild(sm)}}
 const stepT4=stepsLi[3].querySelector('.t'),meterT4=meter.querySelectorAll('span')[3];
+small.addEventListener('change',()=>{const T=TXT[cond];stepT4.textContent=small.matches?(T.m4||'A cirurgia'):(T.t4||'A cirurgia')});   // girou o celular / mudou a largura
 function fill(){
-  const T=TXT[cond];stepT4.textContent=T.t4||'A cirurgia';meterT4.textContent=T.m4||'Cirurgia';stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
+  const T=TXT[cond];stepT4.textContent=small.matches?(T.m4||'A cirurgia'):(T.t4||'A cirurgia');meterT4.textContent=T.m4||'Cirurgia';stepsLi.forEach((li,i)=>{const d=li.querySelector('.d>div');d.textContent='';const p=document.createElement('span');p.textContent=T.steps[i][0];d.appendChild(p);if(T.steps[i][1]){const sm=document.createElement('small');sm.textContent=T.steps[i][1];d.appendChild(sm)}});
   viewTag.textContent=T.name;kicker.textContent=scene().view;
   for(const k in scenes){const on=scenes[k]===scene();scenes[k].xr.style.display=scenes[k].sk.style.display=scenes[k].an.style.display=on?'':'none'}
   partgrid.textContent='';PARTLIST[cond].forEach(id=>{const b=document.createElement('button');b.type='button';b.className='part';b.dataset.p=id;b.id='part-'+id;b.setAttribute('aria-pressed','false');
@@ -190,7 +191,7 @@ if(!reduced&&'IntersectionObserver' in window){
 const note=document.getElementById('note'),noteOut=document.getElementById('noteOut'),noteSend=document.getElementById('noteSend');
 const rxOnde=document.getElementById('rxOnde'),rxQuando=document.getElementById('rxQuando'),rxTipo=document.getElementById('rxTipo'),nomeIn=document.getElementById('nomeIn'),planoIn=document.getElementById('planoIn'),planoOutro=document.getElementById('planoOutro'),outroLbl=note.querySelector('.outroLbl'),noteErr=document.getElementById('noteErr');
 function compose(){const o=note.querySelector('input[name=onde]:checked').value,q=note.querySelector('input[name=quando]:checked').value,t=note.querySelector('input[name=tipo]:checked').value;
-  rxOnde.textContent=o;rxQuando.textContent=q;rxTipo.textContent=t.replace('por ','');
+  rxOnde.textContent=o;rxQuando.textContent=q;rxTipo.textContent=t.replace('por ','').replace(/ \(.*\)/,'');   // no papel cabe só "teleconsulta"
   const outro=planoIn.value==='outro';planoOutro.hidden=outroLbl.hidden=!outro;   /* "Outro plano": aparece a linha para escrever o nome */
   const nome=nomeIn.value.trim(),plano=(outro?planoOutro.value:planoIn.value).trim();
   /* mensagem em linhas: a secretária lê de relance; nome e plano entram quando preenchidos */

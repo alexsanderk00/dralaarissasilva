@@ -868,8 +868,8 @@
   "<legend>Where it hurts</legend>"
  ],
  [
-  "'TENDÃO LIVRE\\nDO ATRITO'",
-  "'TENDON FREE\\nOF FRICTION'"
+  "'TENDÃO\\nLIVRE DO\\nATRITO'",
+  "'TENDON\\nFREE OF\\nFRICTION'"
  ],
  [
   "'O SAPATO\\nENCOSTA AQUI'",
@@ -1120,10 +1120,6 @@
   "<b>Flat foot</b><span>the arch that collapsed</span>"
  ],
  [
-  "stepT4.textContent=T.t4||'A cirurgia';meterT4.textContent=T.m4||'Cirurgia';",
-  "stepT4.textContent=T.t4||'The surgery';meterT4.textContent=T.m4||'Surgery';"
- ],
- [
   "t4:'O tratamento',m4:'Tratamento'",
   "t4:'The treatment',m4:'Treatment'"
  ],
@@ -1262,5 +1258,13 @@
  [
   ">Pé plano do adulto</a></li></ul></nav>",
   ">Adult-acquired flatfoot</a></li></ul></nav>"
+ ],
+ [
+  "(T.m4||'A cirurgia'):(T.t4||'A cirurgia')",
+  "(T.m4||'The surgery'):(T.t4||'The surgery')"
+ ],
+ [
+  "meterT4.textContent=T.m4||'Cirurgia';",
+  "meterT4.textContent=T.m4||'Surgery';"
  ]
 ]

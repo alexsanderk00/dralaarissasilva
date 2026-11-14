@@ -114,10 +114,10 @@ fav.paste(br, ((192 - m.width) // 2, (192 - m.height) // 2), br); fav.save('img/
 fav.save('favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])   # na raiz: é onde o Google procura primeiro o ícone dos resultados de busca
 FAV_V = hashlib.md5(open('img/web/favicon.png', 'rb').read()).hexdigest()[:8]   # versão no link: navegador guarda favicon no cache com força
 
-desc = 'Dra. Larissa Silva, ortopedista e traumatologista, cirurgia minimamente invasiva do pé e tornozelo no Rio de Janeiro. Joanete, Haglund, tendão de Aquiles e tornozelo explicados no esquema, do pé ao osso.'
+desc = 'Dra. Larissa Silva, ortopedista e traumatologista no Leblon, Rio de Janeiro. Cirurgia minimamente invasiva do pé e tornozelo. Presencial ou teleconsulta.'
 ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'alternateName': ['Larissa Silva', 'Dra. Larissa da Silva', 'Larissa da Silva'], 'url': URL, 'image': URL + 'img/web/og.jpg',
       'description': desc, 'medicalSpecialty': 'Musculoskeletal', 'telephone': '+55-21-97289-6222',
-      'address': {'@type': 'PostalAddress', 'streetAddress': 'Rua General Venâncio Flores, 184 - Leblon', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
+      'address': {'@type': 'PostalAddress', 'streetAddress': 'Rua General Venâncio Flores, 184 - Leblon', 'postalCode': '22441-090', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
       'areaServed': {'@type': 'City', 'name': 'Rio de Janeiro'},
       'isAcceptingNewPatients': True,
       'hasMap': 'https://www.google.com/maps/search/?api=1&query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro',
@@ -159,8 +159,7 @@ TEM_EN = os.path.exists('traducao_en.json')
 if TEM_EN:
     en = full
     en = en.replace(LANG_PT, '<a class="lang" href="../" hreflang="pt-BR" lang="pt-BR" aria-label="Versão em português">PT</a>')
-    desc_en = ("Dr. Larissa Silva, orthopedic surgeon in Rio de Janeiro (Leblon) focused on minimally invasive foot and ankle surgery. "
-               "Bunions, Haglund's deformity, Achilles tendon and ankle problems explained from skin to bone. In-person and teleconsultation (Google Meet).")
+    desc_en = "Dr. Larissa Silva, orthopedic surgeon in Leblon, Rio de Janeiro: minimally invasive foot and ankle surgery. In person or by teleconsultation."
     for a, b in [('<html lang="pt-BR">', '<html lang="en">'), ('content="' + desc + '"', 'content="' + desc_en.replace("'", '&#39;') + '"'),
                  ('<link rel="canonical" href="' + URL + '">', '<link rel="canonical" href="' + URL + 'en/">'),
                  ('<meta property="og:url" content="' + URL + '">', '<meta property="og:url" content="' + URL + 'en/">'),

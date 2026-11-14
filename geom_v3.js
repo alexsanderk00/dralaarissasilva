@@ -198,10 +198,10 @@ function Plantar(){
     probe.setAttribute('transform','translate('+f1(O[0]+mix(260,0,pin))+' '+f1(O[1]+mix(120,0,pin))+')');setD(prHandle,'M40 50L210 250L250 214L80 14Z');
     waves.forEach((e,i)=>{const ph=reduced?(i+1)/4:((t*.9+i/3)%1);e.setAttribute('cx',O[0]);e.setAttribute('cy',O[1]);e.setAttribute('r',f1(80+ph*190));show(e,wv*(1-ph)*.9)});
     const o0=1-clamp((s-.22)/.25),o1=win(s,.6,.9,1.06,1.22),o3=seg(s,2.55,2.9);
-    L.fas([840,1250],G(445,250),'FÁSCIA\nPLANTAR',o0);L.cal([700,1640],G(445,470),'CALCÂNEO',o0);L.met([690,900],G(445,150),'METATARSOS',o0);
-    L.dor(O,G(445,530),'DÓI AO PISAR,\nDE MANHÃ',o1);L.des([850,1560],G(445,400),'A FÁSCIA SE\nDESGASTA AQUI',o1);
-    L.ond(O,G(445,520),'ONDAS DE\nCHOQUE,\nSEM CORTE',wv);L.apl([O[0]+150,O[1]+130],G(445,605),'APLICADOR\nNA PELE',win(s,1.5,1.65,2.3,2.5));
-    L.rec(O,G(445,520),'ALONGAMENTO\nE CALÇADO',o3);
+    L.fas([840,1250],G(430,250),'FÁSCIA\nPLANTAR',o0);L.cal([700,1640],G(430,470),'CALCÂNEO',o0);L.met([690,900],G(430,150),'METATARSOS',o0);
+    L.dor(O,G(430,530),'DÓI AO PISAR,\nDE MANHÃ',o1);L.des([850,1560],G(430,400),'A FÁSCIA SE\nDESGASTA AQUI',o1);
+    L.ond(O,G(430,520),'ONDAS DE\nCHOQUE,\nSEM CORTE',wv);L.apl([O[0]+150,O[1]+130],G(430,605),'APLICADOR\nNA PELE',win(s,1.5,1.65,2.3,2.5));
+    L.rec(O,G(430,520),'ALONGAMENTO\nE CALÇADO',o3);
     return fi>.5||wv>0;
   }
   return{xr,sk,an:lbG,update,parts,view:'Vista de baixo',dir:'right',endW:()=>.62};
@@ -320,16 +320,16 @@ function Lateral(){
     L.sut([xm,YR],[236,330],'PONTOS UNEM\nAS DUAS PONTAS',Q?win(s,1.6,1.75,2.3,2.5):0);L.cic([xm,YR],[236,330],'TENDÃO\nCICATRIZADO',Q?o3:0);L.bur([180,356],[92,300],'BURSA',H?o0:0,'end');L.cal([290,446],Q?[500,566]:[318,566],'CALCÂNEO',(H||Q)?o0:0);
     L.sal([160,352],[92,250],'SALIÊNCIA\nDO OSSO',H?o1:0,'end');L.sap([74,472],[176,560],'O SAPATO\nENCOSTA AQUI',H?o1:0,'end');L.fas([206,499],[322,560],'FASCITE DÓI AQUI,\nEMBAIXO',H?o1:0);
     L.ret(mixP([176-26*fd,366-34*fd],[192,385],seg(s,1.78,1.95)),[92,226],'OSSO\nRETIRADO',H?win(s,1.5,1.6,2.3,2.5):0,'end');
-    L.esp([178,388],[92,300],'TENDÃO LIVRE\nDO ATRITO',H?o3:0,'end');
+    L.esp([178,388],[92,300],'TENDÃO\nLIVRE DO\nATRITO',H?o3:0,'end');
     L.fib([270,268],[212,236],'FÍBULA',T?o0:0,'end');L.tal([378,372],[424,318],'TÁLUS',T?o0:0);L.lg(mixP(o,ins,.5),[424,232],'LIGAMENTO\nTALOFIBULAR',T?o0:0);
     L.rom(mixP(o,ins,.5),[424,232],'LIGAMENTO\nROMPIDO',T?o1:0);L.fol([420+dx,330],[436,330],'O TÁLUS\nGANHA FOLGA',T?win(s,.75,.95,1.3,1.5):0);
     L.anc(a0,[424,232],'ÂNCORA\nE SUTURA',T?win(s,1.5,1.6,2.3,2.5):0);L.rep(mixP(o,ins,.5),[424,232],'LIGAMENTO\nREPARADO',T?o3:0);
     // pé plano
-    L.pt(rot([378,372],[330,335],14*pc),[400,262],'TÁLUS',P?o0:0);L.pa(rot([470,400],[670,500],-6*pc),[520,330],'ARCO DO PÉ',P?o0:0);
-    L.pe(mixP(e0,eEnd,.55),[520,440],'EIXO DO TÁLUS\nNO METATARSO',P?win(s,-.3,-.02,.75,.9):0);
-    L.pdes(rot([470,400],[670,500],-6*pc),[520,330],'O ARCO DESABA',P?o1:0);L.pinc(mixP(e0,eEnd,.75),[520,440],'EIXO DO TÁLUS\nPARA O CHÃO',P?o1:0);
+    L.pt(rot([378,372],[330,335],14*pc),[400,262],'TÁLUS',P?o0:0);L.pa(rot([470,400],[670,500],-6*pc),[505,330],'ARCO DO PÉ',P?o0:0);
+    L.pe(mixP(e0,eEnd,.55),[505,440],'EIXO DO TÁLUS\nNO METATARSO',P?win(s,-.3,-.02,.75,.9):0);
+    L.pdes(rot([470,400],[670,500],-6*pc),[505,330],'O ARCO DESABA',P?o1:0);L.pinc(mixP(e0,eEnd,.75),[505,440],'EIXO DO TÁLUS\nPARA O CHÃO',P?o1:0);
     L.pfr([262,300],[400,190],'TENDÃO TIBIAL\nPOSTERIOR\nPERDE FORÇA',P?o1:0);
-    L.ppal([420,515],[600,470],'PALMILHA\nAPOIA O ARCO',P?win(s,1.45,1.6,2.3,2.5):0);L.pap([420,515],[580,470],'PALMILHA E\nFORTALECIMENTO',P?o3:0);
+    L.ppal([420,515],[575,470],'PALMILHA\nAPOIA O ARCO',P?win(s,1.45,1.6,2.3,2.5):0);L.pap([420,515],[565,470],'PALMILHA E\nFORTALECIMENTO',P?o3:0);
     return (infl>.5)||(loose>.6)||(rp>0&&rp<1);
   }
   return{xr,sk,an:ann,update,parts,view:'Vista de lado',dir:'left',endW:c=>c==='tornozelo'?1:.58,geo:{talN,calN,calH,tenN,tenH,skN,skH,skQ,stumps}};

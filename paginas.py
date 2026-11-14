@@ -6,33 +6,33 @@ import datetime, html, json, re
 REVISADO = '2026-11-12'   # data da revisão médica dos textos pela Dra. Larissa: trocar quando ela revisar de novo
 
 PAGINAS = [
-    dict(slug='joanete', cond='joanete', card='Joanete', h1='Joanete', sub='hálux valgo',
+    dict(slug='joanete', desc='Joanete (hálux valgo): o que é, quando tratar sem cirurgia e como é a cirurgia minimamente invasiva. Dra. Larissa Silva, ortopedista no Leblon, Rio.', cond='joanete', card='Joanete', h1='Joanete', sub='hálux valgo',
          title='Joanete: avaliação e cirurgia minimamente invasiva', img='{{IMG_PE_CIMA}}', alt='Pé com joanete visto de cima',
          faq=[0, 1, 4], dor='Calombo na lateral do dedão, que dói no sapato', cuidado=True,
-         en=dict(h1='Bunion', sub='hallux valgus', title='Bunion: evaluation and minimally invasive surgery', alt='Foot with a bunion seen from above',
+         en=dict(desc='Bunion (hallux valgus): what it is, when to treat it without surgery and how minimally invasive surgery works. Dr. Larissa Silva, Rio de Janeiro.', h1='Bunion', sub='hallux valgus', title='Bunion: evaluation and minimally invasive surgery', alt='Foot with a bunion seen from above',
                  dor='A bump on the side of the big toe that hurts in shoes')),
-    dict(slug='haglund', cond='haglund', card='Haglund', h1='Deformidade de Haglund', sub='dor atrás do calcanhar',
+    dict(slug='haglund', desc='Dor atrás do calcanhar, onde o sapato encosta: deformidade de Haglund, tratamento sem cirurgia e quando operar. Dra. Larissa Silva, Leblon, Rio.', cond='haglund', card='Haglund', h1='Deformidade de Haglund', sub='dor atrás do calcanhar',
          title='Deformidade de Haglund: dor atrás do calcanhar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
          faq=[2, 4], dor='Calombo atrás do calcanhar, onde o sapato encosta', oque=2, dentro=[1],   # a etapa 0 é o calcanhar normal visto por fora: não entra em "Por dentro"
-         en=dict(h1='Haglund’s deformity', sub='pain at the back of the heel', title='Haglund’s deformity: pain at the back of the heel', alt='Foot seen from the side, heel on the left',
+         en=dict(desc='Pain at the back of the heel where the shoe rubs: Haglund’s deformity, non-surgical care and when surgery is considered. Dr. Larissa Silva, Rio.', h1='Haglund’s deformity', sub='pain at the back of the heel', title='Haglund’s deformity: pain at the back of the heel', alt='Foot seen from the side, heel on the left',
                  dor='A bump at the back of the heel, where the shoe rubs')),
-    dict(slug='tendao-de-aquiles', cond='aquiles', card='Tendão de Aquiles', h1='Tendão de Aquiles', sub='ruptura do tendão',
+    dict(slug='tendao-de-aquiles', desc='Ruptura do tendão de Aquiles: sintomas, tratamento com bota ou cirurgia e recuperação por fases. Dra. Larissa Silva, ortopedista no Leblon, Rio.', cond='aquiles', card='Tendão de Aquiles', h1='Tendão de Aquiles', sub='ruptura do tendão',
          title='Ruptura do tendão de Aquiles', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tendão atrás do tornozelo',
          faq=[2, 4], dor=None,   # o texto revisado fala de ruptura; o sintoma da lista é de tendinite
-         en=dict(h1='Achilles tendon', sub='tendon rupture', title='Achilles tendon rupture', alt='Foot seen from the side, with the tendon behind the ankle', dor=None)),
-    dict(slug='entorse-de-tornozelo', cond='tornozelo', card='Tornozelo', h1='Entorse de tornozelo', sub='ligamentos e tornozelo que falseia',
+         en=dict(desc='Achilles tendon rupture: symptoms, treatment with a boot or surgery, and recovery in phases. Dr. Larissa Silva, orthopedic surgeon in Rio.', h1='Achilles tendon', sub='tendon rupture', title='Achilles tendon rupture', alt='Foot seen from the side, with the tendon behind the ankle', dor=None)),
+    dict(slug='entorse-de-tornozelo', desc='Entorse de tornozelo e tornozelo que falseia: quando procurar avaliação, reabilitação e reparo do ligamento. Dra. Larissa Silva, Leblon, Rio.', cond='tornozelo', card='Tornozelo', h1='Entorse de tornozelo', sub='ligamentos e tornozelo que falseia',
          title='Entorse de tornozelo e tornozelo que falseia', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tornozelo',
          faq=[3, 4], dor='Torceu o pé e semanas depois ainda incha', cuidado=True,
-         en=dict(h1='Ankle sprain', sub='ligaments and an ankle that gives way', title='Ankle sprain and an ankle that gives way', alt='Foot seen from the side, showing the ankle',
+         en=dict(desc='Ankle sprain and an ankle that gives way: when to get checked, rehabilitation and ligament repair. Dr. Larissa Silva, Rio de Janeiro.', h1='Ankle sprain', sub='ligaments and an ankle that gives way', title='Ankle sprain and an ankle that gives way', alt='Foot seen from the side, showing the ankle',
                  dor='Twisted the foot and weeks later it is still swollen')),
 ]
 
 T = {
-    'pt': dict(lang='pt-BR', locale='pt_BR', sufixo=' · Dra. Larissa Silva, ortopedista no Rio de Janeiro', og=' · Dra. Larissa Silva', inicio='Início', area='Pé e tornozelo',
+    'pt': dict(lang='pt-BR', locale='pt_BR', sufixo=' · Dra. Larissa Silva', og=' · Dra. Larissa Silva', inicio='Início', area='Pé e tornozelo',
                agendar='Agendar avaliação', ver='Ver no esquema →', oque='O que é', aparece='Costuma aparecer assim', dentro='Por dentro', trat='Tratamento',
                depois='Depois', obs='O que eu observo na consulta', observo='Na consulta eu observo:', perg='Perguntas', perg_h='O que todo mundo <em>pergunta.</em>',
                outros='Outros problemas que eu trato', cta='Traga o sapato que <em>mais dói.</em>', nome='Dra. Larissa Silva'),
-    'en': dict(lang='en', locale='en_US', sufixo=' · Dr. Larissa Silva, orthopedic surgeon in Rio de Janeiro', og=' · Dr. Larissa Silva', inicio='Home', area='Foot and ankle',
+    'en': dict(lang='en', locale='en_US', sufixo=' · Dr. Larissa Silva', og=' · Dr. Larissa Silva', inicio='Home', area='Foot and ankle',
                agendar='Book an appointment', ver='See it in the diagram →', oque='What it is', aparece='How it often shows up', dentro='Inside', trat='Treatment',
                depois='Afterwards', obs='What I look at in the visit', observo='In the visit I look at:', perg='Questions', perg_h='What everyone <em>asks.</em>',
                outros='Other problems I treat', cta='Bring the shoe that <em>hurts the most.</em>', nome='Dr. Larissa Silva'),
@@ -52,7 +52,8 @@ CSS_PAG = '''
 .ph .more:hover{color:var(--brand-lite)}
 .ph figure{margin:0;width:clamp(8rem,22vw,17rem);aspect-ratio:3/4;border-radius:var(--r-film);overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%);border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 60px -24px rgba(0,0,0,.6)}
 .ph figure img{width:100%;height:100%;object-fit:contain;object-position:50% 70%;display:block}
-.ph figure img.lado{object-fit:cover;object-position:0 100%;transform:scale(1.7);transform-origin:28% 96%}   /* foto de lado: o pé fica embaixo, à esquerda; amplia nele */
+.ph figure img.lado{object-fit:cover;object-position:0 100%;transform:scale(1.7);transform-origin:28% 96%}
+.ph figure img.lado.atras{transform:scale(1.55);transform-origin:4% 96%}   /* Haglund e Aquiles: o assunto é a parte de trás do calcanhar */   /* foto de lado: o pé fica embaixo, à esquerda; amplia nele */
 .ph .crumbs{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 .ph .crumbs a{color:inherit}
 .art .wrap{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(1.2rem,5vw,4.5rem);padding-block:var(--space) 0}
@@ -125,7 +126,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
         url = URL + pasta + p['slug'] + '.html'
         url_pt = URL + p['slug'] + '.html'; url_en = URL + 'en/' + p['slug'] + '.html'
         title = X['title'] + L['sufixo']
-        desc = html.unescape(re.sub('<[^>]+>', '', o_que[0] + ' ' + cards[c]))
+        desc = X.get('desc') or html.unescape(re.sub('<[^>]+>', '', o_que[0] + ' ' + cards[c]))
         lead = cards[c]   # o 'o que é' já vem logo abaixo: aqui só o que eu faço
         obs = ''.join(('<div><dt>%s<small>%s</small></dt><dd>%s</dd><dd><b>' + L['observo'] + '</b> %s</dd></div>') % (parts[k][0], parts[k][1], parts[k][2], parts[k][3]) for k in plist[c])
         perg = ''.join('<details%s><summary>%s</summary><p>%s</p></details>' % (' open' if i == 0 else '', faq[j][0], faq[j][1]) for i, j in enumerate(p['faq']))
@@ -151,7 +152,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
 <link rel="canonical" href="{url}">
 <link rel="alternate" hreflang="pt-BR" href="{url_pt}"><link rel="alternate" hreflang="en" href="{url_en}"><link rel="alternate" hreflang="x-default" href="{url_pt}">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="192x192" href="{pre}img/web/favicon.png?v={fav_v}">
+<link rel="icon" type="image/png" sizes="192x192" href="{pre}img/web/favicon.png?v={fav_v}"><link rel="apple-touch-icon" href="{pre}img/web/favicon.png?v={fav_v}">
 <meta property="og:type" content="article"><meta property="og:locale" content="{L['locale']}">
 <meta property="og:title" content="{html.escape(X['title'] + L['og'])}">
 <meta property="og:description" content="{html.escape(desc)}">
@@ -173,7 +174,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
     <p class="lead">{lead}</p>
     <div class="acts"><a class="btn primary" href="./#agendar">{L['agendar']}</a><a class="more" href="./#esquema-{c}">{L['ver']}</a></div>
   </div>
-  <figure><img{' class="lado"' if p['img']=='{{IMG_PE_LADO}}' else ''} src="{img_url[p['img']]}" alt="{X['alt']}" width="569" height="852"></figure>
+  <figure><img{(' class="lado atras"' if p['slug'] in ('haglund', 'tendao-de-aquiles') else ' class="lado"') if p['img']=='{{IMG_PE_LADO}}' else ''} src="{img_url[p['img']]}" alt="{X['alt']}" width="569" height="852"></figure>
 </div></section>
 
 <main class="art"><div class="wrap">
@@ -220,8 +221,10 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
 #    a página vai para a raiz, entra no sitemap, nas listas "Outros problemas" e na página do Leblon.
 # ======================================================================================================
 
+REVISADO_NOVAS = '2026-11-13'   # aprovação da Dra. Larissa das páginas novas
+
 NOVAS = [
-    dict(slug='fascite-plantar', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True, esq='fascite',
+    dict(slug='fascite-plantar', desc='Fascite plantar: dor embaixo do calcanhar ao pisar. Tratamento sem cirurgia e ondas de choque. Dra. Larissa Silva, ortopedista no Leblon, Rio de Janeiro.', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True, esq='fascite',
          title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
          lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
@@ -240,8 +243,8 @@ NOVAS = [
                  ('Quando é indicada', ['É indicada quando a dor continua apesar de alongamento, calçado, palmilha e fisioterapia bem feitos. Não substitui esses cuidados: os exercícios continuam durante e depois das sessões.',
                                         'Nem todo mundo pode fazer. Gravidez, alterações da coagulação ou uso de anticoagulante, infecção ou tumor no local, entre outros casos, contraindicam. Avalio isso na consulta.',
                                         'A resposta varia de pessoa para pessoa e a melhora costuma ser gradual, nas semanas seguintes.'])]),
-    dict(slug='neuroma-de-morton', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=True,
-         title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+    dict(slug='neuroma-de-morton', desc='Dor na bola do pé, como pedrinha no sapato: neuroma de Morton e metatarsalgia, causas e tratamento. Dra. Larissa Silva, ortopedista no Leblon, Rio.', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=True,
+         title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dor na “bola” do pé, como pedrinha no sapato', faq=[4],
          lead='A dor na “bola” do pé tem várias causas. Investigo a causa e começo pelo calçado e pela palmilha.',
          oque=['Metatarsalgia é o nome geral da dor na “bola” do pé, a região de apoio logo atrás dos dedos. Uma das causas é o neuroma de Morton: um espessamento do nervo que passa entre os ossos, mais comum entre o terceiro e o quarto dedo.'],
@@ -249,8 +252,8 @@ NOVAS = [
          trat=['Começo pelo calçado: mais largo, de salto baixo e sola que amortece. Uma palmilha com apoio logo atrás da bola do pé tira a pressão do nervo e dos ossos. Fisioterapia e, em alguns casos, infiltração entram como opções.',
                'A cirurgia fica para quando a dor continua apesar desses cuidados.'],
          quando=['Dormência que não passa, dor que acorda à noite ou inchaço no peito do pé pedem avaliação, porque podem ter outra causa, como fratura por estresse.']),
-    dict(slug='halux-rigido', h1='Hálux rígido', sub='artrose do dedão', revisado=True,
-         title='Hálux rígido: artrose e dor no dedão', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+    dict(slug='halux-rigido', desc='Hálux rígido: artrose e dor no dedão ao dobrar. Calçado, palmilha e, se preciso, cirurgia. Dra. Larissa Silva, ortopedista no Leblon, Rio de Janeiro.', h1='Hálux rígido', sub='artrose do dedão', revisado=True,
+         title='Hálux rígido: artrose e dor no dedão', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dedão duro, que dói ao dobrar', faq=[4],
          lead='Dedão duro e dolorido não é joanete. Trato primeiro com calçado e palmilha e, se a dor continuar, avalio a cirurgia pelo grau do desgaste.',
          oque=['É o desgaste da articulação na base do dedão. A cartilagem afina, o osso forma bicos nas bordas e o dedão perde a capacidade de dobrar para cima.'],
@@ -258,7 +261,7 @@ NOVAS = [
          trat=['Calçado de sola mais rígida e bico alto, palmilha que limita o movimento do dedão, ajuste das atividades e fisioterapia aliviam muitos casos.',
                'Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.'],
          quando=['Procure avaliação se o dedão dói e endurece há semanas, se incha e fica vermelho de repente ou se a dor muda o seu jeito de pisar.']),
-    dict(slug='pe-plano-do-adulto', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True, esq='peplano',
+    dict(slug='pe-plano-do-adulto', desc='Pé plano do adulto: o arco que desaba e o tendão tibial posterior. Palmilha, fortalecimento e quando operar. Dra. Larissa Silva, Leblon, Rio.', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True, esq='peplano',
          title='Pé plano do adulto: o arco que desabou', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Arco que desabou, dor por dentro do tornozelo', faq=[4],
          lead='Quando o arco do pé desaba na vida adulta, na maioria das vezes há um tendão envolvido. Quanto antes avaliar, mais opções de tratamento sem cirurgia.',
@@ -271,7 +274,7 @@ NOVAS = [
 
 LEBLON = dict(slug='ortopedista-leblon-pe-tornozelo',
               title='Ortopedista no Leblon · Pé e tornozelo · Dra. Larissa Silva',   # "Ortopedista de Pé e Tornozelo" não é área registrada no CFM: manter separado
-              desc='Avaliação do pé e do tornozelo no Leblon, Rio de Janeiro, com a Dra. Larissa Silva, ortopedista e traumatologista formada pelo INTO. Consulta presencial ou por teleconsulta. Primeiro, sem cirurgia.')
+              desc='Avaliação do pé e do tornozelo no Leblon, Rio, com a Dra. Larissa Silva, ortopedista formada pelo INTO. Presencial ou teleconsulta. Primeiro, sem cirurgia.')
 
 def _casca(src_head, src_ctrl, pre, logo_url, home):
     # pedaços comuns: CSS, fontes, cabeçalho, aviso de cookies, rodapé, GA e regra de segurança da página principal
@@ -301,7 +304,7 @@ CSS_NOVAS = '''
 @media (max-width:520px){.lst{grid-template-columns:minmax(0,1fr)}}
 '''
 
-def _doc(csp, title, desc, url, fav_v, pre, og_v, ld, links, css, extra_head, cab, corpo, cookies, footer, ga, og_type='article'):
+def _doc(csp, title, desc, url, fav_v, pre, og_v, ld, links, css, extra_head, cab, corpo, cookies, footer, ga, og_type='article', og_title=None):
     return f'''<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -313,9 +316,9 @@ def _doc(csp, title, desc, url, fav_v, pre, og_v, ld, links, css, extra_head, ca
 <meta name="theme-color" content="#113358">
 {extra_head}<link rel="canonical" href="{url}">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="192x192" href="{pre}img/web/favicon.png?v={fav_v}">
+<link rel="icon" type="image/png" sizes="192x192" href="{pre}img/web/favicon.png?v={fav_v}"><link rel="apple-touch-icon" href="{pre}img/web/favicon.png?v={fav_v}">
 <meta property="og:type" content="{og_type}"><meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="{html.escape(title)}">
+<meta property="og:title" content="{html.escape(og_title or title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="https://dralaarissasilva.com.br/img/web/og.jpg?v={og_v}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -370,7 +373,7 @@ def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
         outros = ''.join('<li><a href="%s.html">%s</a></li>' % s for s in irmas) + '<li><a href="%s.html">Avaliação no Leblon</a></li>' % (pre + LEBLON['slug'])
         ld = {'@context': 'https://schema.org', '@type': 'MedicalWebPage', 'name': p['title'], 'url': url, 'inLanguage': 'pt-BR',
               'about': {'@type': 'MedicalCondition', 'name': p['h1']}, 'author': {'@type': 'Physician', 'name': L['nome'], 'url': URL}}
-        if p['revisado']: ld['reviewedBy'] = {'@type': 'Physician', 'name': L['nome'], 'url': URL}
+        if p['revisado']: ld['reviewedBy'] = {'@type': 'Physician', 'name': L['nome'], 'url': URL}; ld['lastReviewed'] = REVISADO_NOVAS
         aviso = '' if p['revisado'] else '<div class="rasc">RASCUNHO para revisão da Dra. Larissa · esta página ainda não está no site</div>\n'
         corpo = aviso + f'''
 <section class="ph"><div class="wrap">
@@ -408,7 +411,7 @@ def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
 '''
         extra = '' if p['revisado'] else '<meta name="robots" content="noindex,nofollow">\n'
         open(pasta + p['slug'] + '.html', 'w', encoding='utf-8').write(
-            _doc(csp, p['title'] + L['sufixo'], re.sub('<[^>]+>', '', p['oque'][0]), url, fav_v, pre, og_v, ld, links, css, extra, header, corpo, cookies, footer, ga))
+            _doc(csp, p['title'] + L['sufixo'], p.get('desc') or re.sub('<[^>]+>', '', p['oque'][0]), url, fav_v, pre, og_v, ld, links, css, extra, header, corpo, cookies, footer, ga, og_title=p['title'] + L['og']))
         if p['revisado']: publicadas.append(url)
     return publicadas
 
