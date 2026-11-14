@@ -307,6 +307,9 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 /* o que trata */
 .treat{background:var(--card);border-block:1px solid var(--rule)}
 .treat .wrap{padding-block:var(--space);display:grid;gap:2rem}
+.mais ul{list-style:none;padding:0;margin:.8rem 0 0;display:flex;flex-wrap:wrap;gap:.6rem}   /* páginas dos outros problemas, logo depois das quatro cirurgias */
+.mais a{display:inline-block;border:1.5px solid var(--brand-deep);border-radius:999px;padding:.6rem 1.1rem;text-decoration:none;color:var(--brand-deep);font-weight:600;font-size:.92rem}
+.mais a:hover{background:var(--brand-deep);color:#fff}
 .treat .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.8rem,2vw,1.4rem)}
 .tcard{display:grid;gap:.7rem;align-content:start;min-width:0}
 .tcard .ico{border-radius:var(--r-film);overflow:hidden;aspect-ratio:4/3;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%)}
@@ -541,9 +544,9 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <div class="tabs" role="group" aria-label="Escolha o problema">
         <button class="tab" type="button" id="tab-joanete" data-c="joanete" aria-pressed="true"><b>Joanete</b><span>lateral do dedão</span></button>
         <button class="tab" type="button" id="tab-haglund" data-c="haglund" aria-pressed="false"><b>Calcanhar</b><span>atrás, no sapato</span></button>
+        <button class="tab" type="button" id="tab-fascite" data-c="fascite" aria-pressed="false"><b>Fascite</b><span>embaixo do calcanhar</span></button>
         <button class="tab" type="button" id="tab-aquiles" data-c="aquiles" aria-pressed="false"><b>Aquiles</b><span>pedrada atrás da perna</span></button>
         <button class="tab" type="button" id="tab-tornozelo" data-c="tornozelo" aria-pressed="false"><b>Tornozelo</b><span>torce e falseia</span></button>
-        <button class="tab" type="button" id="tab-fascite" data-c="fascite" aria-pressed="false"><b>Fascite</b><span>embaixo do calcanhar</span></button>
         <button class="tab" type="button" id="tab-peplano" data-c="peplano" aria-pressed="false"><b>Pé plano</b><span>o arco que desabou</span></button>
       </div>
       <ol class="steps" id="steps">
@@ -596,6 +599,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     <article class="tcard rv"><a class="ico" href="#esquema" data-go="aquiles" aria-label="Ver tendão de Aquiles no esquema"><svg id="icoAquiles" viewBox="20 150 372 279" aria-hidden="true"></svg></a><h3>Tendão de Aquiles</h3><p>Quando a cirurgia é indicada, costuro o tendão rompido. Na tendinite que não melhora com fisioterapia e outros cuidados, avalio se a cirurgia é indicada.</p><span class="links"><a class="more" href="#esquema" data-go="aquiles">Ver no esquema</a><a class="more" href="tendao-de-aquiles.html">Ler mais</a></span></article>
     <article class="tcard rv"><a class="ico" href="#esquema" data-go="tornozelo" aria-label="Ver tornozelo no esquema"><svg id="icoAnkle" viewBox="190 236 300 225" aria-hidden="true"></svg></a><h3>Tornozelo</h3><p>Reparo os ligamentos do tornozelo que falseia e fixo fraturas.</p><span class="links"><a class="more" href="#esquema" data-go="tornozelo">Ver no esquema</a><a class="more" href="entorse-de-tornozelo.html">Ler mais</a></span></article>
   </div>
+  <nav class="mais rv" aria-label="Outros problemas que eu trato"><span class="caps">Outros problemas que eu trato</span><ul><li><a href="fascite-plantar.html">Fascite plantar</a></li><li><a href="neuroma-de-morton.html">Neuroma de Morton</a></li><li><a href="halux-rigido.html">Hálux rígido</a></li><li><a href="pe-plano-do-adulto.html">Pé plano do adulto</a></li></ul></nav>
   <div class="common">
     <div class="rv dorcol">
       <span class="caps"><b>04</b> — Toque onde dói</span><h2 style="margin-top:.7rem">O que mais <em>aparece.</em></h2>

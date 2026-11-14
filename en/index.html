@@ -307,6 +307,9 @@ li.on .step .d{grid-template-rows:1fr;opacity:1;padding-top:.25rem}
 /* o que trata */
 .treat{background:var(--card);border-block:1px solid var(--rule)}
 .treat .wrap{padding-block:var(--space);display:grid;gap:2rem}
+.mais ul{list-style:none;padding:0;margin:.8rem 0 0;display:flex;flex-wrap:wrap;gap:.6rem}   /* páginas dos outros problemas, logo depois das quatro cirurgias */
+.mais a{display:inline-block;border:1.5px solid var(--brand-deep);border-radius:999px;padding:.6rem 1.1rem;text-decoration:none;color:var(--brand-deep);font-weight:600;font-size:.92rem}
+.mais a:hover{background:var(--brand-deep);color:#fff}
 .treat .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.8rem,2vw,1.4rem)}
 .tcard{display:grid;gap:.7rem;align-content:start;min-width:0}
 .tcard .ico{border-radius:var(--r-film);overflow:hidden;aspect-ratio:4/3;background:radial-gradient(120% 90% at 30% 20%,var(--film-2),var(--film) 70%)}
@@ -541,9 +544,9 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <div class="tabs" role="group" aria-label="Choose the problem">
         <button class="tab" type="button" id="tab-joanete" data-c="joanete" aria-pressed="true"><b>Bunion</b><span>side of the big toe</span></button>
         <button class="tab" type="button" id="tab-haglund" data-c="haglund" aria-pressed="false"><b>Heel</b><span>back, where the shoe rubs</span></button>
+        <button class="tab" type="button" id="tab-fascite" data-c="fascite" aria-pressed="false"><b>Fasciitis</b><span>under the heel</span></button>
         <button class="tab" type="button" id="tab-aquiles" data-c="aquiles" aria-pressed="false"><b>Achilles</b><span>like a kick to the back of the leg</span></button>
         <button class="tab" type="button" id="tab-tornozelo" data-c="tornozelo" aria-pressed="false"><b>Ankle</b><span>sprains and gives way</span></button>
-        <button class="tab" type="button" id="tab-fascite" data-c="fascite" aria-pressed="false"><b>Fasciitis</b><span>under the heel</span></button>
         <button class="tab" type="button" id="tab-peplano" data-c="peplano" aria-pressed="false"><b>Flat foot</b><span>the arch that collapsed</span></button>
       </div>
       <ol class="steps" id="steps">
@@ -596,6 +599,7 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     <article class="tcard rv"><a class="ico" href="#esquema" data-go="aquiles" aria-label="See Achilles tendon in the diagram"><svg id="icoAquiles" viewBox="20 150 372 279" aria-hidden="true"></svg></a><h3>Achilles tendon</h3><p>When surgery is indicated, I suture the ruptured tendon. For tendinitis that does not improve with physical therapy and other measures, I assess whether surgery is indicated.</p><span class="links"><a class="more" href="#esquema" data-go="aquiles">See in the diagram</a><a class="more" href="tendao-de-aquiles.html">Read more</a></span></article>
     <article class="tcard rv"><a class="ico" href="#esquema" data-go="tornozelo" aria-label="See ankle in the diagram"><svg id="icoAnkle" viewBox="190 236 300 225" aria-hidden="true"></svg></a><h3>Ankle</h3><p>I repair the ligaments of an ankle that keeps giving way, and I fix fractures.</p><span class="links"><a class="more" href="#esquema" data-go="tornozelo">See in the diagram</a><a class="more" href="entorse-de-tornozelo.html">Read more</a></span></article>
   </div>
+  <nav class="mais rv" aria-label="Other problems I treat"><span class="caps">Other problems I treat (pages in Portuguese)</span><ul><li><a href="../fascite-plantar.html">Plantar fasciitis</a></li><li><a href="../neuroma-de-morton.html">Morton’s neuroma</a></li><li><a href="../halux-rigido.html">Hallux rigidus</a></li><li><a href="../pe-plano-do-adulto.html">Adult-acquired flatfoot</a></li></ul></nav>
   <div class="common">
     <div class="rv dorcol">
       <span class="caps"><b>04</b> — Tap where it hurts</span><h2 style="margin-top:.7rem">What comes up <em>most often.</em></h2>
