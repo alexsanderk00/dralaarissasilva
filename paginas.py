@@ -445,7 +445,7 @@ def gerar_leblon(src_head, src_ctrl, img_url, URL, logo_url, fav_v, ld_medico):
     <p class="lead">{intro}</p>
     <div class="acts"><a class="btn primary" href="./#agendar">Agendar avaliação</a><a class="more" href="{maps}" target="_blank" rel="noopener">Como chegar →</a></div>
   </div>
-  <figure><img class="foto" src="{img_url['{{IMG_CONSULTORIO}}']}" alt="Dra. Larissa Silva no consultório, sentada à mesa" width="1043" height="1800"></figure>
+  <figure><img class="foto" src="{img_url['{{IMG_CONSULTORIO}}']}" alt="Dra. Larissa Silva no consultório, sentada à mesa" width="1600" height="1831"></figure>
 </div></section>
 
 <main class="art"><div class="wrap">
