@@ -141,6 +141,22 @@ function frame(){
 fill();readScroll();s=target;w=wipeAuto();frame();
 window.__esquema={set(c,v,wv){cond=c;tabs.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.c===c)));fill();target=s=v;setActive(v<-.5?0:Math.round(v)+1);wUser=(wv==null?null:wv);w=wUser!=null?wUser:wipeAuto();dirty=true},select};
 
+/* ---------- galeria: clicar na foto mostra a foto inteira (só na galeria do Quem sou) ---------- */
+{const dlg=document.getElementById('lbx'),fotos=[...document.querySelectorAll('#galeria .photo img')];
+ if(dlg&&dlg.showModal&&fotos.length){const im=document.getElementById('lbxImg'),cap=document.getElementById('lbxCap');let atual=0,x0=null;
+  const mostra=i=>{atual=(i+fotos.length)%fotos.length;const f=fotos[atual];im.src=f.currentSrc||f.src;im.alt=f.alt;const c=f.closest('figure').querySelector('figcaption');cap.textContent=c?c.textContent:''};
+  const abre=i=>{mostra(i);dlg.showModal()};
+  fotos.forEach((f,i)=>{f.tabIndex=0;f.setAttribute('role','button');f.setAttribute('aria-label','Ampliar foto: '+f.alt);
+    f.addEventListener('click',()=>abre(i));f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();abre(i)}})});
+  document.getElementById('lbxClose').addEventListener('click',()=>dlg.close());
+  document.getElementById('lbxPrev').addEventListener('click',()=>mostra(atual-1));
+  document.getElementById('lbxNext').addEventListener('click',()=>mostra(atual+1));
+  dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.tagName==='FIGURE')dlg.close()});   // clique fora da foto fecha
+  dlg.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')mostra(atual-1);if(e.key==='ArrowRight')mostra(atual+1)});
+  dlg.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});   // arrastar para o lado troca a foto
+  dlg.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)mostra(atual+(dx<0?1:-1));x0=null});
+ }}
+
 /* ---------- miniaturas (filme do topo, cartões e capa em produção) ---------- */
 const P=(host,d,fill,stroke,sw=0,op=1)=>el('path',{d,fill:fill||'none',stroke:stroke||'none','stroke-width':sw,opacity:op,'stroke-linejoin':'round','stroke-linecap':'round'},host);
 const HI='rgba(236,243,252,.92)',DIM='rgba(170,196,228,.32)',MID='rgba(205,222,243,.55)',AL='#FF9A7B';

@@ -1286,5 +1286,25 @@
  [
   "<figcaption>Exame</figcaption>",
   "<figcaption>X-ray</figcaption>"
+ ],
+ [
+  "<dialog class=\"lbx\" id=\"lbx\" aria-label=\"Foto ampliada\">",
+  "<dialog class=\"lbx\" id=\"lbx\" aria-label=\"Enlarged photo\">"
+ ],
+ [
+  "id=\"lbxClose\" aria-label=\"Fechar\"",
+  "id=\"lbxClose\" aria-label=\"Close\""
+ ],
+ [
+  "id=\"lbxPrev\" aria-label=\"Foto anterior\"",
+  "id=\"lbxPrev\" aria-label=\"Previous photo\""
+ ],
+ [
+  "id=\"lbxNext\" aria-label=\"Próxima foto\"",
+  "id=\"lbxNext\" aria-label=\"Next photo\""
+ ],
+ [
+  "'Ampliar foto: '",
+  "'Enlarge photo: '"
  ]
 ]
