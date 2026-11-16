@@ -1266,5 +1266,29 @@
  [
   "meterT4.textContent=T.m4||'Cirurgia';",
   "meterT4.textContent=T.m4||'Surgery';"
+ ],
+ [
+  "<img alt=\"Retrato da Dr. Larissa Silva, de braços cruzados\"",
+  "<img alt=\"Portrait of Dr. Larissa Silva, arms crossed\""
+ ],
+ [
+  "<img alt=\"Dr. Larissa Silva sorrindo, com um modelo anatômico do pé nas mãos\"",
+  "<img alt=\"Dr. Larissa Silva smiling, holding an anatomical model of the foot\""
+ ],
+ [
+  "<img alt=\"Dr. Larissa Silva mostrando uma radiografia dos pés no tablet\"",
+  "<img alt=\"Dr. Larissa Silva showing a foot X-ray on a tablet\""
+ ],
+ [
+  "<img alt=\"Dr. Larissa Silva analisando um exame no tablet\"",
+  "<img alt=\"Dr. Larissa Silva reviewing an exam on a tablet\""
+ ],
+ [
+  "<figcaption>Dra. Larissa</figcaption>",
+  "<figcaption>Dr. Larissa</figcaption>"
+ ],
+ [
+  "<figcaption>Exame</figcaption>",
+  "<figcaption>X-ray</figcaption>"
  ]
 ]
