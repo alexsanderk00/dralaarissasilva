@@ -7,23 +7,23 @@ REVISADO = '2026-11-12'   # data da revisão médica dos textos pela Dra. Lariss
 
 PAGINAS = [
     dict(slug='joanete', desc='Joanete (hálux valgo): o que é, quando tratar sem cirurgia e como é a cirurgia minimamente invasiva. Dra. Larissa Silva, ortopedista no Leblon, Rio.', cond='joanete', card='Joanete', h1='Joanete', sub='hálux valgo',
-         title='Joanete: avaliação e cirurgia minimamente invasiva', img='{{IMG_PE_CIMA}}', alt='Pé com joanete visto de cima',
+         title='Joanete: avaliação e cirurgia minimamente invasiva', seo='Joanete: cirurgia minimamente invasiva · Rio de Janeiro', img='{{IMG_PE_CIMA}}', alt='Pé com joanete visto de cima',
          faq=[0, 1, 4], dor='Calombo na lateral do dedão, que dói no sapato', cuidado=True,
-         en=dict(desc='Bunion (hallux valgus): what it is, when to treat it without surgery and how minimally invasive surgery works. Dr. Larissa Silva, Rio de Janeiro.', h1='Bunion', sub='hallux valgus', title='Bunion: evaluation and minimally invasive surgery', alt='Foot with a bunion seen from above',
+         en=dict(desc='Bunion (hallux valgus): what it is, when to treat it without surgery and how minimally invasive surgery works. Dr. Larissa Silva, Rio de Janeiro.', h1='Bunion', sub='hallux valgus', title='Bunion: evaluation and minimally invasive surgery', seo='Bunion: minimally invasive surgery · Rio de Janeiro', alt='Foot with a bunion seen from above',
                  dor='A bump on the side of the big toe that hurts in shoes')),
     dict(slug='haglund', desc='Dor atrás do calcanhar, onde o sapato encosta: deformidade de Haglund, tratamento sem cirurgia e quando operar. Dra. Larissa Silva, Leblon, Rio.', cond='haglund', card='Haglund', h1='Deformidade de Haglund', sub='dor atrás do calcanhar',
-         title='Deformidade de Haglund: dor atrás do calcanhar', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
+         title='Deformidade de Haglund: dor atrás do calcanhar', seo='Haglund: dor atrás do calcanhar · Rio de Janeiro', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o calcanhar à esquerda',
          faq=[2, 4], dor='Calombo atrás do calcanhar, onde o sapato encosta', oque=2, dentro=[1],   # a etapa 0 é o calcanhar normal visto por fora: não entra em "Por dentro"
-         en=dict(desc='Pain at the back of the heel where the shoe rubs: Haglund’s deformity, non-surgical care and when surgery is considered. Dr. Larissa Silva, Rio.', h1='Haglund’s deformity', sub='pain at the back of the heel', title='Haglund’s deformity: pain at the back of the heel', alt='Foot seen from the side, heel on the left',
+         en=dict(desc='Pain at the back of the heel where the shoe rubs: Haglund’s deformity, non-surgical care and when surgery is considered. Dr. Larissa Silva, Rio.', h1='Haglund’s deformity', sub='pain at the back of the heel', title='Haglund’s deformity: pain at the back of the heel', seo='Haglund’s deformity: heel pain · Rio de Janeiro', alt='Foot seen from the side, heel on the left',
                  dor='A bump at the back of the heel, where the shoe rubs')),
     dict(slug='tendao-de-aquiles', desc='Ruptura do tendão de Aquiles: sintomas, tratamento com bota ou cirurgia e recuperação por fases. Dra. Larissa Silva, ortopedista no Leblon, Rio.', cond='aquiles', card='Tendão de Aquiles', h1='Tendão de Aquiles', sub='ruptura do tendão',
-         title='Ruptura do tendão de Aquiles', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tendão atrás do tornozelo',
+         title='Ruptura do tendão de Aquiles', seo='Ruptura do tendão de Aquiles · Rio de Janeiro · Dra. Larissa Silva', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tendão atrás do tornozelo',
          faq=[2, 4], dor=None,   # o texto revisado fala de ruptura; o sintoma da lista é de tendinite
-         en=dict(desc='Achilles tendon rupture: symptoms, treatment with a boot or surgery, and recovery in phases. Dr. Larissa Silva, orthopedic surgeon in Rio.', h1='Achilles tendon', sub='tendon rupture', title='Achilles tendon rupture', alt='Foot seen from the side, with the tendon behind the ankle', dor=None)),
+         en=dict(desc='Achilles tendon rupture: symptoms, treatment with a boot or surgery, and recovery in phases. Dr. Larissa Silva, orthopedic surgeon in Rio.', h1='Achilles tendon', sub='tendon rupture', title='Achilles tendon rupture', seo='Achilles tendon rupture · Rio de Janeiro · Dr. Larissa Silva', alt='Foot seen from the side, with the tendon behind the ankle', dor=None)),
     dict(slug='entorse-de-tornozelo', desc='Entorse de tornozelo e tornozelo que falseia: quando procurar avaliação, reabilitação e reparo do ligamento. Dra. Larissa Silva, Leblon, Rio.', cond='tornozelo', card='Tornozelo', h1='Entorse de tornozelo', sub='ligamentos e tornozelo que falseia',
-         title='Entorse de tornozelo e tornozelo que falseia', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tornozelo',
+         title='Entorse de tornozelo e tornozelo que falseia', seo='Entorse de tornozelo · Rio de Janeiro · Dra. Larissa Silva', img='{{IMG_PE_LADO}}', alt='Pé visto de lado, com o tornozelo',
          faq=[3, 4], dor='Torceu o pé e semanas depois ainda incha', cuidado=True,
-         en=dict(desc='Ankle sprain and an ankle that gives way: when to get checked, rehabilitation and ligament repair. Dr. Larissa Silva, Rio de Janeiro.', h1='Ankle sprain', sub='ligaments and an ankle that gives way', title='Ankle sprain and an ankle that gives way', alt='Foot seen from the side, showing the ankle',
+         en=dict(desc='Ankle sprain and an ankle that gives way: when to get checked, rehabilitation and ligament repair. Dr. Larissa Silva, Rio de Janeiro.', h1='Ankle sprain', sub='ligaments and an ankle that gives way', title='Ankle sprain and an ankle that gives way', seo='Ankle sprain · Rio de Janeiro · Dr. Larissa Silva', alt='Foot seen from the side, showing the ankle',
                  dor='Twisted the foot and weeks later it is still swollen')),
 ]
 
@@ -125,7 +125,7 @@ def gerar(src_head, src_ctrl, img_url, URL, logo_url, fav_v, lang='pt', pares=()
         dentro = [tira(s[i][0]) for i in p.get('dentro', [1, 2])]
         url = URL + pasta + p['slug'] + '.html'
         url_pt = URL + p['slug'] + '.html'; url_en = URL + 'en/' + p['slug'] + '.html'
-        title = X['title'] + L['sufixo']
+        title = X.get('seo') or X['title'] + L['sufixo']   # seo: título curto com a cidade, aprovado em 17/11/2026
         desc = X.get('desc') or html.unescape(re.sub('<[^>]+>', '', o_que[0] + ' ' + cards[c]))
         lead = cards[c]   # o 'o que é' já vem logo abaixo: aqui só o que eu faço
         obs = ''.join(('<div><dt>%s<small>%s</small></dt><dd>%s</dd><dd><b>' + L['observo'] + '</b> %s</dd></div>') % (parts[k][0], parts[k][1], parts[k][2], parts[k][3]) for k in plist[c])
@@ -225,7 +225,7 @@ REVISADO_NOVAS = '2026-11-13'   # aprovação da Dra. Larissa das páginas novas
 
 NOVAS = [
     dict(slug='fascite-plantar', desc='Fascite plantar: dor embaixo do calcanhar ao pisar. Tratamento sem cirurgia e ondas de choque. Dra. Larissa Silva, ortopedista no Leblon, Rio de Janeiro.', h1='Fascite plantar', sub='dor embaixo do calcanhar', revisado=True, esq='fascite',
-         title='Fascite plantar: dor embaixo do calcanhar ao pisar', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
+         title='Fascite plantar: dor embaixo do calcanhar ao pisar', seo='Fascite plantar: dor no calcanhar · Rio de Janeiro', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dor embaixo do calcanhar ao levantar da cama', faq=[2, 4],
          lead='Trato a dor embaixo do calcanhar quase sempre sem cirurgia: alongamento, calçado, palmilha e, quando indicado, ondas de choque.',
          oque=['A fáscia plantar é uma faixa firme que vai do calcanhar até a base dos dedos e sustenta o arco do pé. Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar.'],
@@ -243,7 +243,7 @@ NOVAS = [
                                         'Nem todo mundo pode fazer. Gravidez, alterações da coagulação ou uso de anticoagulante, infecção ou tumor no local, entre outros casos, contraindicam. Avalio isso na consulta.',
                                         'A resposta varia de pessoa para pessoa e a melhora costuma ser gradual, nas semanas seguintes.'])]),
     dict(slug='neuroma-de-morton', desc='Dor na bola do pé, como pedrinha no sapato: neuroma de Morton e metatarsalgia, causas e tratamento. Dra. Larissa Silva, ortopedista no Leblon, Rio.', h1='Neuroma de Morton', sub='metatarsalgia · dor na bola do pé', revisado=True,
-         title='Neuroma de Morton e metatarsalgia: dor na bola do pé', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
+         title='Neuroma de Morton e metatarsalgia: dor na bola do pé', seo='Neuroma de Morton · Rio de Janeiro · Dra. Larissa Silva', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dor na “bola” do pé, como pedrinha no sapato', faq=[4],
          lead='A dor na “bola” do pé tem várias causas. Investigo a causa e começo pelo calçado e pela palmilha.',
          oque=['Metatarsalgia é o nome geral da dor na “bola” do pé, a região de apoio logo atrás dos dedos. Uma das causas é o neuroma de Morton: um espessamento do nervo que passa entre os ossos, mais comum entre o terceiro e o quarto dedo.'],
@@ -252,7 +252,7 @@ NOVAS = [
                'A cirurgia fica para quando a dor continua apesar desses cuidados.'],
          quando=['Dormência que não passa, dor que acorda à noite ou inchaço no peito do pé pedem avaliação, porque podem ter outra causa, como fratura por estresse.']),
     dict(slug='halux-rigido', desc='Hálux rígido: artrose e dor no dedão ao dobrar. Calçado, palmilha e, se preciso, cirurgia. Dra. Larissa Silva, ortopedista no Leblon, Rio de Janeiro.', h1='Hálux rígido', sub='artrose do dedão', revisado=True,
-         title='Hálux rígido: artrose e dor no dedão', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
+         title='Hálux rígido: artrose e dor no dedão', seo='Hálux rígido: dor no dedão · Rio de Janeiro', img='{{IMG_PE_SOLA}}', alt='Sola do pé, do calcanhar aos dedos', wh=(1500, 2000),
          dor='Dedão duro, que dói ao dobrar', faq=[4],
          lead='Dedão duro e dolorido não é joanete. Trato primeiro com calçado e palmilha e, se a dor continuar, avalio a cirurgia pelo grau do desgaste.',
          oque=['É o desgaste da articulação na base do dedão. A cartilagem afina, o osso forma bicos nas bordas e o dedão perde a capacidade de dobrar para cima.'],
@@ -261,7 +261,7 @@ NOVAS = [
                'Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.'],
          quando=['Procure avaliação se o dedão dói e endurece há semanas, se incha e fica vermelho de repente ou se a dor muda o seu jeito de pisar.']),
     dict(slug='pe-plano-do-adulto', desc='Pé plano do adulto: o arco que desaba e o tendão tibial posterior. Palmilha, fortalecimento e quando operar. Dra. Larissa Silva, Leblon, Rio.', h1='Pé plano do adulto', sub='o arco que desabou', revisado=True, esq='peplano',
-         title='Pé plano do adulto: o arco que desabou', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
+         title='Pé plano do adulto: o arco que desabou', seo='Pé plano do adulto · Rio de Janeiro · Dra. Larissa Silva', img='{{IMG_PE_LADO}}', alt='Pé visto de lado',
          dor='Arco que desabou, dor por dentro do tornozelo', faq=[4],
          lead='Quando o arco do pé desaba na vida adulta, na maioria das vezes há um tendão envolvido. Quanto antes avaliar, mais opções de tratamento sem cirurgia.',
          oque=['Muita gente tem pé plano desde a infância, sem dor. No adulto, o arco também pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior, que sustenta o arco por dentro do tornozelo, perde força.'],
@@ -272,8 +272,8 @@ NOVAS = [
 ]
 
 LEBLON = dict(slug='ortopedista-leblon-pe-tornozelo',
-              title='Ortopedista no Leblon · Pé e tornozelo · Dra. Larissa Silva',   # "Ortopedista de Pé e Tornozelo" não é área registrada no CFM: manter separado
-              desc='Avaliação do pé e do tornozelo no Leblon, Rio, com a Dra. Larissa Silva, ortopedista formada pelo INTO. Presencial ou teleconsulta. Primeiro, sem cirurgia.')
+              title='Ortopedista no Leblon, Rio de Janeiro · Dra. Larissa Silva',   # "Ortopedista de Pé e Tornozelo" não é área registrada no CFM: manter separado
+              desc='Avaliação e cirurgia do pé e do tornozelo no Leblon, Rio de Janeiro (RJ), com a Dra. Larissa Silva, ortopedista formada pelo INTO. Presencial ou teleconsulta. Primeiro, sem cirurgia.')
 
 def _casca(src_head, src_ctrl, pre, logo_url, home):
     # pedaços comuns: CSS, fontes, cabeçalho, aviso de cookies, rodapé, GA e regra de segurança da página principal
@@ -410,7 +410,7 @@ def gerar_novas(src_head, src_ctrl, img_url, URL, logo_url, fav_v):
 '''
         extra = '' if p['revisado'] else '<meta name="robots" content="noindex,nofollow">\n'
         open(pasta + p['slug'] + '.html', 'w', encoding='utf-8').write(
-            _doc(csp, p['title'] + L['sufixo'], p.get('desc') or re.sub('<[^>]+>', '', p['oque'][0]), url, fav_v, pre, og_v, ld, links, css, extra, header, corpo, cookies, footer, ga, og_title=p['title'] + L['og']))
+            _doc(csp, p.get('seo') or p['title'] + L['sufixo'], p.get('desc') or re.sub('<[^>]+>', '', p['oque'][0]), url, fav_v, pre, og_v, ld, links, css, extra, header, corpo, cookies, footer, ga, og_title=p['title'] + L['og']))
         if p['revisado']: publicadas.append(url)
     return publicadas
 

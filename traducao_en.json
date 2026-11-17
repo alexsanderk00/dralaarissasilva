@@ -912,8 +912,8 @@
   "<b>01</b> — The diagram"
  ],
  [
-  "<b>03</b> — Cirurgias",
-  "<b>03</b> — Surgeries"
+  "<b>03</b> — Cirurgia do pé e tornozelo",
+  "<b>03</b> — Foot and ankle surgery"
  ],
  [
   "<b>07</b> — Perguntas",
@@ -1306,5 +1306,13 @@
  [
   "'Ampliar foto: '",
   "'Enlarge photo: '"
+ ],
+ [
+  "<details><summary>Procuro um médico para dor no pé no Rio de Janeiro. Por onde começo?</summary><p>Por uma avaliação com ortopedista. Eu atendo pé e tornozelo no Leblon, Rio de Janeiro, e também por teleconsulta. Na consulta, examino o pé parado, andando e dentro do calçado que você usa, vejo os exames e explico na tela o que está acontecendo. A maioria das dores no pé e no tornozelo melhora com calçado certo, palmilha e fisioterapia.</p></details>",
+  "<details><summary>I am looking for a doctor for foot pain in Rio de Janeiro. Where do I start?</summary><p>With an assessment by an orthopedic surgeon. I see foot and ankle patients in Leblon, Rio de Janeiro, and also by teleconsultation. At the consultation, I examine your foot standing, walking and in the shoes you wear, look at your scans and explain on screen what is going on. Most foot and ankle pain gets better with the right footwear, insoles and physical therapy.</p></details>"
+ ],
+ [
+  "<details><summary>Você faz cirurgia do pé no Rio de Janeiro?</summary><p>Sim. As que eu mais faço são de joanete, Haglund, tendão de Aquiles e tornozelo. No joanete, em muitos casos, por técnica minimamente invasiva. Em geral, a cirurgia entra quando o tratamento sem cirurgia não resolve, e eu mostro o plano no seu próprio exame.</p></details>",
+  "<details><summary>Do you perform foot surgery in Rio de Janeiro?</summary><p>Yes. The ones I do most are bunion, Haglund, Achilles tendon and ankle surgery. For bunions, in many cases, with a minimally invasive technique. In general, surgery comes in when non-surgical treatment does not work, and I show you the plan on your own scan.</p></details>"
  ]
 ]

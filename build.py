@@ -115,14 +115,14 @@ fav.paste(br, ((192 - m.width) // 2, (192 - m.height) // 2), br); fav.save('img/
 fav.save('favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])   # na raiz: é onde o Google procura primeiro o ícone dos resultados de busca
 FAV_V = hashlib.md5(open('img/web/favicon.png', 'rb').read()).hexdigest()[:8]   # versão no link: navegador guarda favicon no cache com força
 
-desc = 'Dra. Larissa Silva, ortopedista e traumatologista no Leblon, Rio de Janeiro. Cirurgia minimamente invasiva do pé e tornozelo. Presencial ou teleconsulta.'
+desc = 'Dra. Larissa Silva, ortopedista e traumatologista no Leblon, Rio de Janeiro (RJ). Avaliação e cirurgia do pé e do tornozelo, com técnica minimamente invasiva quando indicada. Presencial ou teleconsulta.'
 ld = {'@context': 'https://schema.org', '@type': 'Physician', 'name': 'Dra. Larissa Silva', 'alternateName': ['Larissa Silva', 'Dra. Larissa da Silva', 'Larissa da Silva'], 'url': URL, 'image': URL + 'img/web/og.jpg',
       'description': desc, 'medicalSpecialty': 'Musculoskeletal', 'telephone': '+55-21-97289-6222',
       'address': {'@type': 'PostalAddress', 'streetAddress': 'Rua General Venâncio Flores, 184 - Leblon', 'postalCode': '22441-090', 'addressLocality': 'Rio de Janeiro', 'addressRegion': 'RJ', 'addressCountry': 'BR'},
       'areaServed': {'@type': 'City', 'name': 'Rio de Janeiro'},
       'isAcceptingNewPatients': True,
       'hasMap': 'https://www.google.com/maps/search/?api=1&query=Rua+General+Ven%C3%A2ncio+Flores%2C+184%2C+Leblon%2C+Rio+de+Janeiro',
-      'knowsAbout': ['Joanete (hálux valgo)', 'Deformidade de Haglund', 'Tendão de Aquiles', 'Entorse de tornozelo', 'Instabilidade do tornozelo', 'Fascite plantar', 'Cirurgia minimamente invasiva do pé e tornozelo'],
+      'knowsAbout': ['Joanete (hálux valgo)', 'Deformidade de Haglund', 'Tendão de Aquiles', 'Entorse de tornozelo', 'Instabilidade do tornozelo', 'Fascite plantar', 'Cirurgia do pé', 'Cirurgia do tornozelo', 'Cirurgia minimamente invasiva do pé e tornozelo'],
       'availableService': [{'@type': 'MedicalProcedure', 'name': n} for n in ['Cirurgia de joanete minimamente invasiva', 'Cirurgia da deformidade de Haglund', 'Sutura do tendão de Aquiles', 'Reparo de ligamentos do tornozelo']],
       'knowsLanguage': ['pt-BR', 'en'],
       'sameAs': ['https://www.instagram.com/dralaarissasilva/', 'https://www.google.com/search?kgmid=/g/11zzlrdytf']}   # Instagram e Perfil da Empresa no Google (kgmid do perfil)
@@ -149,6 +149,13 @@ TOPO = r'^(?:<title>.*?</title>|<meta [^>]*>)\n'
 head_src = ''.join(re.findall(TOPO, site, flags=re.M))
 site = re.sub(TOPO, '', site, flags=re.M)
 head = head_src + head
+# perguntas da seção 07 também como FAQPage (dado para o Google), tiradas do próprio HTML: em inglês sai da página já traduzida
+def faq_ld(h):
+    qs = re.findall(r'<details[^>]*><summary>(.*?)</summary><p>(.*?)</p></details>', h.split('id="perguntas"')[1].split('</section>')[0])
+    sem = lambda x: re.sub(r'<[^>]+>', '', x).replace('&nbsp;', ' ')
+    return '<script type="application/ld+json">' + json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': sem(q), 'acceptedAnswer': {'@type': 'Answer', 'text': sem(a)}} for q, a in qs]}, ensure_ascii=False) + '</script>\n'
+FAQ_PT = faq_ld(site)
+head = head + FAQ_PT
 full = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
         + head + '<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n</head>\n<body>\n' + site + '\n</body>\n</html>\n')
 open('index.html', 'w', encoding='utf-8').write(full)
@@ -160,13 +167,13 @@ TEM_EN = os.path.exists('traducao_en.json')
 if TEM_EN:
     en = full
     en = en.replace(LANG_PT, '<a class="lang" href="../" hreflang="pt-BR" lang="pt-BR" aria-label="Versão em português">PT</a>')
-    desc_en = "Dr. Larissa Silva, orthopedic surgeon in Leblon, Rio de Janeiro: minimally invasive foot and ankle surgery. In person or by teleconsultation."
+    desc_en = "Dr. Larissa Silva, orthopedic surgeon in Leblon, Rio de Janeiro (RJ). Foot and ankle assessment and surgery, with minimally invasive techniques when indicated. In person or by teleconsultation."
     for a, b in [('<html lang="pt-BR">', '<html lang="en">'), ('content="' + desc + '"', 'content="' + desc_en.replace("'", '&#39;') + '"'),
                  ('<link rel="canonical" href="' + URL + '">', '<link rel="canonical" href="' + URL + 'en/">'),
                  ('<meta property="og:url" content="' + URL + '">', '<meta property="og:url" content="' + URL + 'en/">'),
                  ('content="pt_BR"', 'content="en_US"'), ('Dra. Larissa Silva · Seu pé, explicado.', 'Dr. Larissa Silva · Your foot, explained.')]:
         assert a in en, a[:60]; en = en.replace(a, b)
-    ld_en = dict(ld, description=desc_en, knowsAbout=['Bunion (hallux valgus)', "Haglund's deformity", 'Achilles tendon', 'Ankle sprain', 'Ankle instability', 'Plantar fasciitis', 'Minimally invasive foot and ankle surgery'],
+    ld_en = dict(ld, description=desc_en, knowsAbout=['Bunion (hallux valgus)', "Haglund's deformity", 'Achilles tendon', 'Ankle sprain', 'Ankle instability', 'Plantar fasciitis', 'Foot surgery', 'Ankle surgery', 'Minimally invasive foot and ankle surgery'],
                  availableService=[{'@type': 'MedicalProcedure', 'name': n} for n in ['Minimally invasive bunion surgery', "Haglund's deformity surgery", 'Achilles tendon repair', 'Ankle ligament repair']])
     a = json.dumps(ld, ensure_ascii=False); assert a in en; en = en.replace(a, json.dumps(ld_en, ensure_ascii=False))   # dados para o Google em inglês
     # nome do site (WebSite + og:site_name) igual nas duas línguas: um nome só para o Google; os pares de tradução não podem trocar "Dra." por "Dr." aqui
@@ -180,6 +187,7 @@ if TEM_EN:
     for q in ('"', "'"):
         for a in ('img/web/', 'video/perfil'): en = en.replace(q + a, q + '../' + a)   # só o arquivo do vídeo: "video/mp4" do atributo type não é caminho
     en = re.sub(r'href="([a-z-]+\.html)"', lambda m: 'href="' + ('' if m.group(1) in ('joanete.html', 'haglund.html', 'tendao-de-aquiles.html', 'entorse-de-tornozelo.html') else '../') + m.group(1) + '"', en)   # as 4 páginas têm versão em en/; privacidade fica na raiz
+    assert FAQ_PT in en; en = en.replace(FAQ_PT, faq_ld(en))   # perguntas em inglês no dado do Google
     os.makedirs('en', exist_ok=True)
     open('en/index.html', 'w', encoding='utf-8').write(en)
     print('en/index.html', len(en) // 1024, 'KB')
