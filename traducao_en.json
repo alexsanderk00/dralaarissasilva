@@ -424,10 +424,6 @@
   "'It can be open or endoscopic, depending on the case. Every surgery has risks.'"
  ],
  [
-  "alt=\"Capa do vídeo: Joanete por furinhos? Cirurgia minimamente invasiva\"",
-  "alt=\"Video cover (in Portuguese): Bunion surgery through tiny incisions? Minimally invasive surgery\""
- ],
- [
   "<span class=\"q\">Calombo na lateral do dedão, que dói no sapato</span><span class=\"a\">Joanete</span>",
   "<span class=\"q\">A bump on the side of the big toe that hurts in shoes</span><span class=\"a\">Bunion (hallux valgus)</span>"
  ],
@@ -450,10 +446,6 @@
  [
   "<span>Ortopedia e Traumatologia pelo INTO, Rio de Janeiro</span>",
   "<span>Orthopedics and Traumatology training at INTO, Rio de Janeiro</span>"
- ],
- [
-  "alt=\"Capa do vídeo: Pé de bailarina, o que a ponta faz com o pé\"",
-  "alt=\"Video cover (in Portuguese): A ballet dancer’s foot, what pointe work does to the foot\""
  ],
  [
   "alt=\"Monograma LS com uma pegada, marca da Dra. Larissa Silva\"",
@@ -594,10 +586,6 @@
  [
   "<figcaption>De lado, por fora</figcaption>",
   "<figcaption>Side, outer view</figcaption>"
- ],
- [
-  "<span class=\"tagline\">Salto e ponta</span>",
-  "<span class=\"tagline\">High heels and pointe shoes</span>"
  ],
  [
   "<option value=\"outro\">Outro plano</option>",
@@ -1314,5 +1302,17 @@
  [
   "<details><summary>Você faz cirurgia do pé no Rio de Janeiro?</summary><p>Sim. As que eu mais faço são de joanete, Haglund, tendão de Aquiles e tornozelo. No joanete, em muitos casos, por técnica minimamente invasiva. Em geral, a cirurgia entra quando o tratamento sem cirurgia não resolve, e eu mostro o plano no seu próprio exame.</p></details>",
   "<details><summary>Do you perform foot surgery in Rio de Janeiro?</summary><p>Yes. The ones I do most are bunion, Haglund, Achilles tendon and ankle surgery. For bunions, in many cases, with a minimally invasive technique. In general, surgery comes in when non-surgical treatment does not work, and I show you the plan on your own scan.</p></details>"
+ ],
+ [
+  "alt=\"Capa do vídeo: Corrigir o joanete preservando o movimento\"",
+  "alt=\"Video cover (in Portuguese): Correcting a bunion while keeping the movement\""
+ ],
+ [
+  "alt=\"Capa do vídeo: Um caroço na sola? Pode ser fibroma\"",
+  "alt=\"Video cover (in Portuguese): A lump on the sole? It may be a fibroma\""
+ ],
+ [
+  "<span class=\"tagline\">Caroço na sola</span>",
+  "<span class=\"tagline\">Lump on the sole</span>"
  ]
 ]

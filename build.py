@@ -2,7 +2,7 @@ import base64, hashlib, json, os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 URL = 'https://dralaarissasilva.com.br/'
-IMGS = [('{{IMG_JOANETE}}', 'img/joanete.jpg'), ('{{IMG_BAILARINA}}', 'img/bailarina.jpg'), ('{{IMG_FOTO1}}', 'img/foto1.jpg'), ('{{IMG_FOTO2}}', 'img/foto2.jpg'), ('{{IMG_FOTO3}}', 'img/foto3.jpg'), ('{{IMG_PERFIL}}', 'img/perfil.jpg'), ('{{IMG_CONSULTORIO}}', 'img/consultorio.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
+IMGS = [('{{IMG_JOANETE_TECNICA}}', 'img/joanete_tecnica.jpg'), ('{{IMG_FIBROMA}}', 'img/fibroma.jpg'), ('{{IMG_FOTO1}}', 'img/foto1.jpg'), ('{{IMG_FOTO2}}', 'img/foto2.jpg'), ('{{IMG_FOTO3}}', 'img/foto3.jpg'), ('{{IMG_PERFIL}}', 'img/perfil.jpg'), ('{{IMG_CONSULTORIO}}', 'img/consultorio.jpg'), ('{{IMG_LOGO}}', 'img/logo.png'),
         ('{{IMG_PE_CIMA}}', 'img/pe_cima.webp'), ('{{IMG_PE_LADO}}', 'img/pe_lado.webp'), ('{{IMG_PE_SOLA}}', 'img/pe_sola.webp'),
         ('{{IMG_PERFIL_POSTER}}', 'img/perfil_poster.jpg'),
         ('{{IMG_GAL1}}', 'img/gal1.jpg'), ('{{IMG_GAL2}}', 'img/gal2.jpg'), ('{{IMG_GAL3}}', 'img/gal3.jpg'), ('{{IMG_GAL4}}', 'img/gal4.jpg')]   # fotos do consultório na galeria do Quem sou (Fotos lari/essa*.HEIC, editadas)
