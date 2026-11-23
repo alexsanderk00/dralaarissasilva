@@ -1,0 +1,1564 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pé em 3D · Onde dói · Dra. Larissa Silva</title>
+<link rel="icon" href="/favicon.ico">
+<meta name="robots" content="noindex">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
+<link rel="preload" href="modelo/pe2.bin?v=2" as="fetch" type="application/octet-stream" crossorigin>
+<link rel="preload" href="modelo/pe2.json?v=2" as="fetch" type="application/json" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,112,600;1,112,500&family=JetBrains+Mono:wght@500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--film:#0E2A4A;--ink:#EBF4EF;--dim:#A7BED4;--rule:rgba(235,244,239,.16);--brand:#146046;--lite:#72C6A2;--alert:#F0714C;--card:rgba(9,27,52,.9);
+  --display:'Archivo','Segoe UI',system-ui,sans-serif;--sans:'Montserrat','Segoe UI',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--film);color:var(--ink);font-family:var(--sans);overflow:hidden;overscroll-behavior:none}
+button{font-family:inherit}
+#bg{position:fixed;inset:0;background:radial-gradient(110% 85% at 50% 45%,#1E4C7A 0%,#133A64 40%,#0B2240 78%,#071830 100%)}
+#bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:56px 56px;opacity:.12;mask-image:radial-gradient(60% 55% at 50% 55%,#000,transparent 75%)}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#c:active{cursor:grabbing}
+header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:16px 24px 26px;pointer-events:none;background:linear-gradient(180deg,rgba(7,24,48,.82) 0%,rgba(7,24,48,.5) 55%,transparent 100%)}
+.nome{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:17px}
+.nome small{display:block;font-family:var(--sans);font-stretch:100%;font-weight:500;font-size:11.5px;color:var(--dim);margin-top:2px}
+.nome i{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);opacity:.8;margin-top:6px}
+header a.nome{background:none;color:inherit;padding:0;border-radius:0;white-space:normal;display:block;min-height:0}
+header a{pointer-events:auto;background:var(--brand);color:#fff;text-decoration:none;font-weight:600;font-size:13px;padding:11px 18px;border-radius:999px;white-space:nowrap}
+#titulo{position:fixed;left:24px;top:110px;z-index:4;max-width:360px;pointer-events:none;transition:opacity .4s,transform .4s}
+#titulo.fora{opacity:0;transform:translateY(-10px)}
+.kick{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lite)}
+h1{font-family:var(--display);font-weight:600;font-stretch:112%;font-size:clamp(40px,5.6vw,76px);line-height:.96;margin:.5rem 0 .8rem;letter-spacing:-.01em}
+h1 em{font-style:italic;font-weight:500;color:var(--lite)}
+#titulo p{color:#D5E2EA;font-size:15.5px;line-height:1.55;margin:0}
+.gire{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--dim)}
+.gire svg{width:22px;height:22px;stroke:var(--lite);fill:none;stroke-width:1.6;flex:none}
+/* botões de vista (só na tela inicial) */
+#vistas{position:fixed;z-index:6;left:24px;bottom:22px;display:flex;gap:8px;transition:opacity .3s}
+#vistas button{background:rgba(9,27,52,.78);border:1px solid var(--rule);color:var(--ink);font-weight:600;font-size:13px;min-height:44px;padding:0 16px;border-radius:999px;cursor:pointer}
+#vistas button:hover,#vistas button:focus-visible{border-color:var(--lite)}
+body.foco #vistas,body.sem3d #vistas,body:not(.pronto) #vistas{opacity:0;pointer-events:none;visibility:hidden}
+/* pontos de dor */
+.hot{position:fixed;left:0;top:0;z-index:5;width:0;height:0;border:0;padding:0;background:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s;font:inherit}
+.hot.vis{opacity:1;pointer-events:auto}
+.hot .d{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--alert);box-shadow:0 0 0 5px rgba(240,113,76,.28),0 2px 10px rgba(0,0,0,.4)}
+.hot .d::before{content:"";position:absolute;inset:-14px}
+.hot .d::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(240,113,76,.7);animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.9);opacity:0}}
+.hot .t{position:absolute;left:17px;top:-13px;white-space:nowrap;background:rgba(8,26,51,.88);border:1px solid var(--rule);border-radius:7px;padding:5px 9px;font:600 12px var(--sans);color:var(--ink);opacity:0;transform:translateX(-4px);transition:.2s;pointer-events:none}
+.hot:hover .t,.hot:focus-visible .t,.hot.sel .t{opacity:1;transform:none}
+@media (hover:none){.hot.vis .t{opacity:1;transform:none}}
+.hot.esq .t{left:auto;right:17px}
+.hot.sel .d{background:#fff;box-shadow:0 0 0 6px rgba(240,113,76,.6)}
+.hot:focus-visible .d{outline:2px solid #fff;outline-offset:4px}
+body.foco .hot.vis:not(.sel){opacity:.45}
+body.foco .hot:not(.sel) .t{opacity:0}
+body.prob .hot{opacity:0!important;pointer-events:none}
+/* painel: cabeçalho fixo, texto que rola, botões fixos embaixo */
+#painel{position:fixed;z-index:7;right:20px;top:96px;bottom:20px;width:400px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--rule);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.cab{padding:16px 22px 0;flex:none}
+.cab:empty,.nav:empty{display:none}
+#painel .sc{overflow:auto;padding:14px 22px 14px;flex:1;min-height:0;overscroll-behavior:contain}
+.nav{flex:none;display:flex;gap:10px;padding:12px 22px;border-top:1px solid var(--rule)}
+.nav button,.nav a{min-height:48px;border-radius:999px;font-weight:600;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:0 18px}
+.nav .ant{flex:none;width:52px;padding:0;background:none;border:1px solid var(--rule);color:var(--ink);font-size:18px}
+.nav .ant:disabled{opacity:.3;cursor:default}
+.nav .prox{flex:1;background:var(--brand);border:0;color:#fff}
+.nav .prox.sec{background:rgba(235,244,239,.08);border:1px solid var(--lite);color:var(--ink)}
+.topo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0 8px;margin-bottom:4px}
+.topo h2{order:3;flex:0 0 100%}
+.volta{background:none;border:0;color:var(--lite);font:600 13px var(--sans);padding:8px 8px 8px 0;cursor:pointer;min-height:40px}
+.volta:hover{text-decoration:underline}
+.mini{display:none}
+#painel h2{font-family:var(--display);font-weight:600;font-stretch:112%;font-size:28px;line-height:1.04;margin:.3rem 0 .7rem}
+#painel h2 em{font-style:italic;color:var(--lite);font-weight:500}
+#painel h2:focus{outline:none}
+#painel p{font-size:14.5px;line-height:1.6;color:#D5E2EA;margin:0 0 .7rem}
+#painel p.nota{font-size:12.5px;color:var(--dim)}
+#painel p.rasc{color:#FFC27A}
+#painel p.queixa{font-size:13.5px;color:var(--dim);margin:-.3rem 0 .7rem}
+.lista{display:grid;gap:8px;margin:.4rem 0 .8rem}
+.lista button{display:grid;gap:3px;text-align:left;background:rgba(235,244,239,.05);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer;transition:.2s}
+.lista button:hover,.lista button:focus-visible{border-color:var(--lite);background:rgba(114,198,162,.1)}
+.lista .q{font-size:13.5px;line-height:1.4;color:#D5E2EA}
+.lista .a{font-weight:700;font-size:14.5px;color:var(--ink)}
+.lista .a::after{content:" →";color:var(--lite)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:.4rem 0 .9rem}
+.chips button{background:rgba(235,244,239,.06);border:1px solid var(--rule);color:var(--ink);font:500 13px var(--sans);padding:9px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chips button:hover,.chips button:focus-visible{border-color:var(--alert)}
+.chips.reg button::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--alert);margin-right:7px;vertical-align:1px}
+.chips.probs button:hover,.chips.probs button:focus-visible{border-color:var(--lite)}
+details.sabe{border-top:1px solid var(--rule);padding-top:10px}
+details.sabe summary{cursor:pointer;font-weight:600;font-size:13.5px;color:var(--lite);min-height:36px;display:flex;align-items:center}
+.etapas{display:flex;flex-wrap:wrap;gap:6px 4px;margin:.1rem 0 .6rem}
+.etapas button{flex:1 0 0;min-width:0;background:none;border:0;border-top:2px solid var(--rule);color:var(--dim);font:600 10px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:7px 2px 2px 0;text-align:left;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.etapas.muitas button{flex:1 0 30%}
+.etapas button.on{border-color:var(--lite);color:var(--ink)}
+.tlw{margin:0 0 .5rem}
+.tlw input{display:block;width:100%;margin:0;accent-color:var(--lite);height:28px}
+#painel #fase{font:600 12px var(--sans);color:var(--lite);margin:0 0 .7rem;min-height:1.2em}
+#painel #fase:empty{display:none}
+.mais{display:inline-block;color:var(--lite);font-weight:600;font-size:14px;margin:.2rem 0 .4rem}
+.rod{flex:none;border-top:1px solid var(--rule);padding:8px 22px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--dim);line-height:1.5}
+.rod a{color:inherit}
+.rod summary{cursor:pointer;display:inline}
+.rod details{display:inline}
+#load{position:fixed;inset:0;z-index:9;display:grid;place-items:center;background:var(--film);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);transition:opacity .6s}
+#load.fora{opacity:0;pointer-events:none}
+.sem3d #load,.sem3d #titulo,.sem3d canvas#c,.sem3d #hots{display:none}
+.sem3d #painel{left:20px;right:20px;width:auto;margin:auto;max-width:520px}
+/* painel do celular: folha que sobe e desce */
+#puxa{display:none}
+@media (max-width:860px){
+  body:not(.sem3d) #puxa{display:flex;flex:none;align-items:center;justify-content:center;gap:9px;width:100%;height:32px;background:none;border:0;color:var(--dim);font:600 10px var(--mono);letter-spacing:.09em;text-transform:uppercase;cursor:grab;touch-action:none;padding:0;-webkit-tap-highlight-color:transparent}
+  #puxa i{width:40px;height:4px;border-radius:4px;background:rgba(235,244,239,.42)}
+  #puxa:focus-visible{outline:2px solid var(--lite);outline-offset:-3px;border-radius:12px}
+  .mini{display:none!important}
+  body:not(.sem3d) #painel{transition:none}
+  body:not(.sem3d) #painel.s2,body.prob:not(.sem3d) #painel.s2{max-height:64vh;max-height:64dvh}
+  body:not(.sem3d) #painel.s0 .cab,body:not(.sem3d) #painel.s0 .sc,body:not(.sem3d) #painel.s0 .nav{display:none}
+  body:not(.sem3d) #painel.s1 .sc{flex:0 1 auto;padding-top:0;padding-bottom:6px;overflow:hidden}
+  body:not(.sem3d) #painel.s1 .sc.ini>:not(.kick){display:none}
+  body:not(.sem3d) #painel.s1 .sc.ini .kick{padding:2px 0 6px;text-align:center}
+  body:not(.sem3d) #painel.s1 .sc:not(.ini)>:not(#etx):not(#fase){display:none}
+  body:not(.sem3d) #painel.s1 #etx>*{display:none}
+  body:not(.sem3d) #painel.s1 #etx>p:first-child{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;font-size:14px;line-height:1.4;margin:0 0 .2rem;color:var(--dim)}
+  body:not(.sem3d) #painel.s1 .nav{padding-top:6px;padding-bottom:6px}
+  body:not(.sem3d) #painel.s1 .nav button,body:not(.sem3d) #painel.s1 .nav a{min-height:42px}
+  body:not(.sem3d) #painel.s0 #puxa,body:not(.sem3d) #painel.s1 #puxa{height:26px}
+  body:not(.sem3d) #painel.s1 #etx>p.rasc{display:block;font-size:11.5px;line-height:1.3;margin:0 0 .2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  body:not(.sem3d) #painel.s1 #fase{margin:0 0 .3rem}
+  body:not(.sem3d) #painel.s0 .rod details,body:not(.sem3d) #painel.s1 .rod details{display:none}
+  body:not(.sem3d) #painel.s1 .cab{padding-top:0}
+}
+@media (max-height:480px) and (orientation:landscape){ #puxa{display:none!important} }
+/* modo apresentação (gravar a tela) */
+#legenda,#cartao{display:none}
+body.apres #painel,body.apres #vistas,body.apres #titulo,body.apres header a,body.apres #hots{display:none}
+body.apres #legenda{display:block;position:fixed;z-index:8;left:0;right:0;bottom:0;padding:44px 26px max(28px,env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(7,24,48,.95) 0%,rgba(7,24,48,.82) 68%,transparent 100%);text-align:center;pointer-events:none}
+#legenda .kick{font-size:clamp(13px,1.5vw,18px)}
+#legenda .f{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(22px,3.3vw,40px);line-height:1.14;margin:.5rem auto .7rem;max-width:22em}
+#legenda .n{font-size:clamp(12.5px,1.5vw,18px);color:var(--dim);margin:.15rem auto;max-width:46em;line-height:1.45}
+#legenda .i{color:var(--ink,#EAF2F8);opacity:.92;margin-bottom:.45rem}
+#legenda .r{color:#FFC27A}
+#legenda .c{font-size:clamp(9.5px,1.05vw,13px);opacity:.7;margin-top:.5rem}
+body.apres .nome{font-size:clamp(17px,2.2vw,26px)}
+body.apres .nome small{font-size:clamp(11.5px,1.5vw,18px)}
+body.apres .nome i{font-size:clamp(9.5px,1.1vw,13px)}
+#cartao.vis{display:grid;position:fixed;inset:0;z-index:12;place-items:center;text-align:center;background:#071830;padding:24px}
+#cartao b{display:block;font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(34px,6vw,64px);margin:.6rem 0 .5rem}
+#cartao .kick{font-size:clamp(12px,1.5vw,18px)}
+#cartao p{color:var(--dim);font-size:clamp(15px,2vw,24px);line-height:1.6;margin:0 0 1.2rem}
+#cartao .s{color:var(--lite);font-weight:600;font-size:clamp(17px,2.2vw,26px)}
+#cartao .c{font-size:clamp(10.5px,1.2vw,14px);opacity:.75;max-width:40em;margin:2rem auto 0}
+@media (max-width:860px){
+  header{padding:12px 14px 22px}.nome{font-size:15px}.nome small{font-size:11px}
+  .nome i{font-size:8.5px;letter-spacing:.06em}
+  header a{padding:0 14px;min-height:40px;display:inline-flex;align-items:center;font-size:13px}
+  #titulo{left:16px;right:16px;max-width:none}
+  h1{font-size:30px;margin:.3rem 0}
+  #titulo p{display:none}
+  .gire{margin-top:4px}
+  #vistas{left:auto;right:10px;bottom:auto;top:var(--vistas-top,150px);flex-direction:column;align-items:flex-end}
+  #vistas button{font-size:12.5px;padding:0 13px;min-height:42px}
+  #painel{left:8px;right:8px;width:auto;top:auto;bottom:max(8px,env(safe-area-inset-bottom));max-height:46vh;max-height:46dvh;backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,27,52,.96)}
+  .cab{padding:10px 16px 0}
+  #painel .sc{padding:10px 16px 10px}
+  .nav{padding:8px 16px}
+  #painel h2{font-size:21px;margin:0 0 .45rem}
+  #painel p{font-size:16px}
+  #painel p.nota{font-size:14px}
+  #painel p.queixa{display:none}
+  .kick{font-size:12px}
+  .cab .kick{display:none}
+  .topo{margin-bottom:2px;flex-wrap:nowrap}
+  .topo h2{order:0;flex:1;margin:0!important;min-width:0}
+  .mini{display:block;flex:none;background:rgba(235,244,239,.08);border:1px solid var(--rule);color:var(--ink);border-radius:999px;font:600 12px var(--sans);padding:0 13px;min-height:40px;cursor:pointer}
+  .volta{font-size:0;padding:0;width:40px;flex:none}
+  .volta::before{content:"←";font-size:20px}
+  #painel.min .sc>:not(#etx):not(#fase){display:none}
+  #painel.min #etx>p:not(.nota){display:none}
+  #painel.min #etx .nota{font-size:12px;margin:0 0 .2rem}
+  #painel.min .sc{flex:0 1 auto;min-height:0;padding-top:0;padding-bottom:4px}
+  body.prob #painel{max-height:56vh;max-height:56dvh}
+  .tlw{display:none}
+  .etapas button{min-height:30px}
+  #painel.min .nav{display:none}
+  .etapas button{font-size:9px;letter-spacing:.02em}
+  .tlw input{height:40px}
+  .chips.reg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .chips button{min-height:44px;font-size:14px;white-space:normal;text-align:left}
+  .ini p{display:none}
+  .rod{padding:6px 16px;font-size:10px}
+  .rod .cheio{display:none}
+  .sem3d #painel{max-height:none;top:96px}
+}
+@media (min-width:861px){ .rod details{display:none} .ini details.sabe{border:0;padding:0} }
+@media (max-height:480px) and (orientation:landscape){
+  #painel,body.prob #painel{left:auto;right:8px;top:58px;bottom:8px;width:46vw;max-height:none}
+  .mini{display:none}
+  #titulo{display:none}
+  header .nome i{display:none}
+  #vistas{top:auto;bottom:10px;right:auto;left:10px;flex-direction:row}
+}
+@media (prefers-reduced-motion:reduce){.hot .d::after{animation:none}#titulo,.hot{transition:none}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="c" role="img" aria-label="Modelo 3D ilustrativo de um pé direito, que pode ser girado. Não é exame."></canvas>
+<div id="load">Carregando o pé em 3D…</div>
+<header>
+  <a class="nome" href="/" title="Voltar ao site">Dra. Larissa Silva<small>Médica · Ortopedista e Traumatologista · CRM 52-126334-0 · RQE 60891</small><i>← voltar ao site</i></a>
+  <a href="/#agendar">Agendar avaliação</a>
+</header>
+
+<div id="titulo">
+  <span class="kick">Toque onde dói</span>
+  <h1>Onde dói <em>o seu pé?</em></h1>
+  <p>Gire o pé para qualquer lado e toque no ponto da dor.</p>
+  <span class="gire"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>Arraste para girar · toque onde dói</span>
+</div>
+
+<div id="hots"></div>
+<div id="legenda" aria-live="polite"></div>
+<div id="cartao"><div><span class="kick">Esquema ilustrativo, não é exame</span><b>Dra. Larissa Silva</b><p>Médica · Ortopedista e Traumatologista<br>CRM 52-126334-0 · RQE 60891</p><p class="s">Agendar avaliação · dralaarissasilva.com.br</p><p class="c">Modelo 3D: BodyParts3D, © The Database Center for Life Science, CC BY-SA 2.1 Japan. Malha modificada.</p></div></div>
+<div id="vistas"><button type="button" id="bVirar">↻ Virar o pé</button><button type="button" id="bSola">Ver a sola</button></div>
+
+<aside id="painel" class="s1">
+  <button id="puxa" type="button" aria-label="Abrir ou recolher o painel" aria-expanded="false"><i></i><span>puxe para ver mais</span></button>
+  <div class="cab" id="cab"></div>
+  <div class="sc" id="conteudo"><span class="kick">Problemas mais comuns</span><h2>Onde dói <em>o seu pé?</em></h2><p>O mapa mostra os problemas mais comuns de cada lugar do pé. Na avaliação vemos juntos o que é.</p><div class="lista"><a class="mais" href="https://dralaarissasilva.com.br/joanete.html">Joanete</a><a class="mais" href="https://dralaarissasilva.com.br/halux-rigido.html">Hálux rígido (artrose)</a><a class="mais" href="https://dralaarissasilva.com.br/neuroma-de-morton.html">Metatarsalgia e neuroma de Morton</a><a class="mais" href="https://dralaarissasilva.com.br/pe-plano-do-adulto.html">Pé plano do adulto</a><a class="mais" href="https://dralaarissasilva.com.br/fascite-plantar.html">Fascite plantar</a><a class="mais" href="https://dralaarissasilva.com.br/tendao-de-aquiles.html">Tendão de Aquiles</a><a class="mais" href="https://dralaarissasilva.com.br/haglund.html">Deformidade de Haglund</a><a class="mais" href="https://dralaarissasilva.com.br/entorse-de-tornozelo.html">Entorse de tornozelo</a></div></div>
+  <div class="nav" id="nav"></div>
+  <div class="rod">Esquema ilustrativo, não é exame. <span class="cheio">Modelo 3D: BodyParts3D, © The Database Center for Life Science, <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/">CC BY-SA 2.1 Japan</a>. Malha convertida e simplificada; cor da pele, unhas, veias, fáscia, tendões, ligamentos, instrumentos e animações desenhados à parte.</span>
+    <details><summary>Créditos</summary> Modelo 3D: BodyParts3D, © The Database Center for Life Science, <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/">CC BY-SA 2.1 Japan</a>. Malha convertida e simplificada; cor da pele, unhas, veias, fáscia, tendões, ligamentos, instrumentos e animações desenhados à parte.</details></div>
+</aside>
+
+<script>
+// sem importmap (iPhone antigo) o 3D não roda: mostra a lista na hora. Se o JavaScript nem começou em 12 s, idem.
+if (!(HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) document.body.classList.add('sem3d');
+setTimeout(() => { if (!window.__ok && !window.__js) document.body.classList.add('sem3d'); }, 12000);
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+window.__js = true;
+
+/* ================= textos (os mesmos já revisados do site) ================= */
+const SITE = '/';
+const TXT = {
+  joanete:{t4:'A cirurgia',steps:[
+    ['Por fora, o joanete é o calombo na lateral do dedão, com o dedão inclinado para os outros dedos.'],
+    ['Por dentro não existe osso novo. São os mesmos ossos, fora do lugar: o osso longo do dedão, o primeiro metatarso, abriu para fora, e a cabeça dele saiu de cima dos sesamoides.'],
+    ['O primeiro metatarso abre para um lado e o dedão entorta para o outro. É o ângulo entre os dois que se mede na radiografia. O “calombo” é a cabeça do osso.'],
+    ['Quando calçado largo, palmilha e fisioterapia não controlam a dor, a cirurgia corrige o desvio do osso. Na técnica minimamente invasiva, uma broca fina corta o osso por furinhos na pele, a cabeça é deslocada para o lugar e fixada com parafusos.','A técnica depende do grau do desvio. Toda cirurgia tem riscos, como infecção, rigidez e retorno do desvio.'],
+    ['O osso consolida na nova posição ao longo das semanas. O apoio, o calçado e a volta às atividades seguem o plano definido para o seu caso.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  haglund:{t4:'A cirurgia',steps:[
+    ['Por fora, o calcanhar tem contorno liso atrás, bem onde o contraforte do sapato encosta.'],
+    ['Atrás do calcanhar, o tendão de Aquiles desce e se prende no osso. Entre os dois há uma pequena bolsa de líquido, a bursa, que reduz o atrito.'],
+    ['Na deformidade de Haglund, uma saliência do osso atrita com o tendão e com o sapato. A bursa inflama, incha e dói. Não é calo e não é fascite: fascite dói embaixo do calcanhar.'],
+    ['O primeiro passo não é cirurgia. Calçado com a parte de trás macia, calcanheira e exercício orientado melhoram a maioria. Quando não resolve, a cirurgia retira o excesso de osso e limpa a região inflamada.','Pode ser aberta ou por vídeo, conforme o caso. Toda cirurgia tem riscos.'],
+    ['Sem a saliência, o tendão deixa de ser comprimido contra o osso. O tempo de proteção e a fisioterapia dependem do que foi feito no tendão.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  aquiles:{t4:'A cirurgia',steps:[
+    ['Por fora, o tendão de Aquiles é a corda firme atrás do tornozelo, logo acima do calcanhar.'],
+    ['O tendão de Aquiles liga a panturrilha ao osso do calcanhar. É ele que dá o impulso para andar, correr e ficar na ponta do pé.'],
+    ['Na ruptura, o tendão arrebenta alguns centímetros acima do calcanhar, muitas vezes numa arrancada ou num salto. A sensação é de pedrada atrás da perna. As pontas se afastam e falta força para ficar na ponta do pé.'],
+    ['A ruptura pode ser tratada com bota e reabilitação ou com cirurgia. Na cirurgia, as duas pontas são aproximadas e costuradas, por corte aberto ou por pequenos cortes.','A escolha depende da idade, da atividade e do tempo desde a lesão. Toda cirurgia tem riscos.'],
+    ['O tendão cicatriza e fica mais espesso no ponto do reparo. A volta ao esporte acontece por fases, com fisioterapia, ao longo de meses.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  tornozelo:{t4:'A cirurgia',steps:[
+    ['Por fora, o tornozelo tem um osso saliente de cada lado. Os ligamentos que mais rompem ficam logo à frente e abaixo do de fora.'],
+    ['Do lado de fora do tornozelo, ligamentos curtos prendem a fíbula ao tálus e ao calcâneo. São eles que seguram o pé quando você pisa torto.'],
+    ['Na entorse, o ligamento da frente é o que mais rompe. A maioria cicatriza com proteção e fisioterapia. Quando cicatriza frouxo, o tálus ganha folga e o tornozelo passa a falsear.'],
+    ['Se a instabilidade continua depois da reabilitação, o ligamento pode ser reparado: ele é preso de volta no osso com pequenas âncoras e suturas.','Em muitos casos por vídeo. Toda cirurgia tem riscos.'],
+    ['O ligamento reparado volta a limitar o movimento do tálus. O tratamento inclui fisioterapia de força e equilíbrio, antes e depois.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  fascite:{t4:'Tratamento',steps:[
+    ['Por fora, a dor da fascite fica embaixo do calcanhar, na parte de dentro, no ponto que pisa primeiro.'],
+    ['A fáscia plantar é uma faixa firme que sai do calcanhar e se abre em leque até a base dos dedos. Ela sustenta o arco do pé.'],
+    ['Com sobrecarga repetida, ela se desgasta e dói no ponto onde se prende ao calcanhar. A dor é mais forte nos primeiros passos da manhã. O esporão que pode aparecer na radiografia acompanha a fascite em algumas pessoas, mas não é ele que causa a dor.'],
+    ['Na grande maioria dos casos, o tratamento é sem cirurgia: alongamento, calçado que amortece, palmilha e fisioterapia. Quando a dor persiste, a terapia por ondas de choque é uma opção: o aparelho é apoiado na pele do calcanhar e emite pulsos de energia sobre o ponto da dor, sem corte.','É feita em sessões. A indicação depende da avaliação.'],
+    ['A melhora costuma ser gradual. Alongamento e calçado adequado continuam fazendo parte do cuidado. A cirurgia é rara e fica para quem não melhora depois de um tratamento bem feito por vários meses.','O resultado e a recuperação variam de pessoa para pessoa.']]},
+  peplano:{t4:'Tratamento',nomes:['Por fora','Por dentro','O problema','Tratamento','Depois','Cirurgia'],steps:[
+    ['No pé plano, o arco do lado de dentro do pé fica baixo.'],
+    ['O arco é sustentado pelos ossos do meio do pé e pelo tendão tibial posterior, que passa por dentro do tornozelo. Na radiografia em pé, o eixo do tálus aponta para o primeiro metatarso.'],
+    ['No adulto, o arco pode desabar com o tempo, na maioria das vezes porque o tendão tibial posterior perde força. O tálus inclina para baixo, o eixo dele passa a apontar para o chão e o calcanhar desvia para fora.'],
+    ['No início, palmilha com apoio do arco, calçado firme, fortalecimento e fisioterapia controlam a dor e ajudam a frear a progressão.','Quando o pé continua deformando ou doendo, a cirurgia é planejada caso a caso, conforme a rigidez e o estágio.'],
+    ['A palmilha apoia o arco no dia a dia e o fortalecimento ajuda o tendão. O acompanhamento mostra se o pé está estável.','O resultado varia de pessoa para pessoa.'],
+    ['Quando a palmilha e a fisioterapia não controlam a dor, a cirurgia pode ser indicada para realinhar o pé. Em uma das técnicas, usada quando o pé ainda é flexível, o osso do calcanhar é cortado, deslocado para o lado de dentro e fixado com um ou dois parafusos, em geral junto com outros procedimentos, como a transferência de um tendão.','A cirurgia é planejada caso a caso, conforme a rigidez e o estágio. Toda cirurgia tem riscos. O resultado e a recuperação variam de pessoa para pessoa.']]},
+  // textos das páginas hálux rígido e neuroma de Morton do site (já revisados)
+  halux:{nomes:['Como aparece','O que é','Tratamento','Cirurgia'],steps:[
+    ['Dor e rigidez no dedão ao andar, subir escada, agachar ou usar salto. Às vezes aparece um calombo em cima da articulação, que machuca no sapato. No joanete, o dedão desvia para o lado; no hálux rígido, ele fica duro.'],
+    ['É o desgaste da articulação na base do dedão. A cartilagem afina, o osso forma bicos nas bordas e o dedão perde a capacidade de dobrar para cima.'],
+    ['Calçado de sola mais rígida e bico alto, palmilha que limita o movimento do dedão, ajuste das atividades e fisioterapia aliviam muitos casos.'],
+    ['Se a dor persiste, a cirurgia depende do grau do desgaste: da retirada dos bicos de osso, em alguns casos por técnica minimamente invasiva, até a fixação da articulação nos casos avançados.','Toda cirurgia tem riscos. O resultado e a recuperação variam de pessoa para pessoa.']]},
+  morton:{nomes:['Como aparece','O que é','Tratamento'],steps:[
+    ['Sensação de pedrinha ou de meia dobrada dentro do sapato, queimação, choque ou dormência que corre para os dedos. Piora com salto alto e bico fino e alivia ao tirar o sapato e massagear o pé.'],
+    ['Metatarsalgia é o nome geral da dor na “bola” do pé, a região de apoio logo atrás dos dedos. Uma das causas é o neuroma de Morton: um espessamento do nervo que passa entre os ossos, mais comum entre o terceiro e o quarto dedo.'],
+    ['Começo pelo calçado: mais largo, de salto baixo e sola que amortece. Uma palmilha com apoio logo atrás da bola do pé tira a pressão do nervo e dos ossos. Fisioterapia e, em alguns casos, infiltração entram como opções.','A cirurgia fica para quando a dor continua apesar desses cuidados.']]},
+  // RASCUNHOS: ainda não revisados pela Dra. Larissa (aparecem marcados na tela)
+  unha:{nomes:['Por fora','O problema','Tratamento'],steps:[
+    ['A unha do dedão cresce encaixada entre duas dobras de pele, uma de cada lado.'],
+    ['Na unha encravada, o canto da unha entra na pele. A região fica vermelha, inchada e dolorida, e pode infeccionar.'],
+    ['No início, cuidados locais e calçado folgado costumam aliviar. Quando o quadro se repete ou infecciona, pode ser indicado um procedimento com anestesia local para retirar a faixa da unha que machuca e, em geral, tratar a raiz desse canto, para que ele não volte a crescer.','A indicação depende da avaliação. Todo procedimento tem riscos, e a unha pode voltar a encravar.']]},
+  garra:{nomes:['Por fora','Por dentro','Tratamento'],steps:[
+    ['O dedo fica dobrado e a parte de cima roça no calçado, onde podem surgir calos.'],
+    ['No dedo em martelo, a dobra fica na articulação do meio. No dedo em garra, o dedo também se levanta na base e a ponta dobra para baixo. No começo o dedo ainda estica com a mão; com o tempo pode ficar rígido.'],
+    ['Calçado com a frente alta e larga e protetores diminuem o atrito. Exercícios podem ajudar enquanto o dedo ainda é flexível. Quando a dor continua apesar desses cuidados, a cirurgia pode ser indicada para alinhar o dedo. Conforme o caso, ela solta ou transfere tendões, ou retira um pequeno pedaço de osso da articulação; um fio fino pode ficar no dedo por algumas semanas.','A técnica depende de cada caso. Toda cirurgia tem riscos. O resultado e a recuperação variam de pessoa para pessoa.']]},
+  estresse:{nomes:['Por fora','O problema','Tratamento'],steps:[
+    ['A dor costuma ficar no peito do pé, sobre os ossos longos, e piora com o treino. Pode haver inchaço no local.'],
+    ['Fratura por estresse é uma fissura fina no osso causada por esforço repetido, sem uma pancada. No pé, é mais comum no segundo e no terceiro metatarso.','A radiografia do início pode não mostrar a fissura. Se a suspeita continua, a ressonância mostra mais cedo.'],
+    ['O tratamento costuma ser reduzir a carga e proteger o pé, com calçado de sola rígida ou bota, enquanto o osso cicatriza. A volta ao treino é gradual.','O tempo varia de pessoa para pessoa. Algumas fraturas, como as da base do quinto metatarso e do navicular, cicatrizam mais devagar e podem precisar de mais proteção ou de cirurgia.']]},
+  diabetes:{nomes:['Por fora','O problema','Cuidados'],steps:[
+    ['No diabetes, o pé pode perder sensibilidade. Um calo, uma bolha ou um machucado pode passar sem dor.'],
+    ['Os pontos de maior pressão na sola, como embaixo da bola do pé, do dedão e do calcanhar, são onde as feridas costumam aparecer. Também surgem na ponta e em cima dos dedos e nas laterais do pé, onde o sapato aperta. Sem sensibilidade, a pessoa continua pisando sobre a ferida.'],
+    ['Para prevenir: olhar os pés todos os dias, inclusive entre os dedos, não andar descalço e usar calçado e palmilha que distribuem a pressão. Com a ferida aberta, a palmilha não basta: é preciso tirar o peso de cima dela, em geral com bota ou gesso próprios.','Ferida no pé de quem tem diabetes precisa de avaliação médica sem demora.']]}
+};
+const ETAPAS = ['Por fora', 'Por dentro', 'O problema', null, 'Depois'], NOME_ESQ = { aquiles: 'Ruptura do tendão de Aquiles' };   // nomes das abas e do esquema como no site
+const DEDOS = n => ['prox','med','dist'].map(s => 'p' + n + '_' + s);
+// queixas = lista "Toque onde dói" do site; esq = esquema; pag = página do problema; hi = estruturas acesas; anim = esquema animado em 3D
+const Q = {
+  joanete:{q:'Calombo na lateral do dedão, que dói no sapato',a:'Joanete',esq:'joanete',pag:'joanete.html',hi:['m1','p1_prox','p1_dist'],anim:'joanete'},
+  unha:{q:'Canto da unha vermelho e dolorido',a:'Unha encravada',esq:'unha',hi:['p1_dist'],anim:'unha'},
+  halux:{q:'Dedão duro, que dói ao dobrar',a:'Hálux rígido (artrose)',esq:'halux',pag:'halux-rigido.html',hi:['m1','p1_prox'],anim:'halux'},
+  garra:{q:'Dedos dobrados que roçam no calçado',a:'Dedo em garra e em martelo',esq:'garra',anim:'garra',hi:[...DEDOS(2),...DEDOS(3),...DEDOS(4),'p5_prox','p5_med','p5_dist']},
+  morton:{q:'Dor na “bola” do pé, como pedrinha no sapato',a:'Metatarsalgia e neuroma de Morton',esq:'morton',pag:'neuroma-de-morton.html',hi:['m3','m4'],anim:'morton'},
+  peplano:{q:'Arco que desabou, dor por dentro do tornozelo',a:'Pé plano do adulto',esq:'peplano',pag:'pe-plano-do-adulto.html',hi:['talus','navicular','cuneiforme_medial'],faixa:['tibpost'],anim:'peplano'},
+  fascite:{q:'Dor embaixo do calcanhar ao levantar da cama',a:'Fascite plantar',esq:'fascite',pag:'fascite-plantar.html',hi:['calcaneo'],faixa:['fascia'],anim:'fascite'},
+  aquiles:{q:'Estalo atrás do tornozelo e falta de força para ficar na ponta do pé',a:'Ruptura do tendão de Aquiles',esq:'aquiles',pag:'tendao-de-aquiles.html',hi:[],faixa:['aquiles'],anim:'aquiles'},
+  haglund:{q:'Calombo atrás do calcanhar, onde o sapato encosta',a:'Deformidade de Haglund',esq:'haglund',pag:'haglund.html',hi:['calcaneo'],faixa:['aquiles'],anim:'haglund'},
+  entorse:{q:'Torceu o pé e semanas depois ainda incha',a:'Entorse de tornozelo',esq:'tornozelo',pag:'entorse-de-tornozelo.html',hi:['fibula','talus'],faixa:['ligamento'],anim:'tornozelo'},
+  estresse:{q:'Dor no peito do pé que piora com o treino',a:'Fratura por estresse',esq:'estresse',hi:['m2'],anim:'estresse'},
+  diabetes:{q:'Ferida ou dormência no pé de quem tem diabetes',a:'Pé diabético',esq:'diabetes',hi:[],anim:'diabetes'},
+};
+// regiões = mapa "Toque onde dói" do site. p = ponto dentro do pé, dir = para onde fica a pele, cam = de onde a câmera olha, raio = quanto do pé aparece
+const R = {
+  dedao:{n:'Dedão',qs:['joanete','unha','halux'],p:[.6,.3,-.2],dir:[0,0,-1],cam:[.55,.55,-1],raio:.9},
+  dedos:{n:'Dedos',qs:['garra'],p:[.95,.12,.12],dir:[0,1,0],cam:[.7,1,.35],raio:.8},
+  bola:{n:'Bola do pé',qs:['morton'],p:[.6,.2,0],dir:[0,-1,0],cam:[.45,-1,-.35],raio:.85},
+  arco:{n:'Arco, por dentro',qs:['peplano'],p:[-.2,.42,-.2],dir:[0,-.35,-1],cam:[.12,.12,-1],raio:1.15},
+  calcbaixo:{n:'Calcanhar, embaixo',qs:['fascite'],p:[-.72,.3,-.14],dir:[0,-1,0],cam:[-.35,-1,-.55],raio:1.05},
+  calctras:{n:'Calcanhar, atrás',qs:['aquiles','haglund'],p:[-.85,.55,-.12],dir:[-1,.1,0],cam:[-1,.35,-.45],raio:.95},
+  tornozelo:{n:'Tornozelo',qs:['entorse'],p:[-.48,.6,.05],dir:[.25,0,1],cam:[.35,.35,1],raio:.95},
+  peito:{n:'Peito do pé',qs:['estresse'],p:[.15,.5,.02],dir:[0,1,0],cam:[.45,1,.5],raio:.9},
+};
+const REG_DE = {}; for (const [id, r] of Object.entries(R)) r.qs.forEach(k => { REG_DE[k] ??= id; });
+
+/* ================= cena ================= */
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const V = (x, y, z) => new THREE.Vector3(x, y, z), Y = V(0, 1, 0);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = t => t * t * (3 - 2 * t);
+const canvas = document.getElementById('c'), $painel = document.getElementById('painel'), $c = document.getElementById('conteudo'), $t = document.getElementById('titulo');
+const ESTATICO = $c.innerHTML;
+let renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
+catch (e) { document.body.classList.add('sem3d'); throw e; }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1;
+const scene = new THREE.Scene();
+const ambiente = () => { const pm = new THREE.PMREMGenerator(renderer), sala = new RoomEnvironment(), t = pm.fromScene(sala, .04).texture; sala.dispose(); pm.dispose(); return t; };
+scene.environment = ambiente();
+const camera = new THREE.PerspectiveCamera(32, 1, .05, 90); scene.add(camera);
+const CENTRO = V(-.05, .8, 0), FOCO = V(0, .55, 0), RAIO_PE = 1.45, DIR0 = V(4.6, 2.3, 4.8).normalize();
+// luz principal presa à câmera, vinda de cima e da esquerda do olhar: o lado que a pessoa vê (a sola também) fica sempre claro e com volume
+const frente = new THREE.DirectionalLight(0xfff3ea, 2.5); camera.add(frente); frente.position.set(-2.4, 2.8, .6); frente.target.position.copy(CENTRO); scene.add(frente.target);
+const rim = new THREE.DirectionalLight(0x9fd8ff, 1.6); scene.add(rim); rim.target.position.copy(CENTRO); scene.add(rim.target);   // contraluz fria, sempre atrás do pé
+scene.add(new THREE.HemisphereLight(0xdfeaff, 0xf3d9cc, .34));
+const cheia = new THREE.DirectionalLight(0xfff3ea, .85); camera.add(cheia); cheia.position.set(.4, -.2, 1); cheia.target = frente.target;   // luz de preenchimento de frente: a sola nunca fica escura
+const controls = new OrbitControls(camera, canvas);
+controls.target.copy(CENTRO); controls.enableDamping = true; controls.dampingFactor = .08; controls.enablePan = false;
+controls.minDistance = 1.4; controls.maxDistance = 12; controls.minPolarAngle = .05; controls.maxPolarAngle = Math.PI - .05;
+controls.rotateSpeed = .8;
+
+// sombra de contato: o pé deixa de flutuar
+const sombra = (() => { const cv = document.createElement('canvas'); cv.width = 256; cv.height = 128; const x = cv.getContext('2d');
+  const el = (cx, cy, rx, ry, a) => { const g = x.createRadialGradient(cx, cy, 0, cx, cy, rx); g.addColorStop(0, `rgba(2,10,24,${a})`); g.addColorStop(1, 'rgba(2,10,24,0)'); x.save(); x.translate(cx, cy); x.scale(1, ry / rx); x.translate(-cx, -cy); x.fillStyle = g; x.fillRect(-300, -300, 900, 900); x.restore(); };
+  el(128, 64, 122, 54, .3); el(64, 62, 46, 34, .5); el(190, 64, 58, 42, .45);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(3.7, 1.85), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthWrite: false, opacity: .5 })); m.rotation.x = -Math.PI / 2; m.position.set(-.05, -.004, -.04); m.renderOrder = -2; scene.add(m); return m; })();
+// apaga tudo acima da canela, suavemente (pele e perna cortadas)
+function fadeTopo(m, y0 = 1.55, y1 = 2.25, ao = false) {
+  m.onBeforeCompile = s => {
+    s.vertexShader = (ao ? 'attribute float aAO; varying float vAO;\n' : '') + 'varying float vWY;\n' + s.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vWY = (modelMatrix * vec4(transformed, 1.0)).y;' + (ao ? ' vAO = aAO;' : ''));
+    s.fragmentShader = (ao ? 'varying float vAO;\n' : '') + 'varying float vWY;\n' + s.fragmentShader.replace('#include <dithering_fragment>', `#include <dithering_fragment>\n gl_FragColor.a *= 1.0 - smoothstep(${y0.toFixed(2)}, ${y1.toFixed(2)}, vWY);`);
+    if (ao) s.fragmentShader = s.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n diffuseColor.rgb *= mix(vec3(.56, .48, .42), vec3(1.), vAO);');
+  };
+  m.customProgramCacheKey = () => 'fade' + y0 + y1 + ao;
+  m.transparent = true; return m;
+}
+const skinMat = new THREE.MeshPhysicalMaterial({ vertexColors: true, color: 0xCF9A80, roughness: .56, metalness: 0, envMapIntensity: .4, sheen: .4, sheenColor: new THREE.Color(0xE8755A), sheenRoughness: .5, clearcoat: .05, clearcoatRoughness: .5, transparent: true });
+const uXR = { value: 0 };
+// pele: some suavemente acima da canela; no raio-X vira "vidro" (centro limpo, borda com a cor da pele)
+// unhas: centro (xyz) + meia largura (w) e direção de cada dedo, na posição de repouso; 0 = dedão (some quando a unha da animação aparece)
+const uUnha = { value: Array.from({ length: 5 }, () => new THREE.Vector4(0, -9, 0, 1)) }, uUnhaDir = { value: Array.from({ length: 5 }, () => new THREE.Vector3(1, 0, 0)) }, uUnhaOn = { value: 1 };
+// veias do dorso: trechos retos entre pontos pousados na pele. uVa = início (xyz) + meia largura (w; 0 = trecho vazio), uVb = fim
+const NVEIA = 24, uVa = { value: Array.from({ length: NVEIA }, () => new THREE.Vector4(0, -9, 0, 0)) }, uVb = { value: Array.from({ length: NVEIA }, () => new THREE.Vector3(0, -9, 0)) };
+const RELEVO = innerWidth > 860 && !matchMedia('(pointer: coarse)').matches;   // micro-relevo da pele só no computador
+if (RELEVO) skinMat.defines = { ...skinMat.defines, RELEVO: '' };
+const RUIDO = `
+float hash3(vec3 p){ p = fract(p * .3183099 + .1); p *= 17.; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+float ruido(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3. - 2. * f);
+  return mix(mix(mix(hash3(i), hash3(i + vec3(1,0,0)), f.x), mix(hash3(i + vec3(0,1,0)), hash3(i + vec3(1,1,0)), f.x), f.y),
+             mix(mix(hash3(i + vec3(0,0,1)), hash3(i + vec3(1,0,1)), f.x), mix(hash3(i + vec3(0,1,1)), hash3(i + vec3(1,1,1)), f.x), f.y), f.z); }
+`;
+// pele sem textura: tudo é calculado no shader a partir da posição de repouso (acompanha as deformações).
+// dobras mais escuras e avermelhadas, sola rosada (calcanhar e bola do pé mais vermelhos), manchas suaves, veias azuladas no dorso,
+// ruguinhas nas juntas dos dedos, pontas dos dedos rosadas, micro-relevo, borda translúcida e unhas; no raio-X vira "vidro".
+skinMat.onBeforeCompile = s => {
+  Object.assign(s.uniforms, { uXR, uUnha, uUnhaDir, uUnhaOn, uVa, uVb });
+  s.vertexShader = 'attribute vec3 aRest; attribute float aAO; varying float vWY; varying vec3 vRest; varying float vAO;\n' + s.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vWY = (modelMatrix * vec4(transformed, 1.0)).y; vRest = aRest; vAO = aAO;');
+  s.fragmentShader = `varying float vWY; varying vec3 vRest; varying float vAO; uniform float uXR; uniform vec4 uUnha[5]; uniform vec3 uUnhaDir[5]; uniform float uUnhaOn; uniform vec4 uVa[${NVEIA}]; uniform vec3 uVb[${NVEIA}];\n` + RUIDO + s.fragmentShader
+    .replace('#include <color_fragment>', `#include <color_fragment>
+      float solaM = smoothstep(.2, .03, vRest.y), n0 = ruido(vRest * 6.), n1 = ruido(vRest * 34.), n2 = ruido(vRest * 150.);
+      float unhaM = 0., bordaM = 0., pontaM = 0., lunM = 0., ruga = 0., rosa = 0.;
+      for (int i = 0; i < 5; i++) {
+        vec3 q = vRest - uUnha[i].xyz; vec3 d = uUnhaDir[i]; vec3 w = vec3(-d.z, 0., d.x); float lw = uUnha[i].w;
+        vec2 e = vec2(dot(q, d) / (lw * 1.25), dot(q, w) / lw);
+        float r = pow(pow(abs(e.x), 3.2) + pow(abs(e.y), 3.2), 1. / 3.2), topo = step(0., q.y), cima = topo * (i == 0 ? uUnhaOn : 1.);
+        float m = (1. - smoothstep(.9, 1., r)) * cima;
+        unhaM = max(unhaM, m); bordaM = max(bordaM, smoothstep(.84, 1., r) * (1. - smoothstep(1., 1.35, r)) * cima);
+        pontaM = max(pontaM, m * smoothstep(.58, .86, e.x)); lunM = max(lunM, m * smoothstep(-.5, -.85, e.x));
+        float ao = dot(q, d) / lw;   // ao longo do dedo, em meias larguras de unha (negativo = para trás da unha)
+        ruga = max(ruga, topo * (1. - smoothstep(1., 1.5, abs(e.y))) * exp(-pow((ao + 3.1) / 1.0, 2.)) * pow(.5 + .5 * sin(ao * 10.), 4.));
+        rosa = max(rosa, 1. - smoothstep(1.4, 3.4, length(q) / lw));
+      }
+      float pel = 1. - uXR; unhaM *= pel; bordaM *= pel;
+      // veias
+      float va = ruido(vRest * 5.), vb = ruido(vRest * 5. + 11.); vec3 pv = vRest + .034 * (vec3(va, .5 * (va + vb), vb) - .5);
+      float veia = 0.;
+      for (int i = 0; i < ${NVEIA}; i++) { if (uVa[i].w <= 0.) continue; vec3 a = uVa[i].xyz, ba = uVb[i] - a; float h = clamp(dot(pv - a, ba) / dot(ba, ba), 0., 1.); veia = max(veia, 1. - smoothstep(uVa[i].w * .1, uVa[i].w * 1.25, length(pv - a - ba * h))); }
+      veia *= (.5 + .5 * smoothstep(.3, .6, n0)) * pel * (1. - unhaM);
+      float calM = solaM * smoothstep(-.5, -.95, vRest.x), bolaM = solaM * smoothstep(.12, .4, vRest.x) * (1. - smoothstep(.8, .98, vRest.x));
+      diffuseColor.rgb *= mix(vec3(1.), vec3(1.06, .9, .86), solaM * pel);
+      diffuseColor.rgb *= mix(vec3(1.), vec3(1.04, .9, .87), .6 * max(calM, bolaM) * pel);
+      diffuseColor.rgb *= mix(vec3(.6, .35, .3), vec3(1.), mix(1., vAO, pel));
+      diffuseColor.rgb *= mix(vec3(1.), mix(vec3(.965, .985, 1.), vec3(1.03, 1., .965), n0), pel);
+      diffuseColor.rgb *= .95 + .1 * n1;
+      diffuseColor.rgb *= mix(vec3(1.), vec3(1.05, .93, .92), rosa * .75 * pel);
+      diffuseColor.rgb *= 1. - .17 * ruga * pel;
+      diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.62, .86, .93), veia * .8);
+      diffuseColor.rgb *= 1. - .4 * bordaM;
+      vec3 corUnha = mix(vec3(.66, .30, .30), diffuseColor.rgb * vec3(.95, .7, .7), .35);   // cores em espaço linear
+      corUnha = mix(corUnha, vec3(.8, .55, .54), lunM * .7); corUnha = mix(corUnha, vec3(.88, .82, .72), pontaM * .92);
+      diffuseColor.rgb = mix(diffuseColor.rgb, corUnha, unhaM);`)
+    .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+      roughnessFactor = clamp(roughnessFactor + .14 * solaM + .1 * (n2 - .5), .25, 1.); roughnessFactor = mix(roughnessFactor, .44, unhaM);`)
+    .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+      #ifdef RELEVO
+        vec3 pp = vRest * 150.; float ee = .35;
+        vec3 gp = vec3(ruido(pp + vec3(ee, 0., 0.)), ruido(pp + vec3(0., ee, 0.)), ruido(pp + vec3(0., 0., ee))) - n2;
+        float rasante = smoothstep(.2, .6, abs(dot(normal, normalize(vViewPosition))));   // em ângulo rasante o relevo vira faísca na contraluz: some
+        vec3 gv = mat3(viewMatrix) * gp; normal = normalize(normal - .36 * rasante * (1. - unhaM) * (gv - normal * dot(gv, normal)));
+      #endif`)
+    .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      totalEmissiveRadiance += vec3(.38, .09, .05) * .26 * pow(1. - saturate(dot(normal, normalize(vViewPosition))), 3.) * (1. - uXR) * (1. - unhaM);`)
+    .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
+      #ifdef USE_CLEARCOAT
+        material.clearcoat = mix(material.clearcoat, .16, unhaM); material.clearcoatRoughness = mix(material.clearcoatRoughness, .35, unhaM);
+      #endif`)
+    .replace('#include <aomap_fragment>', `#include <aomap_fragment>
+      reflectedLight.indirectDiffuse *= mix(.55, 1., mix(1., vAO, 1. - uXR));`)
+    .replace('#include <dithering_fragment>', `#include <dithering_fragment>
+      gl_FragColor.a *= 1.0 - smoothstep(1.55, 2.25, vWY);
+      gl_FragColor.a *= mix(1.0, .04 + .5 * pow(1.0 - abs(dot(normalize(vNormal), normalize(vViewPosition))), 2.4), uXR);`);
+};
+const glowMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneFactor,
+  uniforms: { uA: { value: 0 }, uC: { value: new THREE.Color(0x7FE0B8) } },
+  vertexShader: 'varying vec3 vN; varying vec3 vV; varying float vY; void main(){ vec4 w = modelMatrix*vec4(position,1.); vY = w.y; vec4 mv = viewMatrix*w; vV = mv.xyz; vN = normalize(normalMatrix*normal); gl_Position = projectionMatrix*mv; }',
+  fragmentShader: 'uniform float uA; uniform vec3 uC; varying vec3 vN; varying vec3 vV; varying float vY; void main(){ float f = 1.-abs(dot(normalize(vN), normalize(-vV))); float fade = 1.-smoothstep(1.55,2.25,vY); vec3 c = mix(uC, vec3(1.), pow(f, 5.)); gl_FragColor = vec4(c * pow(f, 3.) * .8 * uA * fade, 0.); }' });
+const boneBase = { color: 0xE6DAC6, roughness: .65, metalness: 0, envMapIntensity: .45 };
+const ossos = {}, faixas = {}; let pele, brilho, fundoXR, peleZ; const corTmp = new THREE.Color();
+const st = { xr: 0, xrAlvo: 0, hi: new Set(), faixas: new Set(), h: 0, c: 0, lin: 0, par: 0, disco: 0, broca: 0, fim: 0, aux: 0, cortado: false, an: null };
+// animações: hDe = etapa em que o problema aparece (0 = já por fora); lin = etapas com as linhas de apoio
+// cir = etapa da cirurgia/tratamento; max = fim da barra; aux = etapas de um apoio extra; fases = passo a passo dentro de uma etapa
+const AN = { joanete: { fases: { 3: [[0, 'corte do osso'], [.3, 'a cabeça é deslocada para o lugar'], [.52, 'fixação com parafusos']] }, hDe: 0, lin: [1.9, 3.04], cam: [[.42, .28, -.2], [.3, 1, -.42], .8] }, peplano: { max: 6, auto: [3, 5], fases: { 5: [[0, 'corte do osso do calcanhar'], [.3, 'o osso é deslocado para dentro'], [.66, 'fixação com parafuso']] }, hDe: 2, lin: [1, 3.04], abre: [1.55, 2.45], cam: [[-.05, .5, 0], [.16, .1, -1], 1.38] }, haglund: { hDe: 2, lin: [.9, 9], fases: { 3: [[0, 'limpeza da região inflamada'], [.3, 'retirada do excesso de osso'], [.66, 'quando o tendão precisa ser solto, ele é preso de volta com âncoras']] } },
+  aquiles: { hDe: 2, fases: { 3: [[0, 'as duas pontas são aproximadas'], [.56, 'as pontas são costuradas']] } },
+  tornozelo: { hDe: 2, fases: { 3: [[0, 'o ligamento é levado de volta ao osso'], [.6, 'fixação com pequenas âncoras e suturas']] } },
+  fascite: { hDe: 2, aux: [0, .9], fases: { 3: [[0, 'o aparelho é apoiado na pele do calcanhar'], [.5, 'pulsos de energia sobre o ponto da dor']] } } }, POSE = {}, FX = {};
+function cil(p, q, r, mat, seg = 16) {
+  const d = q.clone().sub(p), l = d.length(), m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, l, seg), mat);
+  m.position.copy(p).addScaledVector(d, .5); m.quaternion.setFromUnitVectors(Y, d.normalize()); return m;
+}
+
+/* ================= carregar o modelo ================= */
+// pe2.bin: posições em inteiros de 0,01 mm, guardadas como diferenças (zigue-zague) em dois planos de bytes; índices como distância até o próximo vértice novo
+function decodificar(bin, p) {
+  const u8 = new Uint8Array(bin), nv = p.pos[1], ni = p.idx[1], pos = new Float32Array(nv * 3), idx = new Uint16Array(ni); let o = p.pos[0];
+  for (let c = 0; c < 3; c++, o += nv * 2) for (let i = 0, a = 0; i < nv; i++) { const z = u8[o + i] | u8[o + nv + i] << 8; a = ((a + ((z >>> 1) ^ -(z & 1)) + 32768) & 65535) - 32768; pos[i * 3 + c] = a * 1e-4; }
+  o = p.idx[0];
+  for (let i = 0, prox = 0; i < ni; i++) { const v = prox - (u8[o + i] | u8[o + ni + i] << 8); idx[i] = v; if (v === prox) prox++; }
+  return [pos, idx];
+}
+async function carregar() {
+  const [meta, bin] = await Promise.all([fetch('modelo/pe2.json?v=2').then(r => { if (!r.ok) throw r; return r.json(); }), fetch('modelo/pe2.bin?v=2').then(r => { if (!r.ok) throw r; return r.arrayBuffer(); })]);
+  for (const p of meta.partes) {
+    const g = new THREE.BufferGeometry();
+    const [pos, idx] = decodificar(bin, p);
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1));
+    g.setAttribute('aAO', new THREE.BufferAttribute(new Uint8Array(bin, p.ao, p.pos[1]), 1, true));   // sombreamento das dobras, por vértice
+    g.computeVertexNormals();
+    if (p.nome === 'pele') {
+      g.setAttribute('aRest', new THREE.BufferAttribute(pos.slice(), 3));   // posição de repouso: a 'textura' calculada acompanha as deformações
+      g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(p.pos[1] * 3).fill(1), 3));
+      g.boundingSphere = new THREE.Sphere(V(0, 1.4, 0), 2.6);
+      pele = new THREE.Mesh(g, skinMat); pele.renderOrder = 3;
+      brilho = new THREE.Mesh(g, glowMat); brilho.renderOrder = 4;
+      // raio-X: fundo azul-escuro por dentro do pé (os ossos se destacam) e passe só de profundidade (o contorno brilha só na superfície de fora)
+      fundoXR = new THREE.Mesh(g, fadeTopo(new THREE.MeshBasicMaterial({ color: 0x071A30, side: THREE.BackSide, depthWrite: false, opacity: 0 }))); fundoXR.renderOrder = -1;
+      peleZ = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ colorWrite: false, transparent: true })); peleZ.renderOrder = 3.5; peleZ.visible = false;
+      scene.add(pele, brilho, fundoXR, peleZ);
+    } else {
+      const m = new THREE.Mesh(g, fadeTopo(new THREE.MeshStandardMaterial(boneBase), 1.55, 2.25, true));
+      m.material.emissive = new THREE.Color(0xF0714C); m.material.emissiveIntensity = 0;
+      ossos[p.nome] = m; scene.add(m);
+    }
+  }
+  criarFaixas(meta.caixas);
+  criarPontos();
+  montarJoanete(meta.juntas);
+  montarOutros(meta.caixas, meta.juntas);
+  maisAnimacoes(meta.caixas, meta.juntas);
+  configurarCams();
+  Object.values(POSE).forEach(f => f(0));   // tudo começa escondido e no lugar
+  window.__ok = true; document.body.classList.remove('sem3d'); document.getElementById('load').classList.add('fora');
+  aoCarregar();
+}
+
+// normais só na região que a animação mexe (recalcular a pele inteira a cada quadro pesa no celular)
+const RN = {};
+function regiaoNormais(geo, mexe) {
+  const ix = geo.index.array, alvo = new Uint8Array(mexe.length), tris = [], vs = [];
+  for (let i = 0; i < ix.length; i += 3) if (mexe[ix[i]] | mexe[ix[i+1]] | mexe[ix[i+2]]) alvo[ix[i]] = alvo[ix[i+1]] = alvo[ix[i+2]] = 1;
+  for (let i = 0; i < ix.length; i += 3) if (alvo[ix[i]] | alvo[ix[i+1]] | alvo[ix[i+2]]) tris.push(i);
+  for (let v = 0; v < alvo.length; v++) if (alvo[v]) vs.push(v * 3);
+  return { tris: Uint32Array.from(tris), vs: Uint32Array.from(vs), alvo };
+}
+function normaisParciais(geo, Rg) {
+  const p = geo.attributes.position.array, n = geo.attributes.normal.array, ix = geo.index.array, { tris, vs, alvo } = Rg;
+  for (let k = 0; k < vs.length; k++) { const v = vs[k]; n[v] = n[v+1] = n[v+2] = 0; }
+  for (let k = 0; k < tris.length; k++) { const i = tris[k], a = ix[i], b = ix[i+1], c = ix[i+2], A = a*3, B = b*3, C = c*3;
+    const cx = p[C]-p[B], cy = p[C+1]-p[B+1], cz = p[C+2]-p[B+2], ax = p[A]-p[B], ay = p[A+1]-p[B+1], az = p[A+2]-p[B+2];
+    const nx = cy*az - cz*ay, ny = cz*ax - cx*az, nz = cx*ay - cy*ax;
+    if (alvo[a]) { n[A] += nx; n[A+1] += ny; n[A+2] += nz; } if (alvo[b]) { n[B] += nx; n[B+1] += ny; n[B+2] += nz; } if (alvo[c]) { n[C] += nx; n[C+1] += ny; n[C+2] += nz; } }
+  for (let k = 0; k < vs.length; k++) { const v = vs[k], l = Math.hypot(n[v], n[v+1], n[v+2]) || 1; n[v] /= l; n[v+1] /= l; n[v+2] /= l; }
+  geo.attributes.normal.needsUpdate = true;
+}
+const regiaoDe = pred => { const n = P0.length / 3, m = new Uint8Array(n); for (let v = 0; v < n; v++) if (pred(v, P0[v*3], P0[v*3+1], P0[v*3+2])) m[v] = 1; return regiaoNormais(pele.geometry, m); };
+const regiaoIdx = (...listas) => { const m = new Uint8Array(P0.length / 3); listas.forEach(l => l.forEach(i => { m[i / 3] = 1; })); return regiaoNormais(pele.geometry, m); };
+function normaisPele() { const r = RN[st.an]; if (r) normaisParciais(pele.geometry, r); else pele.geometry.computeVertexNormals(); }
+
+// halo suave (ponto de dor): textura de gradiente radial, usada em sprites
+const HALO = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 64; const x = cv.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.35, 'rgba(255,255,255,.55)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(cv); })();
+// manchas na própria pele (vermelhidão, inchaço): escolhe os vértices perto de um ponto, na posição de repouso
+function mancha(centro, raio, filtro) { const idx = [], w = []; for (let i = 0; i < P0.length; i += 3) { const d2 = (P0[i] - centro.x) ** 2 + (P0[i+1] - centro.y) ** 2 + (P0[i+2] - centro.z) ** 2, k = Math.exp(-d2 / (raio * raio)); if (k > .04 && (!filtro || filtro(P0[i], P0[i+1], P0[i+2]))) { idx.push(i); w.push(k); } } return { idx, w, g: 0, e: 0 }; }
+function pintar(M, cor, g) { if (Math.abs(g - M.g) < 2e-3) return; M.g = g; const col = pele.geometry.attributes.color.array; M.idx.forEach((i, k) => { const e = M.w[k] * g; col[i] = 1 + (cor.r - 1) * e; col[i+1] = 1 + (cor.g - 1) * e; col[i+2] = 1 + (cor.b - 1) * e; }); pele.geometry.attributes.color.needsUpdate = true; }
+function empurrar(M, d, g) { if (Math.abs(g - M.e) < 2e-4) return; M.e = g; const arr = pele.geometry.attributes.position.array; M.idx.forEach((i, k) => { const e = M.w[k] * g; arr[i] = P0[i] + d.x * e; arr[i+1] = P0[i+1] + d.y * e; arr[i+2] = P0[i+2] + d.z * e; }); pele.geometry.attributes.position.needsUpdate = true; normaisPele(); }
+// fita achatada ao longo de uma curva (tendão, ligamento, fáscia): larg = meia largura, esp = meia espessura, fora = para onde fica a face larga
+function faixaGeo(pts, larg, esp, fora, perfil = () => 1, S = 40, R = 10) {
+  const cv = new THREE.CatmullRomCurve3(pts), g = new THREE.TubeGeometry(cv, S, 1, R, false), p = g.attributes.position, c = V(0, 0, 0), t = V(0, 0, 0), a = V(0, 0, 0), b = V(0, 0, 0);
+  for (let i = 0; i <= S; i++) { cv.getPointAt(i / S, c); cv.getTangentAt(i / S, t); a.crossVectors(t, fora).normalize(); b.crossVectors(a, t).normalize(); const k = perfil(i / S);
+    for (let j = 0; j <= R; j++) { const an = j / R * Math.PI * 2, ca = Math.cos(an) * larg * k, sb = Math.sin(an) * esp * (.6 + .4 * k); p.setXYZ(i * (R + 1) + j, c.x + a.x * ca + b.x * sb, c.y + a.y * ca + b.y * sb, c.z + a.z * ca + b.z * sb); } }
+  g.computeVertexNormals(); return g;
+}
+// fáscia, tendão de Aquiles, ligamentos do tornozelo e tibial posterior, desenhados sobre os ossos do modelo
+function criarFaixas(B) {
+  const mat = () => fadeTopo(new THREE.MeshStandardMaterial({ color: 0xEBD0BE, emissive: 0xF0714C, emissiveIntensity: .3, roughness: .5, transparent: true, opacity: 0, side: THREE.DoubleSide }));
+  const grupo = (...ms) => { const g = new THREE.Group(); g.userData.mats = []; ms.forEach(m => { g.add(m); m.traverse(o => { if (o.isMesh) o.renderOrder = 2; if (o.material && !g.userData.mats.includes(o.material)) g.userData.mats.push(o.material); }); }); g.visible = false; scene.add(g); return g; };
+  const fita = (pts, larg, esp, fora, perfil, m) => new THREE.Mesh(faixaGeo(pts, larg, esp, fora, perfil), m);
+  const amostra = (pts, n) => new THREE.CatmullRomCurve3(pts).getPoints(n);
+  const c = B.calcaneo;
+  // fáscia plantar: uma faixa larga que sai do calcanhar e se abre em cinco tiras até a base dos dedos
+  const o = V(c.min[0] + .16, c.min[1] + .02, c.c[2] - .06), fm = mat(); FX.o = o;
+  faixas.fascia = grupo(...[1, 2, 3, 4, 5].map(k => { const m = B['m' + k], f = B[`p${k}_prox`];
+    return fita([o, V((o.x + m.max[0]) / 2, m.min[1] - .01, (o.z + m.c[2]) / 2), V(m.max[0] - .07, m.min[1], m.c[2]), V(f.min[0] + .03, f.min[1] + .012, f.c[2])], .085, .009, V(0, -1, 0), u => 1 - .68 * sm(u), fm); }));
+  // tendão de Aquiles: fita que desce pela linha do meio de trás e abre em leque no osso do calcanhar; em duas partes (a de cima sobe na ruptura)
+  const pc = ossos.calcaneo.geometry.attributes.position.array, atras = y => { let m = 0; for (let i = 0; i < pc.length; i += 3) if (Math.abs(pc[i+1] - y) < .05 && pc[i+2] > -.3 && pc[i+2] < -.06) m = Math.min(m, pc[i]); return (m || -1.06) - .03; };   // logo atrás da superfície do osso, medida no modelo
+  const aqPts = amostra([V(atras(.3), .3, -.18), V(atras(.42), .42, -.18), V(atras(.54), .54, -.2), V(Math.min(atras(.6), -1.095), .71, -.265), V(-1.015, 1.0, -.24), V(-1.0, 1.35, -.14), V(-1.05, 2.0, -.06)], 72), ka = aqPts.findIndex(q => q.y > .9), tras = V(-1, 0, 0), am = mat();
+  FX.aqInf = fita(aqPts.slice(0, ka + 1), .06, .026, tras, u => 1 + .45 * (1 - sm(cl(u / .3))), am); FX.aqSup = fita(aqPts.slice(ka), .06, .026, tras, () => 1, am);
+  FX.aqP = aqPts[ka].clone(); FX.aqIns = aqPts[10].clone(); FX.aqPts = aqPts;
+  FX.aqInfG = new THREE.Group(); FX.aqInfG.position.copy(FX.aqP); const dentro = new THREE.Group(); dentro.position.copy(FX.aqP).negate(); FX.aqInfG.add(dentro); dentro.add(FX.aqInf);   // pivô no alto da parte de baixo (Haglund afasta o tendão)
+  faixas.aquiles = grupo(FX.aqInfG, FX.aqSup);
+  // ligamentos de fora do tornozelo: o da frente (fíbula → tálus), em duas partes porque é o que mais rompe, e o de baixo (fíbula → calcâneo)
+  const lm = mat(), lgT = amostra([V(-.55, .62, .07), V(-.485, .645, .02), V(-.42, .65, -.06)], 20), frente = V(.7, 0, .7);
+  FX.ligA = fita(lgT.slice(0, 6), .034, .012, frente, () => 1, lm); FX.ligB = fita(lgT.slice(5), .034, .012, frente, () => 1, lm);
+  FX.ligDir = lgT[20].clone().sub(lgT[0]).normalize(); FX.ligIni = lgT[0].clone(); FX.ligRup = lgT[5].clone();
+  faixas.ligamento = grupo(FX.ligA, FX.ligB, fita([V(-.62, .56, .10), V(-.71, .47, .07), V(-.80, .36, .01)], .03, .012, V(0, 0, 1), () => 1, lm));
+  // tendão tibial posterior: passa atrás do osso de dentro do tornozelo e chega ao navicular; sustenta o arco
+  const tb = B.tibia, nv = B.navicular;
+  faixas.tibpost = grupo(fita([V(-.66, 1.9, tb.min[2] + .07), V(-.67, .88, tb.min[2] + .045), V(-.6, .68, tb.min[2] + .015), V(-.42, .58, tb.min[2] + .03), V(nv.c[0] - .02, nv.min[1] + .05, nv.min[2] + .02)], .03, .016, V(0, 0, -1), () => 1, mat()));
+}
+
+/* ================= ferragens e instrumentos: parafuso com rosca, fio-guia, chave, fresa, serra, agulha, pinça ================= */
+class Helice extends THREE.Curve { constructor(r, L, n) { super(); this.r = r; this.L = L; this.n = n; } getPoint(t, o = new THREE.Vector3()) { const a = t * this.n * Math.PI * 2; return o.set(this.r * Math.cos(a), t * this.L, this.r * Math.sin(a)); } }
+const aco = () => new THREE.MeshStandardMaterial({ color: 0xCBD3DB, metalness: 1, roughness: .32, envMapIntensity: 1.5, emissive: 0x8E9BA8, emissiveIntensity: .2, transparent: true, opacity: 0 });
+const cabo = () => new THREE.MeshStandardMaterial({ color: 0x3A526B, roughness: .5, metalness: .15, emissive: 0x1B2A3A, emissiveIntensity: .5, transparent: true, opacity: 0 });   // cabo dos instrumentos
+// instOK: os instrumentos (e a etiqueta) só entram em cena com a linha do tempo andando para a frente; ao voltar ou sair, as peças apenas esmaecem
+let instOK = true, instT = -1, instRecuo = -1e9;
+function instSentido(now) { const T = tl.on ? tl.T : -1; if (T < instT - 1e-5) instRecuo = now; instT = T; instOK = !!tl.on && now - instRecuo > 700; }
+// a pedido, o nome do instrumento não aparece na tela (só a figura); as chamadas ficam, sem efeito, para o caso de voltar
+function pedirInst() {}
+function instQuadro() {}
+// faz o material sumir aos poucos para trás do ponto de entrada (y negativo no referencial do parafuso); uOff = deslocamento da peça nesse eixo
+function fadeEixo(m, y0, y1) {
+  const uOff = { value: 0 }; m.userData.uOff = uOff;
+  m.onBeforeCompile = s => { s.uniforms.uOff = uOff;
+    s.vertexShader = 'varying float vEY; uniform float uOff;\n' + s.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n vEY = position.y + uOff;');
+    s.fragmentShader = 'varying float vEY;\n' + s.fragmentShader.replace('#include <dithering_fragment>', `#include <dithering_fragment>\n gl_FragColor.a *= smoothstep(${y1.toFixed(3)}, ${y0.toFixed(3)}, vEY);`); };
+  m.customProgramCacheKey = () => 'fe' + y0 + '_' + y1; return m;
+}
+// parafuso de S até E: haste, rosca na metade da ponta, ponta cônica e (opcional) cabeça. Sólido onde aparece; "fantasma" claro onde está dentro do osso.
+// op.fio: primeiro entra um fio-guia, o parafuso vai por cima dele e o fio sai. A chave gira junto com o parafuso e recua quando ele assenta.
+// Desenhado depois da pele e antes do passe de profundidade da pele, para se comparar só com os ossos.
+function parafuso(S, E, r, cabeca, op = {}) {
+  const d = E.clone().sub(S), len = d.length(); d.normalize();
+  const mt = aco(), fant = new THREE.MeshBasicMaterial({ color: 0xC6D1DC, transparent: true, opacity: 0, depthFunc: THREE.GreaterDepth, depthWrite: false });
+  const g = new THREE.Group(), dentro = new THREE.Group(); g.position.copy(S); g.quaternion.setFromUnitVectors(Y, d); g.add(dentro);
+  const pecas = [], haste = new THREE.CylinderGeometry(r * .78, r * .78, len, 12); haste.translate(0, len / 2, 0); pecas.push(haste);
+  const voltas = Math.max(4, Math.round(len * .45 / (r * 1.15))), rosca = new THREE.TubeGeometry(new Helice(r * .86, len * .45, voltas), voltas * 14, r * .26, 5, false); rosca.translate(0, len * .53, 0); pecas.push(rosca);
+  const ponta = new THREE.ConeGeometry(r * .78, r * 2.2, 12); ponta.translate(0, len + r * 1.1, 0); pecas.push(ponta);
+  if (cabeca) { const c = new THREE.CylinderGeometry(r * 1.55, r * 1.1, r * 1.3, 14); c.translate(0, -r * .65, 0); pecas.push(c); }
+  pecas.forEach(geo => { const a = new THREE.Mesh(geo, mt), b = new THREE.Mesh(geo, fant); a.renderOrder = 3.2; b.renderOrder = 3.3; dentro.add(a, b); });
+  // chave (no parafuso) ou insertor (na âncora)
+  const chave = new THREE.Group(), mCh = aco(), mCb = cabo(); g.add(chave);
+  const porCh = (geo, m, y) => { geo.translate(0, y, 0); const o = new THREE.Mesh(geo, m); o.renderOrder = 3.2; chave.add(o); };
+  const y0 = cabeca ? -r * 1.3 : 0, hL = Math.max(.26, r * 13, (op.fora || 0) + .07), cR = Math.max(.026, r * 1.45);
+  porCh(new THREE.CylinderGeometry(r * .62, r * .62, hL, 10), mCh, y0 - hL / 2);
+  porCh(new THREE.CylinderGeometry(cR * .82, cR * .5, .05, 14), mCb, y0 - hL - .025);
+  porCh(new THREE.CylinderGeometry(cR, cR * .9, .27, 8), mCb, y0 - hL - .185);   // cabo de 8 faces: dá para ver que gira
+  // fio-guia
+  let gf = null, mF = null;
+  let mFf = null;
+  if (op.fio) { mF = aco(); mFf = fant.clone(); const tras = op.curto ? .1 : Math.max(.5, (op.fora || 0) + .25), L = len + tras, rf = Math.max(.0075, r * .34), geo = new THREE.CylinderGeometry(rf, rf, L, 8); geo.translate(0, L / 2 - tras, 0);
+    gf = new THREE.Group(); const a = new THREE.Mesh(geo, mF), b = new THREE.Mesh(geo, mFf); a.renderOrder = 3.2; b.renderOrder = 3.3; gf.add(a, b); g.add(gf); }
+  const somem = op.some ? [mCh, mCb, mF, mFf].filter(Boolean).map(m => fadeEixo(m, -op.some * .5, -op.some)) : null;   // op.some: distância atrás da entrada em que chave e fio já sumiram
+  g.visible = false;
+  return { g, len, pose(e, giros = 5) {
+    if (!instOK) { g.visible = e > .01; mt.opacity = cl(e * 1.5); fant.opacity = mt.opacity * .7; dentro.visible = true; dentro.position.y = 0; dentro.rotation.y = 0; chave.visible = false; if (gf) gf.visible = false; return; }   // voltando: o parafuso só esmaece no lugar
+    const eF = op.fio ? sm(cl(e / .2)) : 1, eP = sm(op.fio ? cl((e - .2) / .62) : cl(e / .82)), sai = sm(cl((e - .84) / .16)), vis = cl(eP * 5);
+    g.visible = e > .01; mt.opacity = vis; fant.opacity = vis * .7; dentro.visible = vis > .01;
+    dentro.position.y = -(1 - eP) * (len + r * 3); dentro.rotation.y = -(1 - eP) * giros * Math.PI * 2;
+    chave.visible = !op.curto && vis > .01 && sai < .99; chave.position.y = dentro.position.y - sai * .3; chave.rotation.y = dentro.rotation.y; mCh.opacity = mCb.opacity = vis * (1 - sai);
+    if (gf) { gf.visible = e > .01 && sai < .99; gf.position.y = -(1 - eF) * (len + .2) - sai * (len + .5); mF.opacity = cl(e * 10) * (1 - sai); mFf.opacity = mF.opacity * .5; }
+    if (somem) { mCh.userData.uOff.value = mCb.userData.uOff.value = chave.position.y; if (gf) mF.userData.uOff.value = mFf.userData.uOff.value = gf.position.y; }
+    if (e > .02 && sai < .6) pedirInst(gf && vis < .5 ? 'Fio-guia' : (op.nome || 'Parafuso'), g);   // a etiqueta fica no ponto de entrada no osso
+  } };
+}
+// encaixa uma âncora no osso: entra pela superfície vista a partir de 'de', na direção dir, e para antes de sair do outro lado
+const _rcO = new THREE.Raycaster(), _avesso = new THREE.MeshBasicMaterial({ side: THREE.BackSide });
+function noOsso(malha, de, dir, r, max) {
+  malha.updateWorldMatrix(true, false); _rcO.set(de, dir); const a = _rcO.intersectObject(malha, false)[0]; if (!a) return null;
+  const av = new THREE.Mesh(malha.geometry, _avesso); av.matrixWorld.copy(malha.matrixWorld);
+  _rcO.set(a.point.clone().addScaledVector(dir, .002), dir); const b = _rcO.intersectObject(av, false)[0];
+  const len = Math.max(r * 1.5, Math.min(max, (b ? b.distance : max) - r * 2.2 - .012));   // sobra para a ponta cônica + 1 mm de osso
+  return { ent: a.point.clone(), S: a.point.clone().addScaledVector(dir, -.008), E: a.point.clone().addScaledVector(dir, len) };
+}
+function ateAPele(o, dir) { const av = new THREE.Mesh(pele.geometry, _avesso); av.matrixWorld.copy(pele.matrixWorld); _rcO.set(o, dir); const h = _rcO.intersectObject(av, false)[0]; return h ? h.distance : 0; }
+// pó de osso: pontinhos que saltam do ponto de corte
+function poDeOsso(pai, N = 22) {
+  const pp = new Float32Array(N * 3), sem = []; for (let i = 0; i < N; i++) sem.push([Math.random() * 6.28, .3 + Math.random() * .7, Math.random()]);
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pp, 3));
+  const po = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xF3E9D8, size: .016, transparent: true, opacity: 0, depthWrite: false, depthTest: false })); po.renderOrder = 8; po.frustumCulled = false; pai.add(po);
+  return (corta, now) => { po.material.opacity = corta ? .85 : 0; if (!corta) return;
+    for (let i = 0; i < N; i++) { const [a, v, f] = sem[i], t = (now * .0016 + f) % 1; pp[i*3] = Math.cos(a) * v * .09 * t; pp[i*3+1] = .02 + t * .06 - t * t * .09; pp[i*3+2] = Math.sin(a) * v * .09 * t; } pg.attributes.position.needsUpdate = true; };
+}
+// fresa (broca fina): peça de mão, haste e ponta que gira.
+// ponta = onde a fresa toca; vem = de que lado o instrumento chega (aponta para fora do pé)
+function fazerBroca(ponta, vem, prof = 0) {
+  const eixo = vem.clone().normalize(), g = new THREE.Group(), gira = new THREE.Group(); g.position.copy(ponta); g.quaternion.setFromUnitVectors(Y, eixo); g.add(gira);
+  const metal = aco(), corpo = new THREE.MeshStandardMaterial({ color: 0xE3E8EE, roughness: .45, metalness: .15, transparent: true, opacity: 0 });
+  const por = (geo, m, y, pai = g) => { geo.translate(0, y, 0); const o = new THREE.Mesh(geo, m); o.renderOrder = 3.2; pai.add(o); };
+  por(new THREE.CylinderGeometry(.013, .016, .07, 10), metal, .035, gira);                      // fresa
+  por(new THREE.TubeGeometry(new Helice(.0165, .06, 3), 36, .004, 4, false), metal, .005, gira);  // sulcos da fresa
+  por(new THREE.CylinderGeometry(.007, .007, .34, 8), metal, .24);                              // haste
+  por(new THREE.CylinderGeometry(.03, .02, .1, 14), corpo, .46);                                // bocal
+  por(new THREE.CylinderGeometry(.034, .03, .42, 14), corpo, .72);                              // peça de mão
+  const po = poDeOsso(g);
+  g.visible = false;
+  return { g, pose(b, now = 0, av = 0) {
+    if (!instOK) b = 0;
+    g.visible = b > .01; metal.opacity = corpo.opacity = cl(b * 3); g.position.copy(ponta).addScaledVector(eixo, (1 - b) * .3 - av * prof); gira.rotation.y = RM ? 0 : now * .05;
+    po(b > .6 && !RM, now); if (b > .2) pedirInst('Fresa', g);
+  } };
+}
+// serra oscilante: lâmina no plano do corte (normal n), entrando na direção d; a lâmina vibra e avança pelo osso.
+function fazerSerra(p0, n, d, meia = .22, varre = .08, larg = .07) {
+  const x = new THREE.Vector3().crossVectors(d, n).normalize(), g = new THREE.Group(), osc = new THREE.Group(), L = .68; g.add(osc);
+  g.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(x, d, n));   // local: Y = para onde a lâmina avança, Z = normal do corte
+  const metal = new THREE.MeshStandardMaterial({ color: 0xD5DCE3, metalness: .55, roughness: .38, emissive: 0x9AA7B4, emissiveIntensity: .45, transparent: true, opacity: 0, side: THREE.DoubleSide }), corpo = new THREE.MeshStandardMaterial({ color: 0xE3E8EE, roughness: .45, metalness: .15, transparent: true, opacity: 0 });
+  const sh = new THREE.Shape(); sh.moveTo(-larg * .5, 0); sh.lineTo(-larg, L - .035);
+  for (let k = 0; k <= 14; k++) { const u = k / 14 * 2 - 1; sh.lineTo(larg * u, L - (k % 2 ? 0 : .013) - .018 * u * u); }   // dentes na ponta
+  sh.lineTo(larg, L - .035); sh.lineTo(larg * .5, 0); sh.closePath();
+  const lam = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: .005, bevelEnabled: false }), metal); lam.position.z = -.0025; lam.renderOrder = 3.2; osc.add(lam); osc.position.y = -L;   // o pivô da vibração é a base da lâmina
+  const por = (geo, y) => { geo.translate(0, y, 0); const o = new THREE.Mesh(geo, corpo); o.renderOrder = 3.2; g.add(o); };
+  por(new THREE.CylinderGeometry(.036, .046, .09, 16), -L - .035);    // cabeçote
+  por(new THREE.CylinderGeometry(.046, .04, .5, 16), -L - .33);        // peça de mão
+  const ponta = new THREE.Group(); g.add(ponta); const po = poDeOsso(ponta, 30);
+  g.visible = false;
+  return { g, pose(v, av, now = 0) {   // v: presença (0..1), av: quanto já cortou (0..1)
+    if (!instOK) v = 0;
+    g.visible = v > .01; metal.opacity = corpo.opacity = cl(v * 3);
+    g.position.copy(p0).addScaledVector(d, -meia + meia * 1.85 * av - (1 - v) * .3).addScaledVector(x, RM ? 0 : varre * Math.sin(now * .0019));   // para antes da cortical do outro lado
+    osc.rotation.z = RM ? 0 : .06 * Math.sin(now * .085);
+    po(v > .6 && !RM, now); if (v > .2) pedirInst('Serra', ponta);
+  } };
+}
+// agulha curva que acompanha a ponta do fio de sutura
+function fazerAgulha() {
+  const geo = new THREE.TorusGeometry(.05, .0045, 6, 22, Math.PI * .92); geo.rotateX(Math.PI / 2); geo.rotateY(-Math.PI / 2);
+  const mat = aco(); mat.depthTest = false; const m = new THREE.Mesh(geo, mat); m.renderOrder = 8.5; m.visible = false;
+  return { g: m, pose(p, a, now = 0) { if (!instOK) a = 0; m.visible = a > .01; mat.opacity = a; if (!m.visible) return; m.position.copy(p); m.rotation.y = RM ? 0 : .35 * Math.sin(now * .005); pedirInst('Agulha e fio', m); } };
+}
+// pinça: duas hastes finas unidas atrás, com as pontas quase fechadas em 'ponta'; vem = para onde fica o cabo
+function fazerPinca(vem) {
+  const g = new THREE.Group(), mat = new THREE.MeshStandardMaterial({ color: 0xD5DCE3, metalness: .55, roughness: .38, emissive: 0x9AA7B4, emissiveIntensity: .45, transparent: true, opacity: 0 }), L = .5; g.quaternion.setFromUnitVectors(Y, vem.clone().normalize());
+  [-1, 1].forEach(s => { const geo = new THREE.BoxGeometry(.009, L, .011); geo.translate(0, L / 2 - .12, 0); const o = new THREE.Mesh(geo, mat); o.position.y = .12; o.rotation.z = s * .07; o.renderOrder = 6;   // dois braços que se cruzam perto da ponta, como uma pinça de cirurgia
+    const arg = new THREE.Mesh(new THREE.TorusGeometry(.03, .006, 6, 18), mat); arg.position.set(-s * .012, L - .1, 0); arg.renderOrder = 6; o.add(arg); g.add(o); });
+  g.visible = false;
+  return { g, pose(p, a) { if (!instOK) a = 0; g.visible = a > .01; mat.opacity = a; if (!g.visible) return; g.position.copy(p); pedirInst('Pinça', g); } };
+}
+
+// fio fino que entra por S até E e fica (ex.: fio temporário no dedo); a parte dentro do osso aparece mais clara
+function fazerFio(S, E, r = .006) {
+  const d = E.clone().sub(S), len = d.length(), g = new THREE.Group(), mt = aco(), fant = new THREE.MeshBasicMaterial({ color: 0xDCE6EE, transparent: true, opacity: 0, depthFunc: THREE.GreaterDepth, depthWrite: false });
+  g.position.copy(S); g.quaternion.setFromUnitVectors(Y, d.normalize());
+  const geo = new THREE.CylinderGeometry(r, r, len, 8); geo.translate(0, len / 2, 0); const a = new THREE.Mesh(geo, mt), b = new THREE.Mesh(geo, fant); a.renderOrder = 3.2; b.renderOrder = 3.3; g.add(a, b); g.visible = false;
+  return { g, pose(e) { g.visible = e > .01; mt.opacity = cl(e * 4); fant.opacity = mt.opacity * .6; a.position.y = b.position.y = instOK ? -(1 - e) * len : 0; } };
+}
+// cotonete (aplicador): haste fina com ponta de algodão; vem = para onde fica a haste
+function fazerCotonete(vem) {
+  const g = new THREE.Group(), m1 = new THREE.MeshStandardMaterial({ color: 0xE9DCC3, roughness: .7, transparent: true, opacity: 0 }), m2 = new THREE.MeshStandardMaterial({ color: 0xFBFBF7, roughness: .9, transparent: true, opacity: 0 });
+  g.quaternion.setFromUnitVectors(Y, vem.clone().normalize());
+  const h = new THREE.CylinderGeometry(.006, .006, .5, 8); h.translate(0, .27, 0); const p = new THREE.SphereGeometry(1, 12, 10); p.scale(.013, .024, .013); p.translate(0, .016, 0);
+  [new THREE.Mesh(h, m1), new THREE.Mesh(p, m2)].forEach(o => { o.renderOrder = 6; g.add(o); }); g.visible = false;
+  return { g, pose(pt, a) { if (!instOK) a = 0; g.visible = a > .01; m1.opacity = m2.opacity = cl(a * 3); if (g.visible) g.position.copy(pt).addScaledVector(vem, (1 - a) * .12); } };
+}
+/* ================= joanete em 3D: desvio, corte, deslocamento e parafusos (ilustrativo) ================= */
+let JO = null, gM1, gToe, P0, wT, wH; const jo = {}; const pp = { h: 0, c: 0 };
+function montarJoanete(j) {
+  const B = V(...j.m1_base), Hd = V(...j.m1_cabeca), J = V(...j.J), tip = V(...j.ponta1), Pc = V(...j.corte), ax = V(...j.eixo);
+  const s = Hd.clone().sub(B); s.y = 0; const L = s.length(); s.normalize(); const n = V(-s.z, 0, s.x);   // n = para o lado de fora (2º dedo)
+  const A = .2, Vg = .33;
+  JO = { B, Hd, J, tip, n, A, Vg, D: L * Math.sin(A) * .95, m2h: V(...j.m2_cabeca), tip2: V(...j.ponta2), toe: tip.clone().sub(J).normalize(), foco: J.clone().lerp(B, .3) };
+  const grupo = (pivo, nomes) => { const g = new THREE.Group(); g.position.copy(pivo); const i = new THREE.Group(); i.position.copy(pivo).negate(); g.add(i); nomes.forEach(k => i.add(ossos[k])); scene.add(g); return [g, i]; };
+  let iM1, iToe; [gM1, iM1] = grupo(B, ['m1', 'm1_a', 'm1_b']); [gToe, iToe] = grupo(J, ['p1_prox', 'p1_dist']);
+  // eixos (o ângulo que se mede na radiografia)
+  jo.linMat = new THREE.MeshBasicMaterial({ color: 0x72C6A2, transparent: true, opacity: 0, depthTest: false });
+  const l1 = cil(B.clone().addScaledVector(ax, -.12), B.clone().addScaledVector(ax, Hd.distanceTo(B) + .5), .007, jo.linMat, 8);
+  const l2 = cil(J.clone().addScaledVector(JO.toe, -.42), tip.clone().addScaledVector(JO.toe, .16), .007, jo.linMat, 8);
+  l1.renderOrder = l2.renderOrder = 10; iM1.add(l1); iToe.add(l2); jo.lins = [l1, l2];
+  // plano do corte e broca fina
+  jo.discoMat = new THREE.MeshBasicMaterial({ color: 0xF0714C, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false });
+  jo.disco = cil(Pc.clone().addScaledVector(ax, -.003), Pc.clone().addScaledVector(ax, .003), .12, jo.discoMat, 40); jo.disco.renderOrder = 2; iM1.add(jo.disco);
+  const metal = () => new THREE.MeshStandardMaterial({ color: 0xD3DAE1, metalness: 1, roughness: .3, envMapIntensity: 1.5, emissive: 0x9AA7B4, emissiveIntensity: .22, transparent: true, opacity: 0 });
+  jo.broca = fazerBroca(Pc.clone().addScaledVector(n, -.085), n.clone().negate(), .12); iM1.add(jo.broca.g);   // a fresa fina entra pelo lado de dentro e atravessa o osso
+  // dois parafusos, do osso de trás para a cabeça já deslocada
+  // parafusos: dois, longos e paralelos, da face de dentro perto da base do metatarso até a metade de fora da cabeça (o 2º cerca de 1,3 cm mais à frente).
+  // No modelo, o prolongamento reto para trás cruzaria ossos do meio do pé: por isso o fio e a chave somem aos poucos antes disso.
+  { const outros = Object.entries(ossos).filter(([k]) => !/^(m1|p1_)/.test(k)).map(([, m]) => m), sw = V(0, 0, 0), ew = V(0, 0, 0), eixoM = Hd.clone().sub(B).normalize();
+    const S1 = B.clone().lerp(Hd, .15).addScaledVector(n, -.06).add(V(0, .015, 0)), E1 = Hd.clone().addScaledVector(n, JO.D * .9 + .05).add(V(-.012, .015, 0)), dir = E1.clone().sub(S1).normalize();
+    const S2 = S1.clone().addScaledVector(eixoM, .13).add(V(0, -.035, 0)), E2 = E1.clone().add(S2).sub(S1).addScaledVector(dir, -S2.clone().sub(S1).dot(dir));
+    gM1.rotation.y = JO.A; gM1.updateWorldMatrix(true, true);
+    jo.par = [[S1, E1], [S2, E2]].map(([S, E]) => { iM1.localToWorld(sw.copy(S)); iM1.localToWorld(ew.copy(E)); const dw = sw.clone().sub(ew).normalize();
+      _rcO.set(sw, dw); _rcO.far = .6; let livre = .6; outros.forEach(m => { const h = _rcO.intersectObject(m, false)[0]; if (h) livre = Math.min(livre, h.distance); }); _rcO.far = Infinity;
+      const p = parafuso(S, E, .017, false, { fio: true, some: cl(livre - .03, .1, .3) }); iM1.add(p.g); return p; });
+    gM1.rotation.y = 0; gM1.updateWorldMatrix(true, true); }
+  // sesamoides: dois ossinhos embaixo da cabeça do 1º metatarso (ficam no lugar; a cabeça sai de cima deles)
+  [[-.045], [.03]].forEach(([dz], k) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), fadeTopo(new THREE.MeshStandardMaterial(boneBase))); m.material.emissive = new THREE.Color(0xF0714C); m.material.emissiveIntensity = 0; m.scale.set(.052, .03, .036); m.position.set(Hd.x - .03, Hd.y - .095, Hd.z + dz); ossos['sesamoide_' + 'ab'[k]] = m; scene.add(m); });
+  // pele: quanto cada ponto acompanha o dedão (wT) e a cabeça do osso (wH)
+  const pos = pele.geometry.attributes.position, N = pos.count; P0 = pos.array.slice(); wT = new Float32Array(N); wH = new Float32Array(N);
+  const p = V(0, 0, 0), ab = V(0, 0, 0), dseg = (a, b) => { ab.copy(b).sub(a); const t = cl(p.clone().sub(a).dot(ab) / ab.lengthSq()); return p.distanceTo(a.clone().addScaledVector(ab, t)); };
+  for (let i = 0; i < N; i++) {
+    p.set(P0[i*3], P0[i*3+1], P0[i*3+2]);
+    if (p.y > .75 || p.x < -.1) continue;
+    const along = p.clone().sub(J).dot(JO.toe);
+    wT[i] = sm(cl((along + .06) / .16)) * sm(cl((dseg(JO.m2h, JO.tip2) - dseg(J, tip) + .02) / .06));
+    wH[i] = Math.exp(-p.distanceToSquared(Hd) / .042);
+  }
+  jo.verm = mancha(Hd.clone().add(V(.01, .02, -.13)), .12); jo.VERM = new THREE.Color(0xE0705C);
+  RN.joanete = regiaoDe(v => wT[v] >= .001 || wH[v] >= .004);
+}
+const t1 = V(0, 0, 0), t2 = V(0, 0, 0);
+POSE.joanete = poseJoanete;
+function poseJoanete(now = 0) {
+  const a = JO.A * st.h, th = -JO.Vg * st.h * (1 - st.c), desl = st.c * JO.D;
+  gM1.rotation.y = a;
+  ossos.m1_b.position.copy(JO.n).multiplyScalar(desl);
+  st.cortado = (tl.on === 'joanete' && tl.T >= 3.1) || st.c > .01;
+  ossos.m1.visible = !st.cortado; ossos.m1_a.visible = ossos.m1_b.visible = st.cortado;
+  t1.copy(JO.J).sub(JO.B).addScaledVector(JO.n, desl).applyAxisAngle(Y, a).add(JO.B);   // onde está a articulação do dedão agora
+  gToe.position.copy(t1); gToe.rotation.y = th;
+  jo.linMat.opacity = st.lin * .95; jo.lins.forEach(l => l.visible = st.lin > .01);
+  jo.discoMat.opacity = st.disco * .7; jo.disco.visible = st.disco > .01;
+  jo.broca.pose(st.broca, now, tl.on === 'joanete' ? sm(cl((tl.T - 3.04) / .15)) : 0);
+  jo.par.forEach((s, k) => s.pose(sm(cl(st.par * 2 - k))));
+  pintar(jo.verm, jo.VERM, .5 * st.h * (1 - st.c));
+  if (Math.abs(st.h - pp.h) + Math.abs(st.c - pp.c) < 2e-4) return;
+  pp.h = st.h; pp.c = st.c;
+  t2.copy(JO.Hd).sub(JO.B).addScaledVector(JO.n, desl).applyAxisAngle(Y, a).add(JO.B).sub(JO.Hd);       // quanto a cabeça do osso saiu do lugar
+  const arr = pele.geometry.attributes.position.array, cs = Math.cos(th), sn = Math.sin(th), J = JO.J;
+  for (let i = 0, k = 0; i < wT.length; i++, k += 3) {
+    const w = wT[i], g = wH[i]; if (w < .001 && g < .004) { if (arr[k] !== P0[k] || arr[k+2] !== P0[k+2]) { arr[k] = P0[k]; arr[k+1] = P0[k+1]; arr[k+2] = P0[k+2]; } continue; }
+    const x = P0[k], y = P0[k+1], z = P0[k+2], hx = x + t2.x * g * 1.12, hy = y + t2.y * g, hz = z + t2.z * g * 1.12;
+    const rx = x - J.x, rz = z - J.z, tx = t1.x + rx * cs + rz * sn, ty = y + t1.y - J.y, tz = t1.z - rx * sn + rz * cs;
+    arr[k] = hx + (tx - hx) * w; arr[k+1] = hy + (ty - hy) * w; arr[k+2] = hz + (tz - hz) * w;
+  }
+  pele.geometry.attributes.position.needsUpdate = true; normaisPele();
+}
+
+/* ================= os outros esquemas animados (ilustrativos): pé plano, Haglund, Aquiles, tornozelo e fascite ================= */
+function casco(pts) {   // contorno (casco convexo) de pontos [x, z]
+  pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]), lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+function montarOutros(B, j) {
+  const c = B.calcaneo, CORAL = new THREE.Color(0xF0714C);
+  const metal = () => new THREE.MeshStandardMaterial({ color: 0xD3DAE1, metalness: 1, roughness: .3, envMapIntensity: 1.5, emissive: 0x9AA7B4, emissiveIntensity: .22, transparent: true, opacity: 0 });
+  const linha = () => new THREE.MeshBasicMaterial({ color: 0x72C6A2, transparent: true, opacity: 0, depthTest: false });
+
+  /* ---- pé plano: o arco desce; no tratamento, a palmilha apoia o arco ---- */
+  const PP = { nomes: ['calcaneo','talus','navicular','cuboide','cuneiforme_medial','cuneiforme_intermedio','cuneiforme_lateral','m1','m1_a','m1_b','m2','m3','m4','m5','calcaneo_a','calcaneo_b'], P0: {}, e: 0, en: 0, D: .15 };
+  PP.nomes.forEach(k => PP.P0[k] = ossos[k].geometry.attributes.position.array.slice());
+  const sino = x => { const t = (x + .1) / .6; if (t <= -1 || t >= 1) return 0; const b = Math.cos(t * Math.PI / 2); return b * b; };
+  const wz = z => 1 - .6 * sm(cl((z + .1) / .38));
+  const tc = V(...B.talus.c), dirT = V(...j.m1_cabeca).sub(tc), lenT = dirT.length(); dirT.normalize();
+  PP.linMat = linha(); PP.eixo = new THREE.Group(); PP.eixo.position.copy(tc);
+  const le = cil(dirT.clone().multiplyScalar(-.25), dirT.clone().multiplyScalar(lenT + .2), .007, PP.linMat, 8); le.renderOrder = 10; PP.eixo.add(le); scene.add(PP.eixo);
+  // contorno da sola por fatias (com a cintura do arco), suavizado
+  const fat = {}; for (let i = 0; i < P0.length; i += 3) if (P0[i+1] < .1) { const k = Math.round(P0[i] / .06), f = fat[k] || (fat[k] = [1e9, -1e9]); f[0] = Math.min(f[0], P0[i+2]); f[1] = Math.max(f[1], P0[i+2]); }
+  const ks = Object.keys(fat).map(Number).sort((a, b) => a - b), suave = (j, q) => { let t = 0, n = 0; for (let d = -1; d <= 1; d++) if (fat[ks[j + d]]) { t += fat[ks[j + d]][q]; n++; } return t / n; };
+  const borda = [...ks.map((k, j) => new THREE.Vector2(k * .06, -(suave(j, 1) + .012))), ...ks.map((k, j) => new THREE.Vector2(k * .06, -(suave(j, 0) - .012))).reverse()];
+  const forma = new THREE.Shape(borda); FX.forma = forma;
+  PP.palmMat = new THREE.MeshStandardMaterial({ color: 0x2E8C73, roughness: .75, transparent: true, opacity: 0 });
+  const base = new THREE.Mesh(new THREE.ExtrudeGeometry(forma, { depth: .03, bevelEnabled: true, bevelSize: .012, bevelThickness: .008, bevelSegments: 2 }), PP.palmMat); base.rotation.x = -Math.PI / 2;
+  const apoio = new THREE.Mesh(new THREE.SphereGeometry(1, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), PP.palmMat); apoio.scale.set(.44, .11, .16); apoio.position.set(-.14, .03, -.2);
+  PP.palm = new THREE.Group(); PP.palm.add(base, apoio); scene.add(PP.palm);
+  RN.peplano = regiaoDe((v, x, y) => y <= 1.05 && sino(x) > 0);
+  POSE.peplano = now => {
+    const s = FX.poseCalc ? FX.poseCalc(now) : 0, e = st.h * (1 - .25 * sm(cl(st.par))) * (1 - .5 * sm(cl((s - .3) / .4)));
+    PP.linMat.opacity = st.lin * .95; PP.eixo.visible = st.lin > .01; PP.eixo.rotation.z = -.2 * e;
+    PP.palm.visible = st.c > .01 && s < .2; PP.palmMat.opacity = cl(st.c * 3) * (1 - cl(s * 5)); PP.palm.position.y = -.04 - (1 - sm(cl(st.c))) * .35;
+    if (Math.abs(e - PP.e) < 2e-4) return; PP.e = e;
+    const refaz = Math.abs(e - PP.en) > .12 || e < .001;   // normais dos ossos: só de vez em quando (a mudança é pequena)
+    for (const k of PP.nomes) {
+      const g = ossos[k].geometry, arr = g.attributes.position.array, p0 = PP.P0[k], f = PP.D * e * wz(B[k.replace(/_[ab]$/, '')].c[2]);
+      const calc = k.startsWith('calcaneo'), valgo = calc ? -.16 * e : 0, cv = Math.cos(valgo), sv = Math.sin(valgo), py = c.max[1], pz = c.c[2];
+      for (let i = 0; i < arr.length; i += 3) { const y = p0[i+1] - f * sino(p0[i]); if (calc) { const ry = y - py, rz = p0[i+2] - pz; arr[i+1] = py + ry * cv - rz * sv; arr[i+2] = pz + ry * sv + rz * cv; } else arr[i+1] = y; }
+      g.attributes.position.needsUpdate = true; if (refaz) g.computeVertexNormals();
+    }
+    if (refaz) PP.en = e;
+    const arr = pele.geometry.attributes.position.array;
+    for (let i = 0; i < arr.length; i += 3) {
+      const y = P0[i+1]; if (y > 1.05) continue;
+      arr[i+1] = Math.max(Math.min(y, .012), y - PP.D * e * sino(P0[i]) * wz(P0[i+2]) * (1 - sm(cl((y - .55) / .45))));
+    }
+    pele.geometry.attributes.position.needsUpdate = true; normaisPele();
+  };
+
+  /* ---- Haglund: bursa entre tendão e osso; a saliência do osso aparece; a cirurgia corta e retira, limpa a bursa e prende o tendão de volta ---- */
+  const HG = { u: 0 }, ins = FX.aqIns, VERM = new THREE.Color(0xDE5A48), fioMat = () => new THREE.MeshStandardMaterial({ color: 0x2A5BD7, roughness: .5, transparent: true, opacity: 0, depthTest: false });
+  HG.salMat = new THREE.MeshStandardMaterial({ color: 0xFFC2AC, emissive: 0xF0714C, emissiveIntensity: .36, roughness: .6, transparent: true, depthWrite: false });
+  HG.sal = new THREE.Group(); [[0, 0, 0, .11, .085, .13], [.02, .045, .05, .07, .06, .08], [-.015, .03, -.06, .065, .055, .075]].forEach(([x, y, z, a, b, d]) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 22, 16), HG.salMat); m.position.set(x, y, z); m.scale.set(a, b, d); HG.sal.add(m); });
+  HG.sal.position.set(c.min[0] + .1, c.max[1] - .1, ins.z + .035); HG.sal.visible = false; scene.add(HG.sal); HG.sal0 = HG.sal.position.clone();
+  HG.bursa = new THREE.Mesh(new THREE.SphereGeometry(1, 22, 14), new THREE.MeshPhysicalMaterial({ color: 0x8FD3FF, roughness: .15, clearcoat: 1, transparent: true, opacity: 0, emissive: 0x2A6FA8, emissiveIntensity: .3 }));
+  HG.bursa.position.set(c.min[0] + .01, c.max[1] - .02, ins.z + .01); HG.bursa.visible = false; scene.add(HG.bursa); HG.pinca = fazerPinca(V(-.45, .35, .82)); scene.add(HG.pinca.g);
+  const hn = V(-.75, .66, 0).normalize();   // direção em que a saliência sai do osso (para trás e para cima)
+  HG.discoMat = new THREE.MeshBasicMaterial({ color: 0xF0714C, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false });
+  HG.disco = cil(HG.sal0.clone().addScaledVector(hn, -.045), HG.sal0.clone().addScaledVector(hn, -.041), .12, HG.discoMat, 36); HG.disco.visible = false; scene.add(HG.disco);
+  const sb0 = HG.sal0.clone().addScaledVector(hn, -.043);   // o instrumento vem pelo lado de fora
+  HG.serra = fazerSerra(sb0, hn, V(0, 0, -1), .15, .03, .05); scene.add(HG.serra.g);   // serra oscilante, no plano do corte, vindo pelo lado de fora
+  HG.anc = [[.08, -.07], [.08, .07], [-.03, -.07], [-.03, .07]].map(([dy, dz]) => { const o = noOsso(ossos.calcaneo, V(-2.5, ins.y + dy, ins.z + dz), V(1, 0, 0), .018, .1) || { ent: V(ins.x + .03, ins.y + dy, ins.z + dz), S: V(ins.x + .02, ins.y + dy, ins.z + dz), E: V(ins.x + .12, ins.y + dy, ins.z + dz) },
+    p = parafuso(o.S, o.E, .018, false, { nome: 'Âncora' }); scene.add(p.g); p.q = o.ent; return p; });   // duas fileiras: 2 em cima, 2 embaixo
+  HG.fioMat = fioMat(); HG.fios = [[0, 2], [1, 3], [0, 3], [1, 2]].map(([a, b]) => { const A = HG.anc[a].q, B = HG.anc[b].q, m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([A.clone().add(V(-.014, 0, 0)), A.clone().lerp(B, .5).add(V(-.028, 0, 0)), B.clone().add(V(-.014, 0, 0))]), 16, .0055, 6, false), HG.fioMat); m.renderOrder = 8; m.visible = false; scene.add(m); return m; });   // fitas retas e cruzadas entre as fileiras, sobre o osso
+  HG.pele = mancha(V(c.min[0] - .02, c.max[1] - .08, ins.z + .02), .13); RN.haglund = regiaoIdx(HG.pele.idx);
+  POSE.haglund = now => {
+    const alvo = tl.on === 'haglund' ? cl(tl.T - 3) : 0; if (tl.on !== 'haglund' && st.h === 0) HG.u = 0; else HG.u += (alvo - HG.u) * K(.15);
+    const u = HG.u, fora = sm(cl((u - .5) / .13)), limpa = sm(cl((u - .1) / .17)), anc = cl((u - .66) / .26);
+    const g = st.h, infl = g * (1 - limpa), p = 1 + .55 * infl * (.85 + (RM ? 0 : .15 * Math.sin(now * .006)));
+    HG.sal.visible = g * (1 - fora) > .01 && st.xr > .02; HG.sal.scale.setScalar(g + .001); HG.sal.position.copy(HG.sal0).addScaledVector(hn, .3 * fora); HG.salMat.opacity = 1 - fora;
+    const corte = u > .3 && u < .63; HG.disco.visible = corte; HG.discoMat.opacity = corte ? .6 : 0;
+    { const t = cl((u - .05) / .24); HG.pinca.pose(HG.bursa.position, u > .05 && u < .29 ? Math.sin(t * Math.PI) : 0); }
+    { const t = cl((u - .32) / .28); HG.serra.pose(u > .32 && u < .6 ? Math.sin(t * Math.PI) : 0, sm(t), now); }
+    const ob = st.lin * .85 * (1 - limpa) * st.xr; HG.bursa.visible = ob > .01; HG.bursa.material.opacity = ob; HG.bursa.scale.set(.03 * p, .06 * p, .07 * p);
+    HG.bursa.material.color.setHex(0x8FD3FF).lerp(CORAL, infl); HG.bursa.material.emissive.setHex(0x2A6FA8).lerp(CORAL, infl);
+    FX.aqInfG.rotation.z = -.13 * sm(cl((u - .02) / .09)) * (1 - sm(cl((u - .91) / .08)));   // o tendão é afastado no começo e só volta depois das âncoras
+    HG.anc.forEach((a, k) => a.pose(sm(cl(anc * 2 - (k > 1 ? 1 : 0))), 3));   // primeiro a fileira de cima, depois a de baixo
+    HG.fioMat.opacity = sm(cl((u - .93) / .06)); HG.fios.forEach(m => m.visible = HG.fioMat.opacity > .01);
+    const calombo = g * (1 - fora); empurrar(HG.pele, hn, .028 * calombo); pintar(HG.pele, VERM, .55 * calombo);
+  };
+
+  /* ---- Aquiles: o tendão rompe e as pontas se afastam; a cirurgia aproxima e costura; depois ele fica mais espesso no reparo ---- */
+  const AQ = { pt: V(0, 0, 0) }, tend = FX.aqSup.material;
+  AQ.fiapoMat = new THREE.MeshStandardMaterial({ color: 0xEBD0BE, emissive: 0xF0714C, emissiveIntensity: .35, roughness: .5, transparent: true, opacity: 0 });
+  const fiapos = (pai, dir) => [-.05, -.03, -.01, .012, .032, .052].forEach((dz, k) => { const a = FX.aqP.clone().add(V((k % 2 ? .012 : -.012), 0, dz)), m = cil(a, a.clone().add(V((k % 3 - 1) * .012, dir * (.04 + .045 * ((k * 7) % 5) / 4), (k % 2 ? .008 : -.008))), .0065, AQ.fiapoMat, 6); pai.add(m); });
+  fiapos(FX.aqSup, -1); fiapos(FX.aqInf, 1);
+  const zig = [], noT = y => { let b = FX.aqPts[0]; for (const q of FX.aqPts) if (Math.abs(q.y - y) < Math.abs(b.y - y)) b = q; return b; }, zy = FX.aqP.y;
+  const lado = (sg, y0, y1) => { for (let k = 0; k <= 6; k++) { const y = y0 + (y1 - y0) * k / 6, q = noT(y); zig.push(V(q.x - .036, y, q.z + sg * (.04 + (k % 2 ? .016 : 0)))); } };
+  lado(-1, zy + .012, zy + .25); lado(1, zy + .25, zy + .012); lado(1, zy - .012, zy - .23); lado(-1, zy - .23, zy - .012); zig.push(zig[0].clone());   // sobe por uma borda da ponta de cima, desce pela outra, cruza a ruptura, faz o mesmo na ponta de baixo e fecha
+  AQ.curva = new THREE.CatmullRomCurve3(zig, false, 'catmullrom', .15); AQ.agulha = fazerAgulha(); scene.add(AQ.agulha.g);
+  AQ.fio = new THREE.Mesh(new THREE.TubeGeometry(AQ.curva, 220, .005, 6, false), fioMat()); AQ.fio.material.opacity = 1; AQ.fio.renderOrder = 8; AQ.fio.visible = false; scene.add(AQ.fio);
+  AQ.calo = new THREE.MeshStandardMaterial({ color: 0xEBD0BE, emissive: 0xF0714C, emissiveIntensity: .3, roughness: .5, transparent: true, opacity: 0 });
+  AQ.eng = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 16), AQ.calo); AQ.eng.scale.set(.042, .17, .09); AQ.eng.position.copy(FX.aqP); AQ.eng.visible = false; scene.add(AQ.eng);
+  POSE.aquiles = now => {
+    const g = st.h * (1 - st.c), s = sm(cl(st.par));
+    FX.aqSup.position.y = .16 * g; FX.aqInf.position.y = -.025 * g;
+    AQ.fiapoMat.opacity = cl(g * 2.5) * tend.opacity; AQ.fiapoMat.visible = AQ.fiapoMat.opacity > .01;
+    AQ.fio.visible = s > .02 && st.xr > .3; AQ.fio.geometry.setDrawRange(0, Math.floor(220 * s) * 36);
+    AQ.agulha.pose(AQ.curva.getPointAt(cl(s), AQ.pt), s > .03 && s < .97 && st.xr > .3 ? 1 : 0, now);
+    AQ.calo.opacity = st.fim * .95 * st.xr; AQ.eng.visible = AQ.calo.opacity > .01;
+  };
+
+  /* ---- tornozelo: o ligamento da frente rompe perto da fíbula; a cirurgia leva de volta ao osso e prende com âncoras e fios ---- */
+  const TZ = { fioMat: fioMat() };
+  TZ.anc = [0, .08].map(dy => { const p0 = FX.ligIni.clone().add(V(-.01, dy, 0)), da = V(-1, .22, 0).normalize(), o = noOsso(ossos.fibula, p0.clone().add(V(0, 0, .03)).addScaledVector(da, -1.5), da, .016, .08) || { ent: p0, S: p0.clone().addScaledVector(da, -.008), E: p0.clone().addScaledVector(da, .05) },
+    p = o.ent.clone().add(V(0, 0, -.04)), pf = parafuso(o.S, o.E, .016, false, { nome: 'Âncora' }); scene.add(pf.g);
+    const f = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([p.clone().add(V(0, 0, .04)), FX.ligRup.clone().add(V(0, dy * .4, .03)), FX.ligRup.clone().addScaledVector(FX.ligDir, .06).add(V(0, -dy * .3, .02))]), 16, .006, 6, false), TZ.fioMat); f.renderOrder = 8; f.visible = false; scene.add(f);
+    pf.f = f; return pf; });
+  POSE.tornozelo = () => {
+    const g = st.h * (1 - st.c), e = sm(cl(st.par));
+    FX.ligA.position.copy(FX.ligDir).multiplyScalar(-.035 * g); FX.ligB.position.copy(FX.ligDir).multiplyScalar(.075 * g);
+    TZ.fioMat.opacity = sm(cl((st.par - .5) * 2)) * st.xr;
+    TZ.anc.forEach(a => { a.pose(e, 3); a.f.visible = TZ.fioMat.opacity > .01; });
+  };
+
+  /* ---- fascite: o ponto da dor na origem da fáscia; no tratamento, o aparelho de ondas de choque apoiado no calcanhar ---- */
+  const o = FX.o, FS = {};
+  FS.ponto = new THREE.Sprite(new THREE.SpriteMaterial({ map: HALO, color: 0xFF6A45, transparent: true, opacity: 0, depthTest: false })); FS.ponto.position.copy(o); FS.ponto.renderOrder = 9; FS.ponto.visible = false; scene.add(FS.ponto);
+  FS.pele = mancha(V(o.x, 0, o.z), .17, (x, y) => y < .14);
+  FS.fora = new THREE.Sprite(new THREE.SpriteMaterial({ map: HALO, color: 0xFF6A45, transparent: true, opacity: 0, depthTest: false })); FS.fora.position.set(o.x, -.01, o.z); FS.fora.renderOrder = 9; FS.fora.visible = false; scene.add(FS.fora);
+  FS.corpoMat = new THREE.MeshStandardMaterial({ color: 0xD7DEE6, roughness: .4, metalness: .2, transparent: true, opacity: 0 }); FS.pontaMat = metal();
+  FS.anelMat = new THREE.MeshBasicMaterial({ color: 0x72C6A2, transparent: true, opacity: 0 });
+  FS.ap = new THREE.Group();
+  const cabeca = new THREE.Mesh(new THREE.CylinderGeometry(.04, .066, .1, 28), FS.pontaMat); cabeca.position.set(o.x, -.062, o.z);
+  FS.ap.add(cil(V(o.x, -.66, o.z), V(o.x, -.112, o.z), .07, FS.corpoMat, 28), cabeca, cil(V(o.x, -.2, o.z), V(o.x, -.17, o.z), .073, FS.anelMat, 28)); FS.ap.visible = false; scene.add(FS.ap);
+  FS.ondas = [0, 1, 2].map(() => { const m = new THREE.Mesh(new THREE.TorusGeometry(.045, .004, 6, 32), new THREE.MeshBasicMaterial({ color: 0x9FE8CB, transparent: true, opacity: 0, depthTest: false })); m.rotation.x = Math.PI / 2; m.renderOrder = 9; m.visible = false; scene.add(m); return m; });
+  POSE.fascite = now => {
+    const uF = tl.on === 'fascite' ? cl(tl.T - 3) : 0, g = st.h * (1 - .8 * st.fim), a = st.c * (1 - st.fim) * (1 - sm(cl((uF - .86) / .1))), b = RM ? 1 : 1 + .25 * Math.sin(now * .007);
+    FS.fora.visible = st.aux > .01; FS.fora.material.opacity = .85 * st.aux; FS.fora.scale.setScalar(.2 * b);
+    FS.ponto.visible = g * st.xr > .01; FS.ponto.scale.setScalar(.16 * b); FS.ponto.material.opacity = .8 * g * st.xr;
+    pintar(FS.pele, VERM, .6 * g * (.75 + .25 * b));
+    if (a > .3) pedirInst('Ondas de choque', cabeca);
+    FS.ap.visible = a > .01; FS.ap.position.y = -(1 - sm(cl(a))) * .4; FS.corpoMat.opacity = FS.pontaMat.opacity = FS.anelMat.opacity = cl(a * 3);
+    FS.ondas.forEach((m, k) => { const ph = RM ? k / 3 : (now * .0011 + k / 3) % 1; m.visible = a > .7; m.position.set(o.x, ph * .18, o.z); m.scale.setScalar(1 + ph * 1.8); m.material.opacity = (1 - ph) * .8; });
+  };
+}
+
+/* ================= mais esquemas animados: hálux rígido, neuroma de Morton, unha encravada, dedo em garra, fratura por estresse, pé diabético ================= */
+function maisAnimacoes(B, j) {
+  const CORAL = 0xF0714C;
+  const metal = () => new THREE.MeshStandardMaterial({ color: 0xD3DAE1, metalness: 1, roughness: .3, envMapIntensity: 1.5, emissive: 0x9AA7B4, emissiveIntensity: .22, transparent: true, opacity: 0 });
+  const luzMat = (cor = 0xF0603C) => new THREE.SpriteMaterial({ map: HALO, color: cor, transparent: true, opacity: 0, depthTest: false });
+  const esfera = (mat, p, r) => { const m = new THREE.Sprite(mat); m.position.copy(p); m.scale.setScalar(r * 2.6); m.renderOrder = 9; m.visible = false; scene.add(m); return m; };
+  const bate = now => RM ? 1 : 1 + .25 * Math.sin(now * .007);
+  const tubo = (pts, r, mat) => { const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, r, 8, false), mat); m.visible = false; scene.add(m); return m; };
+  const pontasDe = k => {   // centro da ponta de trás e da ponta da frente de um osso
+    const a = ossos[k].geometry.attributes.position.array; let mn = 1e9, mx = -1e9;
+    for (let i = 0; i < a.length; i += 3) { mn = Math.min(mn, a[i]); mx = Math.max(mx, a[i]); }
+    const b = V(0, 0, 0), h = V(0, 0, 0); let nb = 0, nh = 0;
+    for (let i = 0; i < a.length; i += 3) { if (a[i] < mn + .03) { b.x += a[i]; b.y += a[i+1]; b.z += a[i+2]; nb++; } if (a[i] > mx - .03) { h.x += a[i]; h.y += a[i+1]; h.z += a[i+2]; nh++; } }
+    return [b.divideScalar(nb), h.divideScalar(nh)];
+  };
+  const raio = new THREE.Raycaster();
+  const parte = teste => { const idx = pele.geometry.index.array, out = []; for (let i = 0; i < idx.length; i += 3) { const a = idx[i] * 3; if (teste(P0[a], P0[a+1], P0[a+2])) for (let k = 0; k < 3; k++) { const v = idx[i+k] * 3; out.push(P0[v], P0[v+1], P0[v+2]); } }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(out), 3)); return new THREE.Mesh(g, new THREE.MeshBasicMaterial()); };
+  const peleDedao = parte((x, y, z) => x > JO.tip.x - .4 && z < JO.tip.z + .3), peleBaixa = parte((x, y) => y < .6);
+  const naPele = (x, z, deCima = true, malha = peleBaixa) => { raio.set(V(x, deCima ? 2 : -1, z), V(0, deCima ? -1 : 1, 0)); const h = raio.intersectObject(malha, false)[0]; return h ? h.point.clone() : null; };
+  const palmilha = (cor = 0x2E8C73, opaca = true) => {
+    const mat = new THREE.MeshStandardMaterial({ color: cor, roughness: .75, transparent: true, opacity: 0, depthWrite: opaca });
+    const m = new THREE.Mesh(new THREE.ExtrudeGeometry(FX.forma, { depth: .03, bevelEnabled: true, bevelSize: .012, bevelThickness: .008, bevelSegments: 2 }), mat); m.rotation.x = -Math.PI / 2;
+    const g = new THREE.Group(); g.add(m); g.visible = false; scene.add(g); return { g, mat };
+  };
+  const porPalmilha = (P, a, op = 1) => { P.g.visible = a > .01; P.mat.opacity = cl(a * 3) * op; P.g.position.y = -.04 - (1 - sm(cl(a))) * .35; };
+  const arrPele = () => pele.geometry.attributes.position.array, corPele = () => pele.geometry.attributes.color.array, corMudou = () => { pele.geometry.attributes.color.needsUpdate = true; };
+  const peleMudou = () => { pele.geometry.attributes.position.needsUpdate = true; normaisPele(); };
+
+  { // veias do dorso: pontos pousados na pele por um raio de fora para dentro, ligados em trechos
+    const pousa = (alvo, de) => { const a = V(...alvo), o = a.clone().add(V(...de)); raio.set(o, a.sub(o).normalize()); const h = raio.intersectObject(pele, false)[0]; return h ? h.point.clone() : null; };
+    const D = (x, z) => pousa([x, .35, z], [.55, 1.3, 0]), M = (x, y) => pousa([x, y, -.15], [.35, .1, -1.4]), L = (x, y) => pousa([x, y, .1], [.35, .1, 1.4]);
+    const arco = [D(.36, -.23), D(.45, -.11), D(.47, .03), D(.42, .16), D(.32, .27)], med = D(-.02, -.3);
+    const cadeias = [[arco, .021], [[arco[0], D(.17, -.27), med, M(-.25, .78), M(-.36, 1.05), M(-.4, 1.4), M(-.41, 1.85)], .023], [[arco[4], D(.1, .31), D(-.1, .3), L(-.42, .8)], .017],
+      [[arco[1], D(.6, -.07), D(.73, -.05)], .014], [[arco[2], D(.6, .1), D(.71, .12)], .014], [[arco[3], D(.55, .22), D(.64, .25)], .014], [[arco[2], D(.22, 0), D(0, -.06), med], .016]];
+    let k = 0; cadeias.forEach(([pts, w]) => { for (let i = 0; i + 1 < pts.length && k < NVEIA; i++) if (pts[i] && pts[i+1]) { uVa.value[k].set(pts[i].x, pts[i].y, pts[i].z, w); uVb.value[k++].copy(pts[i+1]); } });
+    window.__veias = k; }
+  { const t0 = JO.toe.clone(); t0.y = 0; t0.normalize(); const c1 = JO.tip.clone().addScaledVector(t0, -.095), d1 = pontasDe('p1_dist');
+    uUnha.value[0].set(c1.x, (d1[0].y + d1[1].y) / 2, c1.z, .066); uUnhaDir.value[0].copy(t0);
+    [2, 3, 4, 5].forEach((n, k) => { const [b, h] = pontasDe(`p${n}_dist`), d = h.clone().sub(b); d.y = 0; d.normalize(); const c = b.clone().lerp(h, .7);
+      uUnha.value[k + 1].set(c.x, c.y, c.z, [.028, .026, .024, .022][k]); uUnhaDir.value[k + 1].copy(d); }); }
+
+  /* ---- hálux rígido: bicos de osso na articulação do dedão, calombo em cima; palmilha rígida; retirada dos bicos ---- */
+  { const J = JO.J, H = { g: 0, idx: [], w: [] };
+    const bicoMat = new THREE.MeshStandardMaterial({ color: 0xF4D2C2, emissive: CORAL, emissiveIntensity: .45, roughness: .55 });
+    const bicos = [[-.04, .098, -.07, .028], [-.042, .108, -.035, .033], [-.044, .112, 0, .036], [-.042, .108, .035, .033], [-.04, .098, .07, .028], [.034, .092, -.025, .024], [.034, .092, .025, .024]].map(([dx, dy, dz, r]) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), bicoMat); m.position.copy(J).add(V(dx, dy, dz)); m.userData.r = r; m.visible = false; scene.add(m); return m; });
+    const topo = J.clone().add(V(0, .15, 0));
+    for (let i = 0; i < P0.length; i += 3) { const d2 = (P0[i] - topo.x) ** 2 + (P0[i+1] - topo.y) ** 2 + (P0[i+2] - topo.z) ** 2, w = Math.exp(-d2 / .011); if (w > .03 && P0[i+1] > J.y) { H.idx.push(i); H.w.push(w); } }
+    const P = palmilha(); const placa = new THREE.Mesh(new THREE.BoxGeometry(.95, .014, .26), new THREE.MeshStandardMaterial({ color: 0x1B5747, roughness: .5, transparent: true, opacity: 0 })); placa.position.set(J.x - .05, .043, J.z + .03); P.g.add(placa);
+    const broca = fazerBroca(J.clone().add(V(-.035, .115, -.09)), V(0, .25, -1), .15); scene.add(broca.g);   // vem por cima e por dentro (dorsomedial)
+    POSE.halux = now => {
+      const g = st.h * (1 - st.c);
+      bicos.forEach(m => { const r = m.userData.r * g + .0005; m.visible = g > .01; m.scale.set(r * .9, r * .62, r * 1.5); });
+      gToe.position.copy(J).addScaledVector(JO.toe, -.014 * st.h);   // o espaço da articulação diminui
+      porPalmilha(P, st.aux); placa.material.opacity = P.mat.opacity;
+      const u = tl.on === 'halux' ? cl(tl.T - 3) : 0, b = u > .02 && u < .5 ? Math.sin(cl((u - .02) / .48) * Math.PI) : 0;
+      broca.pose(b, now, sm(cl((u - .06) / .3)));
+      if (Math.abs(g - H.g) < 2e-4) return; H.g = g;
+      const arr = arrPele(); H.idx.forEach((i, k) => { arr[i+1] = P0[i+1] + .035 * g * H.w[k]; }); peleMudou();
+    };
+    RN.halux = regiaoIdx(H.idx);
+    AN.halux = { fases: { 3: [[0, 'exemplo: retirada dos bicos de osso']] }, hDe: 0, cir: 3, aux: [2, 3.02], cam: [[J.x - .02, .26, J.z], [.3, .7, -1], .72] };
+  }
+
+  /* ---- neuroma de Morton: nervo entre o 3º e o 4º dedo com espessamento; palmilha com apoio atrás da bola do pé ---- */
+  { const m3 = pontasDe('m3'), m4 = pontasDe('m4'), p3 = pontasDe('p3_prox'), p4 = pontasDe('p4_prox'), meio = (a, b) => a.clone().lerp(b, .5);
+    const N0 = meio(m3[0], m4[0]).add(V(.18, -.13, 0)), N1 = meio(m3[1], m4[1]).add(V(-.1, -.075, 0)), N2 = meio(m3[1], m4[1]).add(V(.05, -.07, 0));
+    const nMat = new THREE.MeshStandardMaterial({ color: 0xFFD966, emissive: 0xC79A1E, emissiveIntensity: .55, roughness: .4, transparent: true, opacity: 0 });
+    const nervo = [tubo([N0, N1, N2], .013, nMat), tubo([N2, meio(p3[0], p3[1]).add(V(0, -.035, .035))], .009, nMat), tubo([N2, meio(p4[0], p4[1]).add(V(0, -.035, -.035))], .009, nMat)];
+    const neu = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), new THREE.MeshStandardMaterial({ color: 0xFFB36B, emissive: CORAL, emissiveIntensity: .7, roughness: .4 })); neu.position.copy(N2).add(V(-.03, 0, 0)); neu.visible = false; scene.add(neu);
+    const sp = naPele(N2.x, N2.z, false) || N2, ponto = esfera(luzMat(), sp, .06);
+    const P = palmilha(0x2E8C73, false); const apoioMat = new THREE.MeshStandardMaterial({ color: 0x7FE0BC, emissive: 0x2E8C73, emissiveIntensity: .5, roughness: .5, transparent: true, opacity: 0, depthTest: false, side: THREE.DoubleSide }), apoio = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 10, 0, Math.PI * 2, 0, Math.PI / 2), apoioMat); apoio.scale.set(.12, .07, .17); apoio.position.set(N1.x - .1, .036, N1.z - .02); apoio.renderOrder = 7; P.g.add(apoio);   // domo baixo logo atrás das cabeças dos metatarsos, nunca embaixo delas
+    POSE.morton = now => {
+      const g = st.h, b = 1 + (bate(now) - 1) * (1 - .8 * st.c); neu.material.emissiveIntensity = .7 * (1 - .6 * st.c);
+      nMat.opacity = st.lin * st.xr; nervo.forEach(m => m.visible = nMat.opacity > .01);
+      neu.visible = g > .01 && st.xr > .3; neu.scale.set(.038 * g * b + .001, .024 * g * b + .001, .028 * g * b + .001);
+      ponto.visible = st.aux > .01; ponto.material.opacity = .7 * st.aux; ponto.scale.setScalar(.17 * b);
+      porPalmilha(P, st.c, .5); apoioMat.opacity = Math.min(.7, P.mat.opacity * 1.4);
+    };
+    AN.morton = { hDe: 1, cir: 2, max: 3, lin: [.9, 9], aux: [0, .85] };
+  }
+
+  /* ---- unha encravada: unha abaulada com lúnula e borda livre; o canto de dentro incha e fica vermelho na própria pele; no procedimento sai a faixa da unha ---- */
+  { const t = JO.toe.clone(); t.y = 0; t.normalize(); const w = V(-t.z, 0, t.x), c0 = JO.tip.clone().addScaledVector(t, -.095);
+    const LA = .078, LB = .068, N = 22, NF = 4;   // meio comprimento, meia largura, divisões, colunas da faixa do canto (lado de dentro)
+    const disco = (a, b) => [a * Math.sqrt(1 - b * b / 2), b * Math.sqrt(1 - a * a / 2)], sq = v => Math.sign(v) * Math.abs(v) ** .74;
+    const rosa = new THREE.Color(0xC0726C), claro = new THREE.Color(0xECDCD0), cor = new THREE.Color(), pos = [], cores = [];
+    for (let ia = 0; ia <= N; ia++) for (let ib = 0; ib <= N; ib++) {
+      const [da, db] = disco(ia / N * 2 - 1, ib / N * 2 - 1), fa = LA * sq(da), fb = LB * sq(db);
+      const p = naPele(c0.x + t.x * fa + w.x * fb, c0.z + t.z * fa + w.z * fb, true, peleDedao) || c0.clone();
+      pos.push(p.x, p.y + .003 + .007 * (1 - db * db) * (1 - .5 * Math.max(0, -da)), p.z);     // abaulada: mais alta no meio, baixa junto da cutícula
+      const ponta = sm(cl((da - .6) / .22)), lunula = sm(cl((-da - .5) / .35)) * (1 - db * db);
+      cor.copy(rosa).lerp(claro, Math.max(ponta * .9, lunula * .4)); cores.push(cor.r, cor.g, cor.b);
+    }
+    const malha = (b0, b1) => { const idx = []; for (let ia = 0; ia < N; ia++) for (let ib = b0; ib < b1; ib++) { const i00 = ia * (N + 1) + ib, i01 = i00 + 1, i10 = i00 + N + 1, i11 = i10 + 1; idx.push(i00, i01, i10, i10, i01, i11); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3)); g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(cores), 3)); g.setIndex(idx); g.computeVertexNormals();
+      const m = new THREE.Mesh(g, new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .55, clearcoat: .1, clearcoatRoughness: .4, envMapIntensity: .35, transparent: true, opacity: 0, side: THREE.DoubleSide })); m.renderOrder = 5; m.visible = false; scene.add(m); return m; };
+    const unha = malha(NF, N), faixa = malha(0, NF);
+    const pinca = fazerPinca(V(t.x * .55 - w.x * .3, .78, t.z * .55 - w.z * .3)), pincaP = V(0, 0, 0), pincaV = V(0, 0, 0); scene.add(pinca.g);
+    const coto = fazerCotonete(V(-t.x * .35 - w.x * .25, .9, -t.z * .35 - w.z * .25)), cotoP = V(0, 0, 0); scene.add(coto.g);
+    { const fp = faixa.geometry.attributes.position.array, vs = [...new Set(faixa.geometry.index.array)].map(i => V(fp[i*3], fp[i*3+1], fp[i*3+2])), mx = Math.max(...vs.map(v => v.dot(t))), fim = vs.filter(v => v.dot(t) > mx - .012); fim.forEach(v => pincaP.add(v)); pincaP.divideScalar(fim.length);
+      const mn = Math.min(...vs.map(v => v.dot(t))), ini = vs.filter(v => v.dot(t) < mn + .012); ini.forEach(v => cotoP.add(v)); cotoP.divideScalar(ini.length); }   // raiz desse canto   // ponta de fora da faixa
+    // dobra de pele do canto de dentro: incha (vértices sobem) e fica vermelha (cor na própria pele)
+    const naSup = v => naPele(v.x, v.z, true, peleDedao) || v, U = { g: 0, idx: [], w: [] }, a0 = naSup(c0.clone().addScaledVector(w, -LB * 1.1).addScaledVector(t, -.05)), a1 = naSup(c0.clone().addScaledVector(w, -LB * 1.1).addScaledVector(t, .06)), ab = a1.clone().sub(a0), p = V(0, 0, 0), q = V(0, 0, 0);
+    for (let i = 0; i < P0.length; i += 3) {
+      if (P0[i] < c0.x - .25 || P0[i+1] < a0.y - .08) continue; p.set(P0[i], P0[i+1], P0[i+2]);
+      const s = cl(q.copy(p).sub(a0).dot(ab) / ab.lengthSq()), d2 = p.distanceToSquared(q.copy(a0).addScaledVector(ab, s)), k = Math.exp(-d2 / .0016);
+      if (k > .03) { U.idx.push(i); U.w.push(k); }
+    }
+    const sobe = V(-w.x * .55, .83, -w.z * .55), VERM = new THREE.Color(0xDE4B3A);
+    POSE.unha = now => {
+      const g = st.h * (1 - st.c), a = st.lin * (1 - st.xr);
+      unha.visible = a > .01; unha.material.opacity = a; uUnhaOn.value = 1 - a; const some = a * (1 - sm(cl((st.c - .55) / .45))); faixa.visible = some > .01; faixa.material.opacity = some;
+      faixa.position.copy(w).multiplyScalar(-.07 * st.c); faixa.position.y = .06 * st.c;
+      pinca.pose(pincaV.copy(pincaP).add(faixa.position), cl(st.c * 8) * some);
+      { const u = tl.on === 'unha' ? cl(tl.T - 2) : 0; coto.pose(cotoP, u > .58 && u < .96 ? Math.sin((u - .58) / .38 * Math.PI) : 0); }   // depois da faixa, o aplicador toca a raiz desse canto
+      if (Math.abs(g - U.g) < 2e-4) return; U.g = g;
+      const arr = arrPele(), col = corPele();
+      U.idx.forEach((i, k) => { const e = U.w[k] * g; arr[i] = P0[i] + sobe.x * .02 * e; arr[i+1] = P0[i+1] + sobe.y * .02 * e; arr[i+2] = P0[i+2] + sobe.z * .02 * e;
+        col[i] = 1 + (VERM.r - 1) * e * .9; col[i+1] = 1 + (VERM.g - 1) * e * .9; col[i+2] = 1 + (VERM.b - 1) * e * .9; });
+      peleMudou(); corMudou();
+    };
+    RN.unha = regiaoIdx(U.idx);
+    AN.unha = { fases: { 2: [[0, 'a faixa da unha que machuca é retirada'], [.58, 'a raiz desse canto é tratada']] }, hDe: 1, cir: 2, max: 3, xr: 99, lin: [0, 9], cam: [[c0.x - .06, c0.y + .08, c0.z], [.62, 1, -.5], .3] };
+  }
+
+  /* ---- dedo em garra: a base do dedo sobe e o meio dobra para baixo (2º, 3º e 4º dedos); a pele acompanha com mistura suave entre os dedos ---- */
+  { const G = { dedos: [], e: 0, idx: [], m: [], w: [], cal: [], calW: [] }, eixos = [[JO.J, JO.tip], [pontasDe('m5')[1], pontasDe('p5_dist')[1]]];
+    for (const n of [2, 3, 4]) {
+      const mh = pontasDe('m' + n)[1], pp = pontasDe(`p${n}_prox`), pm = pontasDe(`p${n}_med`), pd = pontasDe(`p${n}_dist`);
+      const MTP = mh.clone().lerp(pp[0], .5), PIP = pp[1].clone().lerp(pm[0], .5), DIP = pm[1].clone().lerp(pd[0], .5), d = pd[1].clone().sub(MTP); d.y = 0; d.normalize();
+      const gA = new THREE.Group(), iA = new THREE.Group(), gB = new THREE.Group(), iB = new THREE.Group(), gC = new THREE.Group(), iC = new THREE.Group(); gC.position.copy(DIP); iC.position.copy(DIP).negate(); gC.add(iC);
+      gA.position.copy(MTP); iA.position.copy(MTP).negate(); gB.position.copy(PIP); iB.position.copy(PIP).negate();
+      gA.add(iA); iA.add(ossos[`p${n}_prox`], gB); gB.add(iB); iB.add(ossos[`p${n}_med`], gC); iC.add(ossos[`p${n}_dist`]); scene.add(gA);
+      G.dedos.push({ MTP, PIP, DIP, tip: pd[1], eixo: V(-d.z, 0, d.x), gA, gB, gC, qC: new THREE.Quaternion(), L1: MTP.distanceTo(PIP), L2: MTP.distanceTo(DIP), dir: pd[1].clone().sub(MTP).normalize(), qA: new THREE.Quaternion(), qB: new THREE.Quaternion() });
+    }
+    const p = V(0, 0, 0), ab = V(0, 0, 0), q = V(0, 0, 0), dseg = (a, b) => { ab.copy(b).sub(a); const s = cl(q.copy(p).sub(a).dot(ab) / ab.lengthSq()); return p.distanceTo(q.copy(a).addScaledVector(ab, s)); };
+    for (let i = 0; i < P0.length; i += 3) {
+      if (P0[i] < .4 || P0[i+1] > .55) continue; p.set(P0[i], P0[i+1], P0[i+2]);
+      const dFora = Math.min(dseg(eixos[0][0], eixos[0][1]), dseg(eixos[1][0], eixos[1][1])), ds = G.dedos.map(D => dseg(D.MTP, D.tip)), dm = Math.min(...ds);
+      const m = (1 - sm(cl((dm - .1) / .08))) * sm(cl((dFora - dm + .015) / .075)); if (m < .003) continue;
+      let soma = 0; const ws = ds.map(dd => { const k = Math.exp(-(dd * dd) / .0028); soma += k; return k; }), linha = [];
+      G.dedos.forEach((D, k) => { const s = q.copy(p).sub(D.MTP).dot(D.dir); linha.push(ws[k] / soma, sm(cl((s + .09) / .18)), sm(cl((s - D.L1 + .07) / .14)), sm(cl((s - D.L2 + .04) / .08))); });
+      if (Math.max(linha[1], linha[5], linha[9]) < .003) continue;
+      G.idx.push(i); G.m.push(m); G.w.push(linha);
+      // marca de atrito: em cima da articulação do meio de cada dedo
+      let c = 0; G.dedos.forEach(D => { const dx = p.x - D.PIP.x, dz = p.z - D.PIP.z; if (p.y > D.PIP.y) c = Math.max(c, Math.exp(-(dx * dx + dz * dz) / .0022)); });
+      if (c > .05) { G.cal.push(i); G.calW.push(c); }
+    }
+    const a1 = V(0, 0, 0), a2 = V(0, 0, 0), a3 = V(0, 0, 0), r = V(0, 0, 0), VERM = new THREE.Color(0xC43B2B);
+    const fiosK = G.dedos.map(D => { const f = fazerFio(D.tip.clone().addScaledVector(D.dir, .1), D.MTP.clone().addScaledVector(D.dir, .04)); scene.add(f.g); return f; });   // fio fino temporário pelo eixo do dedo, com a ponta para fora
+    const protMat = new THREE.MeshStandardMaterial({ color: 0xBFE9FF, roughness: .35, transparent: true, opacity: 0, depthWrite: false, depthTest: false, side: THREE.DoubleSide }), prots = G.dedos.map(() => { const m = new THREE.Mesh(new THREE.CylinderGeometry(.085, .085, .11, 20, 1, true), protMat); m.renderOrder = 8; m.visible = false; scene.add(m); return m; });   // protetor de silicone
+    POSE.garra = () => {
+      const e = st.h * (1 - st.c);
+      for (const D of G.dedos) { D.qA.setFromAxisAngle(D.eixo, .42 * e); D.qB.setFromAxisAngle(D.eixo, -.9 * e); D.qC.setFromAxisAngle(D.eixo, -.5 * e); D.gA.quaternion.copy(D.qA); D.gB.quaternion.copy(D.qB); D.gC.quaternion.copy(D.qC); }
+      { const u = tl.on === 'garra' ? cl(tl.T - 2) : 0, ef = sm(cl((u - .74) / .22)) * st.xr; fiosK.forEach(f => f.pose(ef));
+        const pv = tl.on === 'garra' && tl.T >= 2 ? sm(cl(u / .07)) * (1 - sm(cl((u - .3) / .1))) : 0; protMat.opacity = .55 * pv;
+        G.dedos.forEach((D, k) => { const m = prots[k]; m.visible = pv > .01; if (!m.visible) return; m.position.copy(D.PIP).sub(D.MTP).applyQuaternion(D.qA).add(D.MTP);
+          a1.copy(D.dir).applyQuaternion(D.qA); a2.copy(D.dir).applyQuaternion(D.qB).applyQuaternion(D.qA); m.quaternion.setFromUnitVectors(Y, a1.add(a2).normalize()); }); }
+      if (Math.abs(e - G.e) < 2e-4) return; G.e = e;
+      const arr = arrPele(), col = corPele();
+      G.idx.forEach((i, n) => {
+        p.set(P0[i], P0[i+1], P0[i+2]); r.set(0, 0, 0); const L = G.w[n];
+        G.dedos.forEach((D, k) => {
+          a1.copy(p).sub(D.MTP).applyQuaternion(D.qA).add(D.MTP);
+          a2.copy(p).sub(D.PIP).applyQuaternion(D.qB).add(D.PIP).sub(D.MTP).applyQuaternion(D.qA).add(D.MTP);
+          a3.copy(p).sub(D.DIP).applyQuaternion(D.qC).add(D.DIP).sub(D.PIP).applyQuaternion(D.qB).add(D.PIP).sub(D.MTP).applyQuaternion(D.qA).add(D.MTP);
+          q.copy(p).lerp(a1, L[k*4+1]).lerp(a2, L[k*4+2]).lerp(a3, L[k*4+3]); r.addScaledVector(q, L[k*4]);
+        });
+        p.lerp(r, G.m[n]); arr[i] = p.x; arr[i+1] = Math.max(.004, p.y); arr[i+2] = p.z;
+      });
+      G.cal.forEach((i, n) => { const v = Math.min(1, G.calW[n] * 1.25) * e * .9; col[i] = 1 + (VERM.r - 1) * v; col[i+1] = 1 + (VERM.g - 1) * v; col[i+2] = 1 + (VERM.b - 1) * v; });
+      peleMudou(); corMudou();
+    };
+    RN.garra = regiaoIdx(G.idx);
+    AN.garra = { cDe: .42, fases: { 2: [[0, 'calçado largo e protetores diminuem o atrito'], [.4, 'na cirurgia, o dedo é alinhado'], [.72, 'exemplo de uma das técnicas: um fio fino segura o dedo por algumas semanas']] }, hDe: 0, cir: 2, max: 3, cam: [[.85, .2, .12], [.8, .55, .9], .62] };
+  }
+
+  /* ---- fratura por estresse: fissura fina no 2º metatarso; proteção com sola rígida enquanto o osso cicatriza ---- */
+  { const [b2, h2] = pontasDe('m2'), M = b2.clone().lerp(h2, .66), ax = h2.clone().sub(b2).normalize();   // um pouco mais perto do colo do osso
+    { const pa = ossos.m2.geometry.attributes.position.array, c = V(0, 0, 0); let k = 0;   // centro da fatia do osso nesse ponto
+      for (let i = 0; i < pa.length; i += 3) { const d = (pa[i] - M.x) * ax.x + (pa[i+1] - M.y) * ax.y + (pa[i+2] - M.z) * ax.z; if (Math.abs(d) < .04) { c.x += pa[i]; c.y += pa[i+1]; c.z += pa[i+2]; k++; } }
+      if (k) M.copy(c.divideScalar(k)); }
+    const anel = new THREE.Mesh(new THREE.TorusGeometry(.044, .0038, 8, 28, Math.PI * 1.15), new THREE.MeshBasicMaterial({ color: 0x9E1F16, transparent: true, opacity: 0, depthTest: false })); anel.position.copy(M); anel.quaternion.setFromUnitVectors(V(0, 0, 1), ax); anel.renderOrder = 8; anel.visible = false; scene.add(anel);
+    const luz = esfera(luzMat(), M, .07), ponto = esfera(luzMat(), naPele(M.x, M.z) || M, .07);
+    const calo = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), new THREE.MeshStandardMaterial({ color: 0xF2E3CF, roughness: .6 })); calo.position.copy(M); calo.quaternion.setFromUnitVectors(V(1, 0, 0), ax); calo.visible = false; scene.add(calo);
+    const P = palmilha(0x3D4F63, false);
+    POSE.estresse = now => {
+      const s = sm(cl(st.par)), g = st.h * (1 - .85 * s), b = bate(now);
+      anel.visible = g * st.xr > .01; anel.material.opacity = g * st.xr; luz.visible = g * st.xr > .01; luz.material.opacity = .5 * g * st.xr; luz.scale.setScalar(.16 * b);
+      ponto.visible = st.aux > .01; ponto.material.opacity = .7 * st.aux; ponto.scale.setScalar(.2 * b);
+      calo.visible = s > .01; calo.scale.set(.13 * s + .001, .064 * s + .001, .064 * s + .001);
+      porPalmilha(P, st.c, .6);
+    };
+    AN.estresse = { hDe: 1, cir: 2, max: 3, aux: [0, .85] };
+  }
+
+  /* ---- pé diabético: a sensibilidade some, pontos de pressão na sola, ferida; palmilha que distribui a pressão ---- */
+  { const sens = []; for (let x = -1.0; x <= 1.05; x += .29) for (const z of [-.26, 0, .26]) { const q = naPele(x, z, false); if (q && q.y < .12) sens.push(esfera(luzMat(0x7FE0B8), q, .022)); }
+    const m1h = pontasDe('m1')[1], m5h = pontasDe('m5')[1], cc = B.calcaneo.c, dd = pontasDe('p1_dist')[0];
+    const zonas = [[m1h.x, m1h.z], [m5h.x, m5h.z], [cc[0] - .12, cc[2]], [dd.x + .08, dd.z]].map(([x, z]) => { const m = esfera(luzMat(0xFF7A45), naPele(x, z, false) || V(x, 0, z), .1); m.userData.s = V(.3, .3, .3); return m; });
+    const fp = naPele(m1h.x, m1h.z, false) || V(m1h.x, 0, m1h.z);
+    const ferida = new THREE.Mesh(new THREE.CircleGeometry(.04, 24), new THREE.MeshBasicMaterial({ color: 0x7A1410, transparent: true, opacity: 0, side: THREE.DoubleSide })); ferida.rotation.x = Math.PI / 2; ferida.position.copy(fp); ferida.position.y -= .004; ferida.renderOrder = 6; ferida.visible = false; scene.add(ferida);
+    const borda = new THREE.Mesh(new THREE.RingGeometry(.04, .058, 24), new THREE.MeshBasicMaterial({ color: 0xD9654F, transparent: true, opacity: 0, side: THREE.DoubleSide })); borda.rotation.x = Math.PI / 2; borda.position.copy(ferida.position); borda.renderOrder = 6; borda.visible = false; scene.add(borda);
+    const P = palmilha(0x2E8C73, false);
+    POSE.diabetes = now => {
+      const g = st.h * (1 - .65 * st.c), b = bate(now);
+      sens.forEach((m, k) => { m.visible = st.lin > .01; m.material.opacity = .85 * st.lin * (RM ? 1 : .55 + .45 * Math.sin(now * .004 + k)); });
+      zonas.forEach(m => { m.visible = g > .01; m.material.opacity = .7 * g; m.scale.copy(m.userData.s).multiplyScalar(b); });
+      { const f = st.h * (1 - sm(cl(st.c * 1.6))); ferida.visible = borda.visible = f > .01; ferida.material.opacity = f * .95; borda.material.opacity = f * .8; }   // a ferida some antes de a palmilha aparecer: palmilha é prevenção
+      porPalmilha(P, st.c, .45);
+    };
+    AN.diabetes = { cams: { 2: [[-.05, .14, 0], [.55, .1, -1], 1.5] }, hDe: 1, cir: 2, max: 3, xr: 99, lin: [0, .6], cam: [[-.05, .1, 0], [.3, -1, -.35], 1.4] };
+  }
+
+  /* ---- pé plano: cirurgia — o osso do calcanhar é cortado, deslocado para dentro e fixado com parafuso ---- */
+  { const p0 = V(...j.calc_corte), n = V(...j.calc_n), C = { s: 0 };
+    ['calcaneo_a', 'calcaneo_b'].forEach(k => ossos[k].visible = false);
+    C.discoMat = new THREE.MeshBasicMaterial({ color: CORAL, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false });
+    C.disco = cil(p0.clone().addScaledVector(n, -.003), p0.clone().addScaledVector(n, .003), .19, C.discoMat, 40); C.discoMat.depthTest = false; C.disco.renderOrder = 7; C.disco.visible = false; scene.add(C.disco);
+    C.mt = metal(); C.mt.depthTest = false;
+    C.par = parafuso(p0.clone().add(V(-.29, -.11, -.1)), p0.clone().add(V(.2, -.02, -.03)), .028, false, { fio: true }); scene.add(C.par.g);   // sem cabeça saliente; segue para a frente do calcâneo, abaixo da articulação
+    C.serra = fazerSerra(p0, n, V(0, 0, -1)); scene.add(C.serra.g);   // a serra vem pelo lado de fora do calcanhar
+    FX.calc = C;
+    FX.poseCalc = (now = 0) => {   // chamado dentro da pose do pé plano
+      const alvo = tl.on === 'peplano' ? cl(tl.T - 5) : 0; if (tl.on !== 'peplano' && st.h === 0) C.s = 0; else C.s += (alvo - C.s) * K(.12);
+      const s = C.s, cortado = s > .12, desl = sm(cl((s - .3) / .32)), pf = sm(cl((s - .66) / .3));
+      ossos.calcaneo.visible = !cortado; ossos.calcaneo_a.visible = ossos.calcaneo_b.visible = cortado;
+      ossos.calcaneo_a.position.z = -.1 * desl;
+      C.disco.visible = s > .03 && s < .34; C.discoMat.opacity = C.disco.visible ? .34 : 0;
+      if (tl.on === 'peplano') { if (tl.T >= 4.98) st.hi.add('calcaneo'); else st.hi.delete('calcaneo'); }
+      { const t = cl((s - .02) / .3); C.serra.pose(s > .02 && s < .32 ? Math.sin(t * Math.PI) : 0, sm(t), now); }
+      C.par.pose(pf);
+      return s;
+    };
+  }
+}
+
+/* ================= pontos de dor ================= */
+const hotsEl = document.getElementById('hots'); const pontos = {};
+function criarPontos() {
+  const ray = new THREE.Raycaster();
+  for (const [id, r] of Object.entries(R)) {
+    const p = V(...r.p), d = V(...r.dir).normalize();
+    ray.set(p.clone().addScaledVector(d, 3), d.clone().negate());
+    const hit = ray.intersectObject(pele, false)[0];
+    const pos = hit ? hit.point : p.clone().addScaledVector(d, .1);
+    const n = hit ? hit.face.normal.clone().transformDirection(pele.matrixWorld) : d;
+    const b = document.createElement('button'); b.className = 'hot'; b.type = 'button';
+    b.innerHTML = `<span class="d"></span><span class="t">${r.n}</span>`; b.setAttribute('aria-label', 'Dói aqui: ' + r.n);
+    b.addEventListener('click', e => { e.stopPropagation(); abrirRegiao(id); });
+    hotsEl.append(b);
+    pontos[id] = { el: b, pos: pos.addScaledVector(n, .015), n };
+  }
+}
+// tocar em qualquer lugar do pé escolhe o ponto mais perto (só o dedo principal, sem contar arrasto nem pinça)
+const rc = new THREE.Raycaster(), ndc = new THREE.Vector2(); let down = null, gesto = -1e9, dedos = 0;
+canvas.addEventListener('pointerdown', e => { dedos++; down = e.isPrimary && !e.button && dedos === 1 ? [e.clientX, e.clientY] : null; voo = null; passeio = null; gesto = performance.now(); });
+const solta = e => { dedos = Math.max(0, dedos - 1); };
+addEventListener('pointercancel', e => { solta(e); down = null; });
+addEventListener('pointerup', solta);
+canvas.addEventListener('pointermove', () => { if (dedos) gesto = performance.now(); });
+canvas.addEventListener('pointerup', e => {
+  const d = down; down = null;
+  if (!d || !e.isPrimary || Math.hypot(e.clientX - d[0], e.clientY - d[1]) > (e.pointerType === 'touch' ? 12 : 6) || !pele || document.body.classList.contains('prob')) return;
+  ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); rc.setFromCamera(ndc, camera);
+  const h = rc.intersectObject(pele, false)[0]; if (!h) return;
+  let best = null, bd = .55;
+  for (const [id, p] of Object.entries(pontos)) { const dd = p.pos.distanceTo(h.point); if (dd < bd) { bd = dd; best = id; } }
+  if (best) abrirRegiao(best);
+});
+
+/* ================= câmera: o pé sempre cabe na área livre da tela ================= */
+let voo = null, ultimo = null, passeio = null; const vista = { ox: 0, oy: 0, oxA: 0, oyA: 0, pronto: false };
+const $cab = document.getElementById('cab'), $nav = document.getElementById('nav'), $header = document.querySelector('header');
+function area() {   // retângulo da tela que não está coberto por título, cabeçalho e painel
+  const W = innerWidth, H = innerHeight, hd = $header.querySelector('.nome').getBoundingClientRect().bottom + 6, p = $painel.getBoundingClientRect();
+  if (document.body.classList.contains('apres')) return { x0: 0, x1: W, y0: hd, y1: $leg.getBoundingClientRect().top + 34 };
+  const tit = !$t.classList.contains('fora') && !document.body.classList.contains('sem3d');
+  if (W > 860 || (H < 480 && W > H)) return { x0: tit && W > 860 ? Math.min(230, W * .17) : 0, x1: p.left, y0: W > 860 ? hd * .6 : hd, y1: H };
+  return { x0: 0, x1: W, y0: tit ? $t.getBoundingClientRect().bottom : hd, y1: p.top };
+}
+function atualizarArea() {
+  const a = area(); vista.oxA = innerWidth / 2 - (a.x0 + a.x1) / 2; vista.oyA = innerHeight / 2 - (a.y0 + a.y1) / 2;
+  if (!vista.pronto) { vista.ox = vista.oxA; vista.oy = vista.oyA; vista.pronto = true; }
+  return a;
+}
+function voar(pos, alvo, ms = 1100) {
+  passeio = null; acordar();
+  if (RM || window.__inst || !ms) { camera.position.copy(pos); controls.target.copy(alvo); controls.update(); voo = null; return; }
+  voo = { p0: camera.position.clone(), t0: controls.target.clone(), p1: pos, t1: alvo, ini: performance.now(), ms };
+}
+function enquadrar(alvo, dir, raio, ms = 1100) {
+  const a = atualizarArea(), menor = Math.max(140, Math.min(a.x1 - a.x0, a.y1 - a.y0));
+  const d = raio * innerHeight / (menor * Math.tan(camera.fov * Math.PI / 360));
+  ultimo = { alvo: alvo.clone(), dir: dir.clone().normalize(), raio };
+  voar(alvo.clone().addScaledVector(ultimo.dir, d), alvo.clone(), ms);
+}
+/* painel do celular: 0 = só o pé, 1 = resumo (padrão), 2 = aberto. Toque na alça alterna; arrastar para cima abre, para baixo recolhe */
+const $puxa = document.getElementById('puxa'); let folha = 1;
+const folhaMovel = () => innerWidth <= 860 && !(innerHeight < 480 && innerWidth > innerHeight) && !document.body.classList.contains('sem3d');
+function porFolha(n, ms = 450) {   // ms < 0: só muda o painel (quem chamou já vai enquadrar o pé)
+  folha = cl(Math.round(n), 0, 2); $painel.classList.remove('s0', 's1', 's2', 'min'); $painel.classList.add('s' + folha);
+  $puxa.setAttribute('aria-expanded', folha === 2); $puxa.querySelector('span').textContent = folha === 2 ? 'recolher' : folha === 1 ? 'puxe para ver mais' : 'mostrar';
+  if (ms >= 0 && folhaMovel() && ultimo) reenquadrar(ms);
+}
+{ let y0 = null;
+  $puxa.addEventListener('pointerdown', e => { y0 = e.clientY; try { $puxa.setPointerCapture(e.pointerId); } catch (er) {} });
+  $puxa.addEventListener('pointerup', e => { if (y0 === null) return; const dy = e.clientY - y0; y0 = null; $puxa.dataset.arr = Math.abs(dy) > 12 ? '1' : '';
+    if (dy < -12) porFolha(folha + (dy < -170 ? 2 : 1)); else if (dy > 12) porFolha(folha - (dy > 170 ? 2 : 1)); });
+  $puxa.addEventListener('pointercancel', () => { y0 = null; });
+  $puxa.addEventListener('click', () => { if ($puxa.dataset.arr) { $puxa.dataset.arr = ''; return; } porFolha(folha === 2 ? 1 : folha + 1); });   // toque (ou Enter): sobe um nível; aberto, recolhe
+}
+function reenquadrar(ms = 600) {   // o painel mudou de tamanho: mantém o ângulo e ajusta a distância
+  if (!ultimo) return;
+  enquadrar(ultimo.alvo, voo ? ultimo.dir : camera.position.clone().sub(controls.target), ultimo.raio, ms);
+}
+// câmera por etapa: cada explicação é vista do lado em que ela acontece
+function configurarCams() {
+  const liga = FX.ligRup;
+  Object.assign(AN.joanete, { fimXR: .5, cams: { 2: [[.45, .28, -.2], [.06, 1, -.05], .78], 3: [[.5, .26, -.2], [.3, 1, -.45], .66] } });
+  Object.assign(AN.peplano, { cams: { 2: [[-.3, .5, -.05], [-1, .32, -.35], 1.05], 5: [[-.7, .42, -.12], [-1, .3, -.3], .8] } });
+  Object.assign(AN.tornozelo, { cams: { 1: [[liga.x, liga.y, liga.z], [.4, .2, 1], .62], 2: [[liga.x, liga.y, liga.z], [.4, .2, 1], .5], 3: [[liga.x, liga.y, liga.z], [.4, .2, 1], .5] } });
+  Object.assign(AN.haglund, { cams: { 3: [[-.95, .6, -.15], [-1, .22, .42], .78], 4: [[-.95, .6, -.15], [-1, .22, .42], .78] } });
+  Object.assign(AN.aquiles, { cams: { 2: [[-1, .95, -.2], [-1, .15, .4], .82], 3: [[-1, .95, -.2], [-1, .15, .4], .82] } });
+  Object.assign(AN.morton, { cams: { 1: [[.62, .15, .12], [.25, -1, -.2], .58] } });
+}
+
+/* ================= linha do tempo do esquema animado ================= */
+const tl = { on: null, T: 0, i: -1, n: 5, auto: null, mostra: null, range: null, fase: null, faseEl: null, nomes: [], padrao: null, cam: null };
+function irPara(i) {
+  if (!tl.on) return;
+  i = cl(i, 0, tl.n - 1); tl.auto = null; const cfg = AN[tl.on], autos = cfg.auto || [cfg.cir ?? 3]; acordar();
+  if (autos.includes(i) && !RM && !window.__inst) { tl.T = i; tl.auto = { de: i, ate: i + .985, ini: performance.now(), ms: tl.on === 'joanete' ? 9500 : tl.on === 'haglund' || i === 5 ? 6500 : 3800 }; }
+  else tl.T = autos.includes(i) ? i + .985 : i;
+  if (tl.range) tl.range.value = tl.T;
+}
+document.addEventListener('wheel', e => {   // dentro de um problema, a roda do mouse sobre o pé avança a explicação (a pinça continua aproximando)
+  if (!tl.on || e.target !== canvas) return;
+  e.preventDefault(); e.stopPropagation(); tl.auto = null; tl.T = cl(tl.T + e.deltaY * .0016, 0, tl.n); if (tl.range) tl.range.value = tl.T; acordar();
+}, { passive: false, capture: true });
+
+/* ================= painel ================= */
+let regiao = null, queixa = null, pendente = null;
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+const acender = (nomes, fx) => { st.hi = new Set(nomes); st.faixas = new Set(fx || []); };
+const sairTL = () => { tl.on = null; tl.auto = null; tl.range = null; tl.faseEl = null; tl.cam = null; };
+const TOPO = (volta, titulo) => `<div class="topo"><button class="volta" type="button" aria-label="${volta}">${volta}</button>${titulo}<button class="mini" type="button" aria-expanded="true">Ampliar o pé</button></div>`;
+let tinhaFoco = false; const lembrarFoco = () => { tinhaFoco = $painel.contains(document.activeElement) || hotsEl.contains(document.activeElement); };
+const focar = () => { const h = $painel.querySelector('h2') || $painel.querySelector('.kick'); if (h && tinhaFoco) { h.tabIndex = -1; h.focus({ preventScroll: true }); } tinhaFoco = false; };
+function ligarTopo() {
+  $painel.classList.remove('min');
+  $cab.querySelector('.volta').onclick = voltar;
+  const m = $cab.querySelector('.mini');
+  m.onclick = () => { const f = $painel.classList.toggle('min'); m.textContent = f ? 'Mostrar o texto' : 'Ampliar o pé'; m.setAttribute('aria-expanded', !f); reenquadrar(); };
+}
+// histórico: o botão Voltar do celular volta um nível em vez de sair da página; o endereço abre direto num problema
+let semHist = false;
+const marcar = (r, q) => { if (semHist || (history.state && history.state.r === r && history.state.q === q)) return; const u = new URLSearchParams(location.search); u.delete('r'); u.delete('q'); u.delete('T'); if (r) u.set('r', r); if (q) u.set('q', q); const s = u.toString().replace(/=(&|$)/g, '$1'); history.pushState({ r, q }, '', location.pathname + (s ? '?' + s : '')); };
+function voltar() { if (history.state) history.back(); else irInicio(); }
+function restaurar(e) { semHist = true; const s = e || {}; if (s.q && Q[s.q]) { if (s.r && R[s.r]) abrirQueixa(s.q, s.r, true); else abrirQueixa(s.q, null); } else if (s.r && R[s.r]) abrirRegiao(s.r, true); else irInicio(); semHist = false; }
+addEventListener('popstate', e => restaurar(e.state));
+addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (ap) sairApresentacao(); else if (regiao || queixa) voltar(); });
+
+function inicio() {
+  porFolha(1, -1); lembrarFoco(); deBaixo = false; document.getElementById('bSola').textContent = 'Ver a sola';
+  regiao = queixa = null; document.body.classList.remove('foco', 'prob'); $t.classList.remove('fora'); $c.classList.add('ini'); $painel.classList.remove('min'); sairTL();
+  Object.values(pontos).forEach(p => p.el.classList.remove('sel'));
+  st.xrAlvo = 0; acender([]); $cab.innerHTML = ''; $nav.innerHTML = '';
+  $c.innerHTML = `<span class="kick">Escolha o lugar da dor</span>
+    <p>O mapa mostra os problemas mais comuns de cada lugar do pé. Na avaliação vemos juntos o que é.</p>
+    <div class="chips reg">${Object.entries(R).map(([id, r]) => `<button type="button" data-r="${id}">${r.n}</button>`).join('')}</div>
+    <div class="chips"><button type="button" data-q="diabetes">Tenho diabetes</button></div>
+    <details class="sabe"${innerWidth > 860 ? ' open' : ''}><summary>Já sabe o nome do problema?</summary>
+    <div class="chips probs">${Object.entries(Q).filter(([k]) => REG_DE[k]).map(([k, q]) => `<button type="button" data-q="${k}">${esc(q.a)}</button>`).join('')}</div></details>`;
+  $c.querySelectorAll('[data-r]').forEach(b => b.onclick = () => abrirRegiao(b.dataset.r));
+  $c.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { const k = b.dataset.q; abrirQueixa(k, REG_DE[k] || null, true); });
+  $c.scrollTop = 0; focar();
+}
+const irInicio = (ms = 1300) => { inicio(); enquadrar(CENTRO, DIR0, RAIO_PE, ms); };
+function abrirRegiao(id, semAbrir) {
+  if (!pontos[id]) { pendente = () => abrirRegiao(id); return; }   // o modelo ainda está chegando: abre assim que carregar
+  const r = R[id];
+  if (r.qs.length === 1 && !semAbrir) return abrirQueixa(r.qs[0], id, true);   // região com um problema só: vai direto
+  porFolha(2, -1); lembrarFoco(); regiao = id; queixa = null; $c.classList.remove('ini'); sairTL();
+  document.body.classList.add('foco'); document.body.classList.remove('prob'); $t.classList.add('fora');
+  Object.entries(pontos).forEach(([k, p]) => p.el.classList.toggle('sel', k === id));
+  st.xrAlvo = 1;
+  acender(r.qs.flatMap(k => Q[k].hi), r.qs.flatMap(k => Q[k].faixa || []));
+  $cab.innerHTML = TOPO('← Início', `<h2>${esc(r.n)}</h2>`); $nav.innerHTML = '';
+  $c.innerHTML = `<p>Pode estar ligado a (toque para ver por dentro):</p><div class="lista">${r.qs.map(k => `<button type="button" data-q="${k}"><span class="q">${esc(Q[k].q)}</span><span class="a">${esc(Q[k].a)}</span></button>`).join('')}</div>
+    <p class="nota">Não é nenhum desses? Na avaliação vemos juntos o que é.</p>`;
+  ligarTopo();
+  $c.querySelectorAll('[data-q]').forEach(b => b.onclick = () => abrirQueixa(b.dataset.q, id));
+  $c.scrollTop = 0; marcar(id, null); focar();
+  enquadrar(pontos[id].pos.clone().lerp(FOCO, .3), V(...r.cam), r.raio);
+}
+function abrirQueixa(k, de, direto) {
+  const q = Q[k]; if (!q) return;
+  if (!window.__ok) { pendente = () => abrirQueixa(k, de, direto); return; }
+  porFolha(1, -1); lembrarFoco(); acender(q.hi, q.faixa); $c.classList.remove('ini'); sairTL(); regiao = de; queixa = k;
+  document.body.classList.add('foco', 'prob'); $t.classList.add('fora');
+  Object.entries(pontos).forEach(([n, p]) => p.el.classList.toggle('sel', n === de));
+  const volta = de && !direto ? `← ${esc(R[de].n)}` : '← Início';
+  const T = TXT[q.esq], nomes = T.nomes || ETAPAS.map(n => n || T.t4), cfg = AN[q.anim], n = T.steps.length;
+  const rasc = i => T.rasc === true || (Array.isArray(T.rasc) && T.rasc.includes(i));
+  $cab.innerHTML = `${TOPO(volta, `<h2>${esc(NOME_ESQ[q.esq] || q.a)}</h2>`)}
+    <div class="etapas${n > 5 ? ' muitas' : ''}" role="tablist" aria-label="Etapas da explicação">${nomes.map((nm, i) => `<button type="button" role="tab" aria-controls="etx" data-i="${i}">${nm}</button>`).join('')}</div>
+    <div class="tlw"><input type="range" min="0" max="${n}" step="0.01" value="0" aria-label="Avançar a explicação"></div>`;
+  $c.innerHTML = `<p id="fase"></p><p class="queixa">Queixa comum: ${esc(q.q)}.</p><div id="etx" role="tabpanel" aria-live="polite"></div>${q.pag ? `<a class="mais" href="${SITE}${q.pag}">Ler mais →</a>` : ''}`;
+  $nav.innerHTML = `<button type="button" class="ant" aria-label="Etapa anterior">←</button><button type="button" class="prox"></button>`;
+  const ant = $nav.querySelector('.ant'), prox = $nav.querySelector('.prox'), abas = [...$cab.querySelectorAll('.etapas button')];
+  const mostra = i => {
+    abas.forEach((b, j) => { b.classList.toggle('on', i === j); b.setAttribute('aria-selected', i === j); b.tabIndex = i === j ? 0 : -1; });
+    const s = T.steps[i]; document.getElementById('etx').innerHTML = `<p>${esc(s[0])}</p>${s[1] ? `<p class="nota">${esc(s[1])}</p>` : ''}`
+      + (rasc(i) ? '<p class="nota rasc">Texto em rascunho: aguarda a revisão da Dra. Larissa.</p>' : '') + (T.extra && T.extra[i] ? `<p class="nota rasc">${esc(T.extra[i])}</p>` : '')
+      + (i === 0 || i === n - 1 ? '<p class="nota">Só a avaliação mostra se é o seu caso.</p>' : '');
+    $c.scrollTop = 0; ant.disabled = i === 0;
+    if (i < n - 1) { prox.textContent = `Próximo: ${nomes[i + 1]} →`; prox.classList.remove('sec'); } else { prox.textContent = 'Agendar avaliação'; prox.classList.add('sec'); trava = performance.now(); }
+    if (tl.range) tl.range.setAttribute('aria-valuetext', nomes[i]);
+  };
+  ant.onclick = () => irPara(tl.i - 1);
+  let trava = 0;
+  prox.onclick = () => { if (tl.i < n - 1) irPara(tl.i + 1); else if (performance.now() - trava > 600) location.href = SITE + '#agendar'; };
+  abas.forEach(b => { b.onclick = () => irPara(+b.dataset.i); b.onkeydown = e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const j = cl(tl.i + (e.key === 'ArrowRight' ? 1 : -1), 0, n - 1); irPara(j); abas[j].focus(); } }; });
+  const ab = cfg.abre;
+  tl.on = q.anim; tl.n = n; tl.nomes = nomes; tl.fase = null; tl.faseEl = $c.querySelector('#fase'); tl.mostra = mostra; tl.range = $cab.querySelector('.tlw input');
+  tl.T = ab ? (RM || window.__inst ? ab[1] : ab[0]) : 0; tl.i = Math.floor(tl.T);
+  if (ab && !RM && !window.__inst) tl.auto = { de: ab[0], ate: ab[1], ini: performance.now() + 900, ms: 2600 };
+  tl.range.oninput = () => { tl.auto = null; tl.T = +tl.range.value; acordar(); };
+  tl.range.onkeydown = e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); irPara(tl.i + (e.key === 'ArrowRight' ? 1 : -1)); } };
+  tl.range.value = tl.T; mostra(tl.i);
+  ligarTopo(); marcar(de, k); focar();
+  // câmera: vista própria do problema, ou a da região
+  const r = de && R[de], c = cfg.cam || (r && [pontos[de].pos.clone().lerp(FOCO, .3).toArray(), r.cam, r.raio]) || [CENTRO.toArray(), DIR0.toArray(), RAIO_PE];
+  tl.padrao = c; tl.cam = (cfg.cams && cfg.cams[tl.i]) || c; gesto = -1e9;
+  enquadrar(V(...tl.cam[0]), V(...tl.cam[1]), tl.cam[2], 1200);
+}
+
+/* ================= vistas da tela inicial e passeio de abertura ================= */
+let deBaixo = false;
+document.getElementById('bVirar').onclick = () => { const d = camera.position.clone().sub(controls.target); d.applyAxisAngle(Y, Math.PI * .6); voar(controls.target.clone().add(d), controls.target.clone(), 900); };
+document.getElementById('bSola').onclick = e => { deBaixo = !deBaixo; e.currentTarget.textContent = deBaixo ? 'Ver por cima' : 'Ver a sola'; enquadrar(CENTRO, deBaixo ? V(.3, -1, -.35) : DIR0, RAIO_PE, 900); };
+function abertura() {   // 3 s: o pé gira um pouco para os dois lados e mostra que é 3D; qualquer toque interrompe
+  if (RM || window.__inst) return;
+  passeio = { ini: performance.now(), ms: 3400, d: camera.position.clone().sub(controls.target), alvo: controls.target.clone() };
+}
+
+/* ================= modo apresentação (para gravar a tela): ?apresentar=joanete,fascite,entorse ================= */
+// Toca sozinho: cada problema passa por todas as etapas, com a câmera de cada etapa e uma legenda grande.
+// Nome, CRM/RQE, "Esquema ilustrativo, não é exame" e o crédito do modelo ficam sempre no quadro. Esc sai.
+// Cada etapa começa parada alguns segundos na primeira frase do texto (nas cirurgias, é a frase da indicação); depois anda.
+let ap = null; const apVel = Math.max(.25, +(new URLSearchParams(location.search).get('ritmo') || '1').replace(',', '.') || 1);   // ?ritmo=1.5 acelera, .7 desacelera
+const $leg = document.getElementById('legenda'), $cartao = document.getElementById('cartao');
+const CRED_AP = 'Modelo 3D: BodyParts3D, © The Database Center for Life Science, CC BY-SA 2.1 Japan. Malha modificada.';
+const frase1 = t => (t.match(/^.*?[.?!](\s|$)/) || [t])[0].trim();
+function legendar() {
+  if (!ap || !queixa) return;
+  const q = Q[queixa], T = TXT[q.esq], i0 = cl(tl.i, 0, tl.n - 1), i = i0 === 0 && ap.adi && tl.n > 1 ? 1 : i0, s = T.steps[i];   // o raio-X começa a aparecer no fim da 1ª etapa: a legenda acompanha
+  const rasc = T.rasc === true || (Array.isArray(T.rasc) && T.rasc.includes(i)) || (T.extra && T.extra[i]);
+  const ind = frase1(s[0]), temFase = !!tl.fase && i === i0 && !ap.lendo;
+  let frase = temFase ? (tl.fase.includes('· parte') ? tl.fase.slice(tl.fase.indexOf(': ') + 2) : tl.fase) : ind;
+  frase = frase.charAt(0).toUpperCase() + frase.slice(1);
+  $leg.innerHTML = `<span class="kick">${esc(NOME_ESQ[q.esq] || q.a)} · ${esc(tl.nomes[i])}</span><p class="f">${esc(frase)}</p>${temFase ? `<p class="n i">${esc(ind)}</p>` : ''}${s[1] ? `<p class="n">${esc(s[1])}</p>` : ''}${rasc ? '<p class="n r">Rascunho: aguarda a revisão da Dra. Larissa.</p>' : ''}<p class="n">Esquema ilustrativo, não é exame.</p><p class="n c">${CRED_AP}</p>`;
+  atualizarArea();
+}
+function proximoAp() {
+  ap.k++; ap.espera = 0;
+  if (ap.k >= ap.lista.length) { ap.k = -1; ap.fim = true; ap.espera = performance.now() + 5000; $cartao.classList.add('vis'); return; }
+  const k = ap.lista[ap.k]; semHist = true; abrirQueixa(k, REG_DE[k] || null, true); semHist = false; tl.auto = null; tl.T = 0; tl.i = 0; ap.adi = false; ap.et = -1; ap.lendo = false; legendar(); reenquadrar(700);
+}
+function apresentar(lista) { ap = { lista, k: -1, espera: 0, fim: false, et: -1, segura: 0, lendo: false, adi: false }; document.body.classList.add('apres'); passeio = null; proximoAp(); }
+function sairApresentacao() { ap = null; document.body.classList.remove('apres'); $cartao.classList.remove('vis'); try { history.replaceState(null, '', location.pathname); } catch (e) {} irInicio(); }
+function apresentarPasso(now) {   // a cada quadro, antes de ler a linha do tempo
+  if (ap.fim) { if (now > ap.espera) { ap.fim = false; $cartao.classList.remove('vis'); proximoAp(); } return; }
+  const cfg = AN[tl.on], i = Math.min(tl.n - 1, Math.floor(tl.T)), acao = (cfg.auto || [cfg.cir ?? 3]).includes(i);
+  tl.auto = null;
+  if (ap.et !== i && tl.T < tl.n) { ap.et = i; ap.segura = now + ((cfg.fases && cfg.fases[i]) ? 4600 : i === 0 ? 3600 : 0) / apVel; }   // tempo de leitura da primeira frase, com a imagem parada
+  const lendo = now < ap.segura; if (lendo !== ap.lendo) { ap.lendo = lendo; legendar(); }
+  if (lendo) return;
+  const dur = acao ? (tl.on === 'joanete' ? 13 : tl.on === 'haglund' || i === 5 ? 10 : 8) : i === 0 ? 4.2 : 4.6;
+  tl.T = Math.min(tl.n, tl.T + dt * apVel / dur);
+  const adi = tl.T >= .45 && tl.T < 1 && cfg.xr !== 99; if (adi !== ap.adi) { ap.adi = adi; legendar(); }
+  if (tl.T >= tl.n) { if (!ap.espera) ap.espera = now + 1600; else if (now > ap.espera) proximoAp(); }
+}
+
+/* ================= tamanho e laço ================= */
+const orcamento = () => Math.max(1, Math.min(devicePixelRatio, 2, Math.sqrt(2.6e6 / (innerWidth * innerHeight))));
+let largAnt = 0, altAnt = 0;
+function resize() {
+  renderer.setPixelRatio(orcamento()); renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight;
+  const hb = $header.querySelector('.nome').getBoundingClientRect().bottom;
+  if (innerWidth <= 860) { $t.style.top = (hb + 6) + 'px'; document.body.style.setProperty('--vistas-top', (hb + 96) + 'px'); } else $t.style.top = '';
+  atualizarArea(); if (largAnt && (largAnt !== innerWidth || Math.abs(altAnt - innerHeight) > 120)) reenquadrar(0);
+  largAnt = innerWidth; altAnt = innerHeight; acordar();
+}
+addEventListener('resize', resize);
+const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+const tmp = V(0, 0, 0);
+// amortecimentos por tempo (iguais em 30, 60 e 120 quadros por segundo)
+let tAnt = 0, dt = 1 / 60, quente = 40, parado = false;
+const K = f => RM || window.__inst ? 1 : 1 - Math.pow(1 - Math.min(1, f), dt * 60);
+function acordar() { quente = 40; }
+['pointerdown', 'pointermove', 'keydown', 'click', 'input'].forEach(t => addEventListener(t, acordar, { capture: true, passive: true }));
+function passo(now) {
+  dt = Math.min(.1, (now - tAnt) / 1000 || 1 / 60); tAnt = now;
+  if (voo) {
+    const t = Math.min(1, (now - voo.ini) / voo.ms), e = ease(t);
+    camera.position.lerpVectors(voo.p0, voo.p1, e); controls.target.lerpVectors(voo.t0, voo.t1, e);
+    if (t >= 1) voo = null;
+  } else if (passeio) {
+    const t = cl((now - passeio.ini) / passeio.ms), a = Math.sin(t * Math.PI * 2) * .55 * (1 - t * .25);
+    camera.position.copy(passeio.alvo).add(tmp.copy(passeio.d).applyAxisAngle(Y, a)); controls.target.copy(passeio.alvo);
+    if (t >= 1) passeio = null;
+  }
+  const k = K(.1);
+  vista.ox += (vista.oxA - vista.ox) * k; vista.oy += (vista.oyA - vista.oy) * k;
+  camera.setViewOffset(innerWidth, innerHeight, vista.ox, vista.oy, innerWidth, innerHeight);
+  const mexeu = controls.update(dt);
+  if (!pele) { renderer.render(scene, camera); return; }
+  // só desenha quando algo muda (poupa bateria com o pé parado)
+  const vivo = mexeu || voo || passeio || tl.auto || tl.on || st.an || st.hi.size || st.xr > .02 || Math.abs(st.xrAlvo - st.xr) > .002 || Math.abs(vista.oxA - vista.ox) + Math.abs(vista.oyA - vista.oy) > .3;
+  if (vivo) quente = 40; else if (--quente < 0) return;
+  // esquema animado
+  let hA = 0, cA = 0, linA = 0, parA = 0, discoA = 0, brocaA = 0, fimA = 0, auxA = 0;
+  if (tl.on) {
+    if (st.an && st.an !== tl.on) { st.h = st.c = st.lin = st.par = st.disco = st.broca = st.fim = st.aux = 0; POSE[st.an](now); }
+    st.an = tl.on;
+    if (ap) apresentarPasso(now);
+    if (tl.auto) { const t = sm(cl((now - tl.auto.ini) / tl.auto.ms)); tl.T = tl.auto.de + (tl.auto.ate - tl.auto.de) * t; if (tl.range) tl.range.value = tl.T; if (now - tl.auto.ini >= tl.auto.ms) tl.auto = null; }
+    const T = tl.T, cfg = AN[tl.on], cir = cfg.cir ?? 3, u = cl(T - cir), i = Math.min(tl.n - 1, Math.floor(T + .005)), jan = w => w && T >= w[0] && T < w[1] ? 1 : 0;
+    if (i !== tl.i) { tl.i = i; tl.mostra(i); legendar(); }
+    // câmera da etapa (se a pessoa não girou o pé agora há pouco)
+    const cam = (cfg.cams && cfg.cams[i]) || tl.padrao;
+    if (cam !== tl.cam) { tl.cam = cam; if (now - gesto > 4000) enquadrar(V(...cam[0]), V(...cam[1]), cam[2], 900); }
+    hA = cfg.hDe ? sm(cl((T - cfg.hDe + .1) / .4)) : 1;
+    st.xrAlvo = cfg.xr === 99 ? 0 : T >= 3.995 && cfg.fimXR != null ? cfg.fimXR : sm(cl((T - .45) / .4));
+    linA = jan(cfg.lin); auxA = jan(cfg.aux);
+    if (tl.on === 'joanete') { discoA = T >= 3.03 && u < .3 ? 1 : 0; brocaA = T >= 3.02 && u < .24 ? Math.sin(cl((u - .02) / .22) * Math.PI) : 0; cA = sm(cl((u - .26) / .24)); parA = cl((u - .52) / .46); }
+    else { cA = sm(cl((u - (cfg.cDe ?? .06)) / .4)); parA = cl((u - .5) / .42); }
+    fimA = T >= 3.995 ? 1 : 0;
+    const fs = cfg.fases && cfg.fases[i]; let ft = '';
+    if (fs) { let q = 0; fs.forEach((f, n) => { if (T - i >= f[0]) q = n; }); ft = fs.length > 1 ? `${tl.nomes[i]} · parte ${q + 1} de ${fs.length}: ${fs[q][1]}` : fs[0][1][0].toUpperCase() + fs[0][1].slice(1); }
+    if (ft !== tl.fase && tl.faseEl) { tl.fase = ft; tl.faseEl.textContent = ft; legendar(); }
+  }
+  const kk = f => K(.1 * f);
+  st.h += (hA - st.h) * kk(.7); st.c += (cA - st.c) * kk(1.6); st.lin += (linA - st.lin) * kk(1.5); st.par += (parA - st.par) * kk(2); st.disco += (discoA - st.disco) * kk(1.5); st.broca += (brocaA - st.broca) * kk(2); st.fim += (fimA - st.fim) * kk(1); st.aux += (auxA - st.aux) * kk(1.5);
+  instSentido(now);
+  if (st.an) {
+    if (!tl.on && st.h < .004 && st.c < .004) { st.h = st.c = st.lin = st.par = st.disco = st.broca = st.fim = st.aux = 0; POSE[st.an](now); st.an = null; }
+    else POSE[st.an](now);
+  }
+  st.xr += (st.xrAlvo - st.xr) * K(.08);
+  uXR.value = st.xr; skinMat.depthWrite = st.xr < .05;
+  glowMat.uniforms.uA.value = st.xr; brilho.visible = peleZ.visible = st.xr > .02; fundoXR.material.opacity = .62 * st.xr; fundoXR.visible = st.xr > .02;
+  // luzes: a principal acompanha a câmera; a contraluz fica atrás do pé
+  frente.target.position.copy(controls.target); tmp.copy(camera.position).sub(controls.target).normalize();
+  rim.target.position.copy(controls.target); rim.position.copy(controls.target).addScaledVector(tmp, -4).addScaledVector(t2.crossVectors(Y, tmp).normalize(), 2.5); rim.position.y += 2;
+  // sombra de contato: some quando se olha por baixo e no raio-X
+  if (sombra) { const alt = cl((camera.position.y - .15) / .8); sombra.material.opacity = .5 * alt * (1 - .7 * st.xr); sombra.visible = sombra.material.opacity > .01; }
+  const pulso = RM ? .8 : .55 + .45 * Math.sin(now * .005), algum = st.hi.size > 0;
+  for (const [n, m] of Object.entries(ossos)) {   // osso em destaque: coral e aceso; os outros esfriam, para dar contraste
+    const on = st.hi.has(n.replace(/_[ab]$/, '')); m.material.emissiveIntensity += ((on ? .32 + .22 * pulso : 0) - m.material.emissiveIntensity) * K(.2);
+    m.material.color.lerp(corTmp.setHex(on ? 0xFFB8A0 : algum ? 0xB4BECA : 0xE6DAC6), K(.15));
+    m.material.visible = st.xr > .02;   // com a pele opaca os ossos não são desenhados (nada atravessa a pele)
+  }
+  for (const g of Object.values(faixas)) g.userData.alvo = 0;
+  st.faixas.forEach(n => { if (faixas[n]) faixas[n].userData.alvo = .95 * st.xr * st.xr; });
+  for (const g of Object.values(faixas)) { const ms = g.userData.mats; ms.forEach(m => { m.opacity += (g.userData.alvo - m.opacity) * K(.12); m.emissiveIntensity = .12 + .3 * pulso; }); g.visible = ms[0].opacity > .01; }
+  instQuadro();
+  // pontos: só aparecem do lado que a câmera vê
+  const prob = document.body.classList.contains('prob');
+  for (const p of Object.values(pontos)) {
+    const frente_ = p.n.dot(tmp.copy(camera.position).sub(p.pos).normalize()) > .12;
+    const v = tmp.copy(p.pos).project(camera), x = (v.x * .5 + .5) * innerWidth, y = (-v.y * .5 + .5) * innerHeight;
+    p.el.classList.toggle('vis', frente_ && v.z < 1);
+    p.el.classList.toggle('esq', x > innerWidth * .62);
+    p.el.style.transform = `translate(${x}px,${y}px)`;
+    p.el.tabIndex = frente_ && !prob ? 0 : -1;
+  }
+  renderer.render(scene, camera);
+}
+function frame(now) { if (parado) return; requestAnimationFrame(frame); passo(now); }
+
+/* ================= início ================= */
+function aoCarregar() {
+  document.body.classList.add('pronto');
+  const u = new URLSearchParams(location.search), r = u.get('r'), q = u.get('q');
+  const apr = u.get('apresentar');
+  if (apr !== null) { const l = apr.split(',').filter(k => Q[k]); semHist = false; pendente = null; apresentar(l.length ? l : ['joanete', 'fascite', 'entorse']); return; }
+  semHist = true;
+  if (q && Q[q]) abrirQueixa(q, r && R[r] ? r : REG_DE[q] || null, true); else if (r && R[r]) abrirRegiao(r, true); else if (pendente) { semHist = false; pendente(); } else abertura();
+  semHist = false; pendente = null;
+  if (window.__d) {   // testes: ?debug&r=dedao&q=joanete&T=3.2&min=1&cam=x,y,z
+    document.getElementById('load').style.display = 'none'; passeio = null;
+    if (u.get('T') && tl.on) { tl.auto = null; tl.T = +u.get('T'); tl.range.value = tl.T; }
+    if (u.get('folha')) porFolha(+u.get('folha'), 0);
+    if (u.get('cam')) { const c = u.get('cam').split(',').map(Number); gesto = performance.now(); enquadrar(ultimo.alvo, V(c[0], c[1], c[2]), ultimo.raio, 0); }
+  }
+}
+if (location.search.includes('debug')) { window.__inst = true; window.__d = { scene, faixas, FX, ossos, camera, controls, abrirRegiao, abrirQueixa, irInicio, st, tl, irT: T => { tl.auto = null; tl.T = T; }, render: () => { for (let i = 0; i < 6; i++) passo(performance.now()); } }; }
+// se o contexto WebGL cair (Safari em segundo plano), refaz o ambiente; se não voltar, recarrega uma vez
+let tPerda;
+canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); tPerda = setTimeout(() => { try { if (!sessionStorage.pe3dR) { sessionStorage.pe3dR = 1; location.reload(); return; } } catch (x) {} document.body.classList.add('sem3d'); }, 5000); });
+canvas.addEventListener('webglcontextrestored', () => { clearTimeout(tPerda); scene.environment = ambiente(); acordar(); });
+document.body.classList.remove('sem3d');
+inicio(); resize(); enquadrar(CENTRO, DIR0, RAIO_PE, 0);
+addEventListener('load', () => { if (!regiao && !queixa && !window.__ok) enquadrar(CENTRO, camera.position.clone().sub(controls.target), RAIO_PE, 0); });
+carregar().catch(() => { parado = true; document.body.classList.add('sem3d'); $c.classList.remove('ini'); $cab.innerHTML = ''; $nav.innerHTML = ''; $c.innerHTML = '<p class="nota">O pé em 3D não abriu neste aparelho. Veja os problemas mais comuns:</p>' + ESTATICO; });
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

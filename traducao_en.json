@@ -1314,5 +1314,13 @@
  [
   "<span class=\"tagline\">Caroço na sola</span>",
   "<span class=\"tagline\">Lump on the sole</span>"
+ ],
+ [
+  "aria-label=\"Ver o pé em 3D\">3D</a>",
+  "aria-label=\"See the foot in 3D (in Portuguese)\">3D</a>"
+ ],
+ [
+  "<a class=\"btn primary ver3d\" href=\"/pe-3d/\">Ver no pé em 3D →</a>",
+  "<a class=\"btn primary ver3d\" href=\"/pe-3d/\">See it on the 3D foot (in Portuguese) →</a>"
  ]
 ]
