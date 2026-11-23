@@ -83,7 +83,42 @@ header.top nav a.b3d{font-family:var(--mono);font-size:.72rem;font-weight:700;le
 header.top nav a.b3d:hover{color:var(--brand-deep);filter:brightness(1.06)}
 header.top nav a.lang{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;border:1.5px solid currentColor;border-radius:999px;padding:.3rem .6rem;line-height:1}
 @media (max-width:520px){header.top .brand{min-width:0}header.top .brand span span{white-space:normal}header.top .brand b{white-space:nowrap;font-size:.98rem}header.top .brand img{height:38px}header.top .brand{gap:.55rem}header.top nav{gap:.5rem}header.top .btn{padding:.55rem .8rem;font-size:.86rem}header.top nav a.lang{padding:.28rem .5rem;font-size:.66rem}}   /* celular: o subtítulo quebra em 2 linhas para caber o botão de idioma */
-@media (max-width:430px){header.top nav{display:grid;grid-template-columns:auto auto;grid-template-areas:"d b" "e b";gap:.3rem .45rem;align-items:center}header.top nav a.b3d{grid-area:d;padding:.28rem .5rem;font-size:.66rem;text-align:center}header.top nav a.lang{grid-area:e;text-align:center}header.top nav .btn{grid-area:b}}   /* celular estreito: 3D em cima do EN, para caber o nome */
+/* menu lateral (gaveta): ≤1180px */
+.menubtn,.gaveta{display:none}
+@media (max-width:1180px){
+  header.top nav a:not(.btn):not(.b3d){display:none}
+  header.top .wrap{gap:.6rem}
+  header.top nav{gap:.6rem}
+  .menubtn{display:inline-grid;place-content:center;gap:5px;flex:none;width:44px;height:44px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);background:transparent;cursor:pointer;padding:0}
+  .menubtn i{display:block;width:18px;height:2px;border-radius:2px;background:#fff}
+  .menubtn:focus-visible{outline:2px solid var(--brand-lite);outline-offset:2px}
+  .gaveta{display:block;position:fixed;inset:0;z-index:60}
+  .gaveta[hidden]{display:none}
+  .gav-fundo{position:absolute;inset:0;background:rgba(7,24,48,.55);opacity:0;transition:opacity .25s}
+  .gav-painel{position:absolute;top:0;right:0;bottom:0;width:min(86vw,360px);background:var(--brand-deep);color:#fff;display:flex;flex-direction:column;gap:1.4rem;padding:calc(1.1rem + env(safe-area-inset-top,0px)) 1.6rem calc(1.4rem + env(safe-area-inset-bottom,0px));overflow-y:auto;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:-24px 0 48px -24px rgba(0,0,0,.5)}
+  .gaveta.on .gav-fundo{opacity:1}
+  .gaveta.on .gav-painel{transform:none}
+  .gav-x{align-self:flex-end;width:44px;height:44px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:transparent;position:relative;cursor:pointer;flex:none}
+  .gav-x::before,.gav-x::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:2px;background:#fff;border-radius:2px}
+  .gav-x::before{transform:translate(-50%,-50%) rotate(45deg)}.gav-x::after{transform:translate(-50%,-50%) rotate(-45deg)}
+  .gav-links{display:flex;flex-direction:column}
+  .gav-links a{color:#fff;text-decoration:none;font-family:var(--display);font-stretch:112%;font-weight:500;font-size:1.32rem;padding:.78rem 0;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:space-between}
+  .gav-links a:hover,.gav-links a:focus-visible{color:var(--brand-lite)}
+  .gav-links a.g3d span{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;background:var(--brand-lite);color:var(--brand-deep);border-radius:999px;padding:.38rem .7rem;line-height:1}
+  .gav-ag{justify-content:center}
+  .gav-pe{margin-top:auto;display:flex;align-items:center;gap:1rem;font-size:.74rem;color:rgba(255,255,255,.7)}
+  .gav-pe .nw{white-space:nowrap}
+  .gav-pe a.lang{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:#fff;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;border:1.5px solid currentColor;border-radius:999px;padding:.4rem .7rem;line-height:1;text-decoration:none;flex:none}
+  body.menu-aberto{overflow:hidden}
+  body.menu-aberto header.top{z-index:200}
+  body.menu-aberto .dock{transform:translateY(110%)}
+}
+@media (max-width:560px){header.top nav a.b3d{display:none}}   /* celular: o 3D fica na gaveta e na seção Toque onde dói */
+@media (max-width:520px){header.top nav{gap:.4rem}header.top .wrap{gap:.45rem}}
+@media (max-width:400px){header.top .brand img{height:34px}header.top .brand{gap:.45rem}}
+@media (max-width:380px){header.top .brand b{font-size:.86rem}header.top .btn{padding:.5rem .7rem;font-size:.82rem}}
+@media (max-width:340px){header.top .wrap>nav .btn{display:none}}   /* celular muito estreito: o Agendar fica na gaveta e na barra de baixo */
+@media (prefers-reduced-motion:reduce){.gav-fundo,.gav-painel{transition:none}}
 @media (max-width:920px){header.top nav a:not(.btn):not(.lang):not(.b3d){display:none}header.top .btn{padding:.6rem .95rem;font-size:.9rem}.brand img{height:44px}.brand b{font-size:1.05rem}.brand span span{white-space:nowrap;font-size:.68rem}}
 @media (max-width:480px){.xs-hide{display:none}}
 
@@ -565,7 +600,28 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 <header class="top"><div class="wrap">
   <a class="brand" href="./"><img src="img/web/logo.png?v=7db9cfa5" alt="Monograma LS com uma pegada, marca da Dra. Larissa Silva" width="293" height="349"><span><b>Dra. Larissa Silva</b><span>Ortopedista e Traumatologista</span></span></a>
   <nav><a href="./#sobre">Quem sou</a><a href="./#esquema">O esquema</a><a href="./#cuidado">O cuidado</a><a href="./#trata">Cirurgias</a><a href="./#perguntas">Perguntas</a><a class="b3d" href="/pe-3d/" aria-label="Ver o pé em 3D">3D</a><a class="lang" href="en/joanete.html" hreflang="en" lang="en" aria-label="English version">EN</a><a class="btn primary" href="./#agendar">Agendar<span class="xs-hide">&nbsp;avaliação</span></a></nav>
-</div></header>
+  <button class="menubtn" type="button" aria-expanded="false" aria-controls="gaveta" aria-label="Abrir o menu"><i></i><i></i><i></i></button>
+</div>
+<div class="gaveta" id="gaveta" hidden>
+  <div class="gav-fundo" data-fecha></div>
+  <div class="gav-painel" role="dialog" aria-modal="true" aria-label="Menu">
+    <button class="gav-x" type="button" data-fecha aria-label="Fechar o menu"></button>
+    <div class="gav-links" role="navigation" aria-label="Menu"><a href="./#sobre">Quem sou</a><a href="./#esquema">O esquema</a><a href="./#cuidado">O cuidado</a><a href="./#trata">Cirurgias</a><a href="./#perguntas">Perguntas</a><a class="g3d" href="/pe-3d/">Pé em 3D <span>3D</span></a></div>
+    <a class="btn primary gav-ag" href="./#agendar">Agendar avaliação</a>
+    <div class="gav-pe"><a class="lang" href="en/joanete.html" hreflang="en" lang="en" aria-label="English version">EN</a><span>Médica · CRM 52-126334-0 · <span class="nw">RQE 60891</span></span></div>
+  </div>
+</div>
+<script>
+/* menu lateral: abre no ☰, fecha no X, no fundo, no Esc ou ao tocar num link */
+(function(){var b=document.querySelector('header.top .menubtn'),g=document.getElementById('gaveta');if(!b||!g)return;
+function abre(){g.hidden=false;document.body.classList.add('menu-aberto');b.setAttribute('aria-expanded','true');setTimeout(function(){g.classList.add('on')},20);var x=g.querySelector('.gav-x');x&&x.focus()}
+function fecha(volta){g.classList.remove('on');document.body.classList.remove('menu-aberto');b.setAttribute('aria-expanded','false');setTimeout(function(){if(!g.classList.contains('on'))g.hidden=true},260);if(volta)b.focus({preventScroll:true})}
+b.addEventListener('click',abre);
+g.addEventListener('click',function(e){if(e.target.closest('[data-fecha]'))fecha(true);else if(e.target.closest('a[href]'))fecha(false)});
+document.addEventListener('keydown',function(e){if(g.hidden)return;if(e.key==='Escape')fecha(true);else if(e.key==='Tab'){var f=g.querySelectorAll('a[href],button'),p=f[0],u=f[f.length-1];if(e.shiftKey&&document.activeElement===p){e.preventDefault();u.focus()}else if(!e.shiftKey&&document.activeElement===u){e.preventDefault();p.focus()}}});
+addEventListener('resize',function(){if(!g.hidden&&innerWidth>1180)fecha(false)})})();
+</script>
+</header>
 
 <section class="ph"><div class="wrap">
   <div>

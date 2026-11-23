@@ -1322,5 +1322,21 @@
  [
   "<a class=\"btn primary ver3d\" href=\"/pe-3d/\">Ver no pé em 3D →</a>",
   "<a class=\"btn primary ver3d\" href=\"/pe-3d/\">See it on the 3D foot (in Portuguese) →</a>"
+ ],
+ [
+  "aria-label=\"Abrir o menu\"",
+  "aria-label=\"Open the menu\""
+ ],
+ [
+  "aria-label=\"Fechar o menu\"",
+  "aria-label=\"Close the menu\""
+ ],
+ [
+  "<a class=\"g3d\" href=\"/pe-3d/\">Pé em 3D <span>3D</span></a>",
+  "<a class=\"g3d\" href=\"/pe-3d/\">3D foot (in Portuguese) <span>3D</span></a>"
+ ],
+ [
+  "<span>Médica · CRM 52-126334-0 · <span class=\"nw\">RQE 60891</span></span>",
+  "<span>Physician · CRM 52-126334-0 · <span class=\"nw\">RQE 60891</span></span>"
  ]
 ]
