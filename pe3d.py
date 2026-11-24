@@ -22,6 +22,12 @@ def gerar():
     # ajustes do agente fiscal para o site oficial
     rp("[0, 'a broca fina corta o osso']", "[0, 'corte do osso']")   # instrumento sem nome na tela (o texto aprovado da etapa continua igual)
     rp("const SITE = 'https://dralaarissasilva.com.br/';", "const SITE = '/';")   # links para o site no mesmo domínio
+    # three.js servido pelo próprio site (vendor/three-0.160.0, conferido com o hash do npm): o pé 3D não depende do jsDelivr
+    T = '/pe-3d/three-0.160.0/'
+    rp('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js', T + 'build/three.module.min.js', 2)
+    rp('"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"', '"three/addons/":"' + T + 'examples/jsm/"')
+    s = re.sub(r'<link rel="preconnect" href="https://cdn\.jsdelivr\.net"[^>]*>\n?', '', s)
+    assert 'jsdelivr' not in s, 'pe3d: sobrou jsdelivr'
     # a pedido do Alexsander (23/11/2026), o site não mostra avisos de rascunho; a revisão da Dra. Larissa continua pela folha de aprovação
 
     s = re.sub(r"rasc:(?:true|\[[0-9, ]*\]),", "", s)
@@ -32,6 +38,9 @@ def gerar():
     open(os.path.join(DEST, 'index.html'), 'w', encoding='utf-8').write(s)
     for f in ['pe2.bin', 'pe2.json']:
         shutil.copyfile(os.path.join(DEMO, 'modelo', f), os.path.join(DEST, 'modelo', f))
+    v = os.path.join(DEST, 'three-0.160.0')
+    if os.path.isdir(v): shutil.rmtree(v)
+    shutil.copytree(os.path.join(AQUI, 'vendor', 'three-0.160.0'), v)
     print('pe-3d/index.html', len(s) // 1024, 'KB')
 
 if __name__ == '__main__':

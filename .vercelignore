@@ -19,3 +19,6 @@ google-perfil/
 
 # capas de posts do Instagram (rascunhos de arte, não vão para o site)
 instagram/
+
+# fonte do three.js (o build copia para pe-3d/three-0.160.0/)
+vendor/
