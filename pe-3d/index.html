@@ -300,6 +300,11 @@ const TXT = {
     ['Metatarsalgia é o nome geral da dor na “bola” do pé, a região de apoio logo atrás dos dedos. Uma das causas é o neuroma de Morton: um espessamento do nervo que passa entre os ossos, mais comum entre o terceiro e o quarto dedo.'],
     ['Começo pelo calçado: mais largo, de salto baixo e sola que amortece. Uma palmilha com apoio logo atrás da bola do pé tira a pressão do nervo e dos ossos. Fisioterapia e, em alguns casos, infiltração entram como opções.','A cirurgia fica para quando a dor continua apesar desses cuidados.']]},
   // RASCUNHOS: ainda não revisados pela Dra. Larissa (aparecem marcados na tela)
+  fibroma:{nomes:['Por fora','O problema','Tratamento','Cirurgia'],steps:[
+    ['Por fora, aparece um caroço firme na sola, no meio do arco, mais para o lado de dentro. Pode ser um só ou vários, às vezes nos dois pés. Muitas vezes não dói; quando incomoda, é ao pisar ou no calçado.'],
+    ['É a fibromatose plantar, também chamada de doença de Ledderhose: nódulos de tecido fibroso que crescem dentro da fáscia plantar, a faixa firme que sustenta o arco. É benigna e pode aparecer junto com nódulos na palma da mão. Não é fascite: na fascite, a dor fica embaixo do calcanhar.','O diagnóstico é feito no exame do pé; o ultrassom ou a ressonância ajudam a confirmar e a diferenciar de outros caroços.'],
+    ['Na maioria dos casos, o tratamento é sem cirurgia: palmilha com alívio embaixo do nódulo e calçado de sola macia diminuem a pressão ao pisar. A palmilha não faz o nódulo sumir, mas costuma aliviar o incômodo. Em casos selecionados, infiltração e outras terapias podem ser opções. A cirurgia fica reservada para nódulos que doem muito ou atrapalham a pisada apesar desses cuidados, porque, mesmo depois de retirado, o nódulo pode voltar.','A indicação depende da avaliação. Toda cirurgia tem riscos. O resultado varia de pessoa para pessoa.'],
+    ['Quando a cirurgia é indicada, um corte na sola, do lado de dentro e fora da área de maior apoio, dá acesso aos nódulos. Eles são retirados junto com uma parte da fáscia ao redor, o que diminui a chance de voltar, e a pele é fechada com pontos.','A cirurgia é planejada caso a caso. Toda cirurgia tem riscos, como demora para cicatrizar, infecção, sensibilidade na cicatriz, dormência na sola e volta do nódulo. O resultado e a recuperação variam de pessoa para pessoa.']]},
   unha:{nomes:['Por fora','O problema','Tratamento'],steps:[
     ['A unha do dedão cresce encaixada entre duas dobras de pele, uma de cada lado.'],
     ['Na unha encravada, o canto da unha entra na pele. A região fica vermelha, inchada e dolorida, e pode infeccionar.'],
@@ -328,6 +333,7 @@ const Q = {
   morton:{q:'Dor na “bola” do pé, como pedrinha no sapato',a:'Metatarsalgia e neuroma de Morton',esq:'morton',pag:'neuroma-de-morton.html',hi:['m3','m4'],anim:'morton'},
   peplano:{q:'Arco que desabou, dor por dentro do tornozelo',a:'Pé plano do adulto',esq:'peplano',pag:'pe-plano-do-adulto.html',hi:['talus','navicular','cuneiforme_medial'],faixa:['tibpost'],anim:'peplano'},
   fascite:{q:'Dor embaixo do calcanhar ao levantar da cama',a:'Fascite plantar',esq:'fascite',pag:'fascite-plantar.html',hi:['calcaneo'],faixa:['fascia'],anim:'fascite'},
+  fibroma:{q:'Caroço firme na sola, no meio do arco',a:'Fibromatose plantar (fibroma)',esq:'fibroma',hi:[],faixa:['fascia'],anim:'fibroma'},
   aquiles:{q:'Estalo atrás do tornozelo e falta de força para ficar na ponta do pé',a:'Ruptura do tendão de Aquiles',esq:'aquiles',pag:'tendao-de-aquiles.html',hi:[],faixa:['aquiles'],anim:'aquiles'},
   haglund:{q:'Calombo atrás do calcanhar, onde o sapato encosta',a:'Deformidade de Haglund',esq:'haglund',pag:'haglund.html',hi:['calcaneo'],faixa:['aquiles'],anim:'haglund'},
   entorse:{q:'Torceu o pé e semanas depois ainda incha',a:'Entorse de tornozelo',esq:'tornozelo',pag:'entorse-de-tornozelo.html',hi:['fibula','talus'],faixa:['ligamento'],anim:'tornozelo'},
@@ -341,6 +347,7 @@ const R = {
   bola:{n:'Bola do pé',qs:['morton'],p:[.6,.2,0],dir:[0,-1,0],cam:[.45,-1,-.35],raio:.85},
   arco:{n:'Arco, por dentro',qs:['peplano'],p:[-.2,.42,-.2],dir:[0,-.35,-1],cam:[.12,.12,-1],raio:1.15},
   calcbaixo:{n:'Calcanhar, embaixo',qs:['fascite'],p:[-.72,.3,-.14],dir:[0,-1,0],cam:[-.35,-1,-.55],raio:1.05},
+  sola:{n:'Sola, no meio',qs:['fibroma'],p:[-.12,.25,-.1],dir:[0,-1,0],cam:[.05,-1,-.45],raio:1},
   calctras:{n:'Calcanhar, atrás',qs:['aquiles','haglund'],p:[-.85,.55,-.12],dir:[-1,.1,0],cam:[-1,.35,-.45],raio:.95},
   tornozelo:{n:'Tornozelo',qs:['entorse'],p:[-.48,.6,.05],dir:[.25,0,1],cam:[.35,.35,1],raio:.95},
   peito:{n:'Peito do pé',qs:['estresse'],p:[.15,.5,.02],dir:[0,1,0],cam:[.45,1,.5],raio:.9},
@@ -1027,7 +1034,7 @@ function maisAnimacoes(B, j) {
       ponto.visible = st.aux > .01; ponto.material.opacity = .7 * st.aux; ponto.scale.setScalar(.17 * b);
       porPalmilha(P, st.c, .5); apoioMat.opacity = Math.min(.7, P.mat.opacity * 1.4);
     };
-    AN.morton = { hDe: 1, cir: 2, max: 3, lin: [.9, 9], aux: [0, .85] };
+    AN.morton = { hDe: 1, cir: 2, max: 3, lin: [.9, 9], aux: [0, 1] };
   }
 
   /* ---- unha encravada: unha abaulada com lúnula e borda livre; o canto de dentro incha e fica vermelho na própria pele; no procedimento sai a faixa da unha ---- */
@@ -1142,7 +1149,7 @@ function maisAnimacoes(B, j) {
       calo.visible = s > .01; calo.scale.set(.13 * s + .001, .064 * s + .001, .064 * s + .001);
       porPalmilha(P, st.c, .6);
     };
-    AN.estresse = { hDe: 1, cir: 2, max: 3, aux: [0, .85] };
+    AN.estresse = { hDe: 1, cir: 2, max: 3, aux: [0, 1] };
   }
 
   /* ---- pé diabético: a sensibilidade some, pontos de pressão na sola, ferida; palmilha que distribui a pressão ---- */
@@ -1161,6 +1168,48 @@ function maisAnimacoes(B, j) {
       porPalmilha(P, st.c, .45);
     };
     AN.diabetes = { cams: { 2: [[-.05, .14, 0], [.55, .1, -1], 1.5] }, hDe: 1, cir: 2, max: 3, xr: 99, lin: [0, .6], cam: [[-.05, .1, 0], [.3, -1, -.35], 1.4] };
+  }
+
+  /* ---- fibromatose plantar: nódulos firmes dentro da fáscia, no meio do arco; palmilha com alívio embaixo do nódulo ---- */
+  { const o = FX.o, meio = k => { const m = B['m' + k]; return V((o.x + m.max[0]) / 2, m.min[1] - .01, (o.z + m.c[2]) / 2); };
+    const N1 = o.clone().lerp(meio(1), .9).add(V(0, -.012, 0)), N2 = o.clone().lerp(meio(1), 1.25).add(V(0, -.012, 0)), N3 = o.clone().lerp(meio(2), 1.05).add(V(0, -.012, 0));
+    const nodMat = new THREE.MeshStandardMaterial({ color: 0xF39A7C, emissive: CORAL, emissiveIntensity: .9, roughness: .45, transparent: true, depthTest: false });
+    const nods = [[N1, .05], [N2, .033], [N3, .026]].map(([p, r]) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), nodMat); m.position.copy(p); m.userData.r = r; m.renderOrder = 8; m.visible = false; scene.add(m); return m; });
+    const F = { g: -1, idx: [], w: [] };
+    for (let i = 0; i < P0.length; i += 3) { if (P0[i+1] > .2) continue; const d2 = (P0[i] - N1.x) ** 2 + (P0[i+2] - N1.z) ** 2, w = Math.exp(-d2 / .01); if (w > .03) { F.idx.push(i); F.w.push(w); } }
+    const ponto = esfera(luzMat(), naPele(N1.x, N1.z, false) || N1, .06);
+    const P = palmilha(0x2E8C73, false);
+    const alivioMat = new THREE.MeshBasicMaterial({ color: 0x0E3A30, transparent: true, opacity: 0, depthTest: false, side: THREE.DoubleSide }), bordaMat = new THREE.MeshBasicMaterial({ color: 0x9FE8CB, transparent: true, opacity: 0, depthTest: false, side: THREE.DoubleSide });
+    const alivio = new THREE.Mesh(new THREE.CircleGeometry(.085, 32), alivioMat), bordaA = new THREE.Mesh(new THREE.RingGeometry(.085, .098, 32), bordaMat);
+    [alivio, bordaA].forEach(m => { m.rotation.x = -Math.PI / 2; m.scale.set(1.5, 1, 1); m.position.set(N1.x + .03, .046, N1.z); m.renderOrder = 7; P.g.add(m); });
+    // cirurgia (etapa 3): corte na sola do lado de dentro, fora da área de apoio; pinça retira o nódulo com a fáscia em volta; pontos na pele
+    const Cx = { s: 0 }, corteP = [];
+    for (let k = 0; k <= 16; k++) { const x = N1.x - .2 + .4 * k / 16, z = N1.z - .075 + .025 * Math.sin(k / 16 * Math.PI), q = naPele(x, z, false); if (q) corteP.push(q.add(V(0, -.004, 0))); }
+    const corteMat = new THREE.MeshBasicMaterial({ color: 0xB3261E, transparent: true, opacity: 0, depthTest: false });
+    const corte = corteP.slice(1).map((q, k) => { const m = cil(corteP[k], q, .006, corteMat, 8); m.renderOrder = 9; m.visible = false; scene.add(m); return m; });
+    const pontoMat = new THREE.MeshBasicMaterial({ color: 0x2A5BD7, transparent: true, opacity: 0, depthTest: false });
+    const pontos = []; for (let k = 2; k < corteP.length - 1; k += 3) { const q = corteP[k], t = corteP[k + 1].clone().sub(corteP[k - 1]).normalize(), w = V(0, 1, 0).cross(t).normalize().multiplyScalar(.03); const m = cil(q.clone().sub(w), q.clone().add(w), .004, pontoMat, 6); m.renderOrder = 9.5; m.visible = false; scene.add(m); pontos.push(m); }
+    const curvaC = corteP.length > 1 ? new THREE.CatmullRomCurve3(corteP) : null, ptA = V(0, 0, 0);
+    const meioC = corteP.length ? corteP[corteP.length >> 1] : N1.clone().add(V(0, -.1, -.1)), dSai = meioC.distanceTo(N1) + .16, sai = meioC.clone().sub(N1).normalize(), pinca = fazerPinca(sai), agulha = fazerAgulha(); scene.add(pinca.g, agulha.g);
+    const pinP = V(0, 0, 0);
+    POSE.fibroma = now => {
+      const alvo = tl.on === 'fibroma' ? cl(tl.T - 3) : 0; if (tl.on !== 'fibroma' && st.h === 0) Cx.s = 0; else Cx.s += (alvo - Cx.s) * K(.12);
+      const s = Cx.s, abre = sm(cl(s / .24)), tira = sm(cl((s - .38) / .22)), fecha = cl((s - .64) / .32), feito = sm(cl((s - .3) / .3));
+      const g = st.h, b = bate(now), caroco = Math.max(st.aux, g) * (1 - feito);
+      nods.forEach((m, k) => { const r = m.userData.r * g * (k ? 1 - feito : 1) + .0005; m.visible = g > .01 && st.xr > .3 && (k ? feito < .99 : tira < .99); m.scale.set(r * 1.5, r * .75, r); });
+      nods[0].position.copy(N1).addScaledVector(sai, dSai * tira); nodMat.opacity = 1;
+      nodMat.emissiveIntensity = .9 * (1 - .5 * st.c * (1 - abre));
+      ponto.visible = st.aux > .01; ponto.material.opacity = .7 * st.aux; ponto.scale.setScalar(.17 * b);
+      porPalmilha(P, st.c * (1 - sm(cl(s * 8))), .5); alivioMat.opacity = Math.min(.85, P.mat.opacity * 1.7); bordaMat.opacity = Math.min(.9, P.mat.opacity * 1.8);
+      { const n = Math.round(abre * corte.length), fade = 1 - .55 * sm(cl((s - .9) / .1)); corte.forEach((m, k) => { m.visible = k < n; }); corteMat.opacity = .95 * fade; }
+      pinP.copy(N1).addScaledVector(sai, dSai * tira); pinca.pose(pinP, s > .26 && s < .66 ? Math.sin(cl((s - .26) / .4) * Math.PI) : 0);
+      { const nP = Math.floor(fecha * (pontos.length + .999)); pontos.forEach((m, k) => { m.visible = k < nP; }); pontoMat.opacity = 1; }
+      if (curvaC) agulha.pose(curvaC.getPointAt(cl(fecha), ptA), s > .64 && s < .97 ? 1 : 0, now);
+      if (Math.abs(caroco - F.g) < 2e-4) return; F.g = caroco;
+      const arr = arrPele(); F.idx.forEach((i, k) => { arr[i+1] = P0[i+1] - .03 * caroco * F.w[k]; }); peleMudou();
+    };
+    AN.fibroma = { hDe: 1, cir: 2, auto: [2, 3], max: 4, aux: [0, 1], cams: { 3: [[N1.x, .12, N1.z - .06], [.15, -.75, -1], .78] }, fases: { 2: [[0, 'palmilha com alívio embaixo do nódulo']], 3: [[0, 'corte na sola, do lado de dentro, fora da área de maior apoio'], [.27, 'os nódulos são retirados com a fáscia ao redor'], [.64, 'a pele é fechada com pontos']] } };
+    RN.fibroma = regiaoIdx(F.idx);
   }
 
   /* ---- pé plano: cirurgia — o osso do calcanhar é cortado, deslocado para dentro e fixado com parafuso ---- */
@@ -1281,7 +1330,7 @@ const tl = { on: null, T: 0, i: -1, n: 5, auto: null, mostra: null, range: null,
 function irPara(i) {
   if (!tl.on) return;
   i = cl(i, 0, tl.n - 1); tl.auto = null; const cfg = AN[tl.on], autos = cfg.auto || [cfg.cir ?? 3]; acordar();
-  if (autos.includes(i) && !RM && !window.__inst) { tl.T = i; tl.auto = { de: i, ate: i + .985, ini: performance.now(), ms: tl.on === 'joanete' ? 9500 : tl.on === 'haglund' || i === 5 ? 6500 : 3800 }; }
+  if (autos.includes(i) && !RM && !window.__inst) { tl.T = i; tl.auto = { de: i, ate: i + .985, ini: performance.now(), ms: tl.on === 'joanete' ? 9500 : tl.on === 'haglund' || i === 5 || tl.on === 'fibroma' && i === 3 ? 6500 : 3800 }; }
   else tl.T = autos.includes(i) ? i + .985 : i;
   if (tl.range) tl.range.value = tl.T;
 }
@@ -1483,7 +1532,7 @@ function passo(now) {
     // câmera da etapa (se a pessoa não girou o pé agora há pouco)
     const cam = (cfg.cams && cfg.cams[i]) || tl.padrao;
     if (cam !== tl.cam) { tl.cam = cam; if (now - gesto > 4000) enquadrar(V(...cam[0]), V(...cam[1]), cam[2], 900); }
-    hA = cfg.hDe ? sm(cl((T - cfg.hDe + .1) / .4)) : 1;
+    hA = cfg.hDe ? (T >= cfg.hDe - .005 ? 1 : 0) : 1;
     st.xrAlvo = cfg.xr === 99 ? 0 : T >= 3.995 && cfg.fimXR != null ? cfg.fimXR : sm(cl((T - .45) / .4));
     linA = jan(cfg.lin); auxA = jan(cfg.aux);
     if (tl.on === 'joanete') { discoA = T >= 3.03 && u < .3 ? 1 : 0; brocaA = T >= 3.02 && u < .24 ? Math.sin(cl((u - .02) / .22) * Math.PI) : 0; cA = sm(cl((u - .26) / .24)); parA = cl((u - .52) / .46); }
