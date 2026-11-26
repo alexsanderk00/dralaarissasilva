@@ -13,7 +13,10 @@ def gerar():
         nonlocal s
         assert s.count(a) == n, ('pe3d', a[:70], s.count(a)); s = s.replace(a, b)
     rp('<title>Onde dói · Pé em 3D</title>', '<title>Pé em 3D · Onde dói · Dra. Larissa Silva</title>\n<link rel="icon" href="/favicon.ico">')
-    # noindex continua enquanto há textos não aprovados pela Dra. Larissa (ela revisa no próprio site)
+    # Dra. Larissa aprovou todos os textos (25/11/2026): a página entra no Google (a demo em vercel.app continua noindex)
+    rp('<meta name="robots" content="noindex">',
+       '<meta name="description" content="Gire o pé em 3D e toque onde dói: veja os problemas mais comuns do pé e do tornozelo, do joanete à fascite. Com a Dra. Larissa Silva, Leblon, RJ.">\n'
+       '<link rel="canonical" href="https://dralaarissasilva.com.br/pe-3d/">')
     # nome no topo volta para o site; "Demonstração" sai
     rp('<div class="nome">Dra. Larissa Silva<small>', '<a class="nome" href="/" title="Voltar ao site">Dra. Larissa Silva<small>')
     rp('<i>Demonstração · modelo ilustrativo</i></div>', '<i>← voltar ao site</i></a>')

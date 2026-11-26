@@ -204,7 +204,7 @@ PAGS += paginas.gerar_novas(open('head_v3.html', encoding='utf-8').read(), open(
 
 # Google: mapa do site e regras de rastreamento (enviar sitemap.xml no Search Console)
 import datetime
-open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('  <url><loc>' + u + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n' for u in [URL] + ([URL + 'en/'] if TEM_EN else []) + PAGS) + '</urlset>\n')
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('  <url><loc>' + u + '</loc><lastmod>' + datetime.date.today().isoformat() + '</lastmod></url>\n' for u in [URL] + ([URL + 'en/'] if TEM_EN else []) + PAGS + [URL + 'pe-3d/']) + '</urlset>\n')   # pé em 3D: textos aprovados pela Dra. Larissa em 25/11/2026
 open('robots.txt', 'w', encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: ' + URL + 'sitemap.xml\n')
 
 # pé em 3D (cópia da demo em /pe-3d/)
